@@ -453,6 +453,7 @@
                 grid-row: 1;
                 justify-content: center;
                 padding-top: 8px;
+                min-height: 260px;
             }
 
             .hero-video {
@@ -494,6 +495,47 @@
             .hero-stats { margin-top: 40px; }
         }
 
+        /* ── SITE LOADER ── */
+        .site-loader {
+            position: fixed;
+            inset: 0;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .site-loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-logo {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #111;
+        }
+
+        .loader-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--pink);
+            box-shadow: 0 0 10px 3px rgba(255,45,135,0.55);
+            animation: loaderPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes loaderPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50%       { transform: scale(1.6); opacity: 0.4; }
+        }
+
         @media (max-width: 400px) {
             .nav-links li:nth-child(3) { display: none; }
             .hero-headline { font-size: 38px; }
@@ -502,6 +544,12 @@
     </style>
 </head>
 <body>
+
+    <!-- ── Site loader ── -->
+    <div class="site-loader" id="siteLoader">
+        <span class="loader-logo">KDO Digital</span>
+        <span class="loader-dot"></span>
+    </div>
 
     <!-- ── Fixed Nav ── -->
     <nav aria-label="Main navigation">
@@ -595,6 +643,16 @@
     <script>
         if (history.scrollRestoration) history.scrollRestoration = 'manual';
         window.scrollTo(0, 0);
+
+        // Loader — hides rough initial load on mobile
+        const siteLoader = document.getElementById('siteLoader');
+        const dismissLoader = () => {
+            if (!siteLoader || siteLoader.classList.contains('hidden')) return;
+            siteLoader.classList.add('hidden');
+            setTimeout(() => siteLoader.remove(), 500);
+        };
+        window.addEventListener('load', () => setTimeout(dismissLoader, 150));
+        setTimeout(dismissLoader, 2000); // hard cap — never blocks more than 2s
 
         const nav = document.querySelector('nav');
         window.addEventListener('scroll', () => {
