@@ -1,611 +1,606 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KDO Digital | Elite Digital Boutique — Isle of Man</title>
-  <meta name="description" content="KDO Digital — Isle of Man's premier digital agency. Elite web experiences, mobile apps and growth strategies for ambitious businesses.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { background: #000; color: #e5e2e1; font-family: 'Inter', sans-serif; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-    ::-webkit-scrollbar { width: 3px; }
-    ::-webkit-scrollbar-track { background: #000; }
-    ::-webkit-scrollbar-thumb { background: rgba(198,198,198,0.2); border-radius: 2px; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KDO Digital — Hero</title>
 
-    #loader { position: fixed; inset: 0; z-index: 9000; background: #000; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 24px; transition: opacity 0.8s ease, visibility 0.8s ease; }
-    #loader.out { opacity: 0; visibility: hidden; pointer-events: none; }
-    .ld-brand { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 26px; letter-spacing: -0.04em; background: linear-gradient(135deg, #fff 0%, #c6c6c6 55%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .ld-bar { width: 160px; height: 1px; background: rgba(255,255,255,0.06); overflow: hidden; }
-    .ld-fill { height: 100%; background: linear-gradient(90deg, transparent, #0052FF 50%, rgba(198,198,198,0.7), transparent); animation: sweep 1.5s ease-in-out infinite; }
-    @keyframes sweep { 0% { transform: translateX(-100%); } 100% { transform: translateX(300%); } }
+    <!-- Outfit — UI, subline, nav, labels -->
+    <!-- Hanken Grotesk — headline (Neue Haas Grotesk inspired, true italic included) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    .liquid-silver { background: linear-gradient(135deg, #fff 0%, #d4d4d4 38%, #888 72%, #c6c6c6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .label-tag { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #0052FF; }
-    .glass { border: 0.5px solid rgba(198,198,198,0.1); transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.35s cubic-bezier(0.23,1,0.32,1); }
-    .glass:hover { border-color: rgba(0,82,255,0.28); box-shadow: 0 0 60px rgba(0,82,255,0.07); }
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    #nav { position: fixed; top: 0; left: 0; right: 0; z-index: 800; padding: 22px 0; transition: background 0.5s, border-color 0.5s, backdrop-filter 0.5s; border-bottom: 1px solid transparent; }
-    #nav.scrolled { background: rgba(0,0,0,0.88); backdrop-filter: blur(24px); border-color: rgba(198,198,198,0.07); }
-    .nav-inner { max-width: 1400px; margin: 0 auto; padding: 0 clamp(24px,4vw,64px); display: flex; align-items: center; justify-content: space-between; }
-    .nav-brand { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 19px; letter-spacing: -0.04em; cursor: pointer; user-select: none; }
-    .nav-links { display: flex; gap: 36px; align-items: center; }
-    .nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(198,198,198,0.5); text-decoration: none; transition: color 0.3s; }
-    .nav-links a:hover { color: #e5e2e1; }
-    .btn-cta { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.05em; background: #fff; color: #000; border: none; border-radius: 9999px; padding: 11px 28px; cursor: pointer; transition: transform 0.25s cubic-bezier(0.23,1,0.32,1), box-shadow 0.25s; }
-    .btn-cta:hover { transform: scale(1.05); box-shadow: 0 0 40px rgba(255,255,255,0.12); }
-    @media (max-width: 768px) { .nav-links, .btn-cta { display: none; } }
+        :root {
+            --accent:  #FF2D87;
+            --pink:    #FF2D87;
+            --green:   #00E676;
+            --nav-h:   72px;
+        }
 
-    #hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 120px clamp(20px,4vw,60px) 100px; position: relative; overflow: hidden; text-align: center; }
-    #hero::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(198,198,198,0.022) 1px, transparent 1px), linear-gradient(90deg, rgba(198,198,198,0.022) 1px, transparent 1px); background-size: 80px 80px; mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%); -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%); pointer-events: none; }
-    #logo-wrap { position: relative; display: inline-block; transition: transform 0.14s ease-out; transform-style: preserve-3d; margin-bottom: 28px; }
-    #logo-canvas { display: block; width: 100%; max-width: 420px; aspect-ratio: 420/360; position: relative; }
-    #logo-canvas canvas { display: block; width: 100% !important; height: 100% !important; }
-    #logo-agency-label { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(198,198,198,0.42); text-align: center; margin-top: 8px; opacity: 0; transition: opacity 1.4s ease; }
-    #hero h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(40px,7.5vw,86px); letter-spacing: -0.04em; line-height: 1.03; text-transform: uppercase; margin-bottom: 24px; }
-    #hero p.sub { font-weight: 300; font-size: clamp(16px,1.8vw,19px); line-height: 1.75; color: rgba(198,198,198,0.6); max-width: 560px; margin: 0 auto 48px; letter-spacing: 0.01em; }
-    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .btn-primary { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.04em; background: #fff; color: #000; border: none; border-radius: 9999px; padding: 14px 38px; cursor: pointer; transition: transform 0.25s cubic-bezier(0.23,1,0.32,1), box-shadow 0.25s; }
-    .btn-primary:hover { transform: scale(1.04); box-shadow: 0 0 40px rgba(255,255,255,0.12); }
-    .btn-outline { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.04em; background: transparent; color: #fff; border: 1px solid rgba(198,198,198,0.22); border-radius: 9999px; padding: 14px 38px; cursor: pointer; transition: all 0.3s cubic-bezier(0.23,1,0.32,1); }
-    .btn-outline:hover { background: rgba(255,255,255,0.04); border-color: rgba(198,198,198,0.45); }
-    .scroll-cue { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; }
-    .scroll-cue span { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.28em; color: rgba(198,198,198,0.25); text-transform: uppercase; }
-    .scroll-line { width: 1px; height: 36px; background: linear-gradient(to bottom, rgba(0,82,255,0.55), transparent); animation: cue 2s ease-in-out infinite; }
-    @keyframes cue { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+        html { scroll-behavior: smooth; }
 
-    .section-wrap { max-width: 1400px; margin: 0 auto; padding: 0 clamp(24px,4vw,64px); }
-    section { padding: 120px 0; }
-    .section-head { margin-bottom: 64px; }
-    .section-head h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(34px,5vw,64px); letter-spacing: -0.04em; text-transform: uppercase; line-height: 1.04; max-width: 700px; margin-top: 16px; }
+        @keyframes navSlideDown {
+            from { opacity: 0; transform: translateY(-14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2px; }
-    .stat-card { padding: 48px 40px; position: relative; overflow: hidden; }
-    .stat-card::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 30%, rgba(0,82,255,0.04), transparent 60%); opacity: 0; transition: opacity 0.4s; }
-    .stat-card:hover::after { opacity: 1; }
-    .stat-val { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(38px,4vw,54px); letter-spacing: -0.04em; line-height: 1; margin: 20px 0 4px; }
-    .stat-sub { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: -0.02em; color: rgba(198,198,198,0.38); margin-bottom: 20px; }
-    .stat-body { font-size: 14px; line-height: 1.8; color: rgba(198,198,198,0.5); font-weight: 300; }
+        @keyframes navLineIn {
+            from { transform: scaleX(0); }
+            to   { transform: scaleX(1); }
+        }
 
-    .svc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1px; }
-    .svc-card { padding: 38px 34px; }
-    .svc-icon { width: 38px; height: 38px; border: 1px solid rgba(0,82,255,0.28); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; color: #0052FF; font-size: 16px; }
-    .svc-card h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 19px; letter-spacing: -0.02em; margin-bottom: 12px; }
-    .svc-card p { font-size: 14px; line-height: 1.8; color: rgba(198,198,198,0.5); font-weight: 300; }
+        @keyframes heroFadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
-    .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
-    .process-step { padding: 32px 28px; position: relative; }
-    .process-step:not(:first-child) { border-left: 0.5px solid rgba(198,198,198,0.07); }
-    .step-num { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: #0052FF; margin-bottom: 22px; }
-    .step-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 19px; letter-spacing: -0.02em; margin-bottom: 12px; }
-    .step-body { font-size: 13px; line-height: 1.8; color: rgba(198,198,198,0.45); font-weight: 300; }
-    .step-line { position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, #0052FF, transparent); transform: scaleX(0); transform-origin: left; transition: transform 0.4s cubic-bezier(0.23,1,0.32,1); }
-    .process-step:hover .step-line { transform: scaleX(1); }
+        @keyframes heroFadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
 
-    .bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 8px; }
-    @media (max-width: 860px) { .bento { display: flex; flex-direction: column; } }
-    .bento-cell { position: relative; overflow: hidden; background: #080808; cursor: pointer; }
-    .bento-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.75s cubic-bezier(0.23,1,0.32,1); }
-    .bento-cell:hover img { transform: scale(1.08); }
-    .bento-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.25) 40%, transparent 75%); }
-    .bento-blue-tint { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,82,255,0.18), transparent 50%); opacity: 0; transition: opacity 0.4s; }
-    .bento-cell:hover .bento-blue-tint { opacity: 1; }
-    .bento-info { position: absolute; bottom: 24px; left: 24px; right: 24px; transform: translateY(4px); transition: transform 0.35s ease; }
-    .bento-cell:hover .bento-info { transform: translateY(0); }
-    .bento-info h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 19px; letter-spacing: -0.02em; color: #fff; margin-bottom: 6px; }
-    .bento-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 52px; flex-wrap: wrap; gap: 20px; }
-    .bento-head a { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(198,198,198,0.38); text-decoration: none; transition: color 0.3s, transform 0.3s; }
-    .bento-head a:hover { color: #0052FF; transform: translateX(4px); }
+        @keyframes scrollSlide {
+            0%   { top: -100%; }
+            100% { top: 100%; }
+        }
 
-    .about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 80px; align-items: center; }
-    .about-copy p { font-size: 16px; line-height: 1.85; color: rgba(198,198,198,0.6); font-weight: 300; margin-bottom: 20px; }
-    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-    .astat { padding: 32px 26px; }
-    .astat-val { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(34px,4vw,48px); letter-spacing: -0.04em; line-height: 1; margin-bottom: 8px; }
-    .astat-lbl { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(198,198,198,0.38); }
+        body {
+            background: #fff;
+            color: #000;
+            font-family: 'Outfit', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
 
-    #cta { text-align: center; position: relative; }
-    .cta-glow { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 900px; max-width: 100%; height: 500px; background: radial-gradient(ellipse, rgba(0,82,255,0.07) 0%, transparent 65%); pointer-events: none; }
-    #cta h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(40px,7.5vw,86px); letter-spacing: -0.04em; text-transform: uppercase; line-height: 1.03; margin: 16px 0 20px; }
-    #cta .sub { font-size: 17px; line-height: 1.75; color: rgba(198,198,198,0.5); font-weight: 300; max-width: 600px; margin: 0 auto 48px; }
-    .cta-form { display: flex; gap: 10px; max-width: 520px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
-    .cta-input { flex: 1; min-width: 220px; padding: 14px 22px; background: rgba(255,255,255,0.03); border: 0.5px solid rgba(198,198,198,0.18); border-radius: 4px; color: #e5e2e1; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.06em; outline: none; transition: border-color 0.3s; }
-    .cta-input:focus { border-color: rgba(0,82,255,0.5); }
-    .cta-input::placeholder { color: rgba(198,198,198,0.28); }
-    .cta-thanks { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.12em; color: #0052FF; padding: 20px; display: none; }
-    .cta-thanks.show { display: block; }
-    .cta-note { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.14em; color: rgba(198,198,198,0.2); text-transform: uppercase; margin-top: 22px; }
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            inset: 0 0 auto 0;
+            height: var(--nav-h);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 56px;
+            z-index: 200;
+            opacity: 0;
+            animation: navSlideDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0s both;
+            transition: background 0.35s ease, box-shadow 0.35s ease;
+        }
 
-    footer { border-top: 0.5px solid rgba(198,198,198,0.07); padding: 52px clamp(24px,4vw,64px); max-width: 1400px; margin: 0 auto; }
-    .footer-inner { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 44px; margin-bottom: 48px; }
-    .footer-brand { max-width: 250px; }
-    .footer-brand-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: -0.04em; margin-bottom: 16px; }
-    .footer-brand p { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(198,198,198,0.28); line-height: 2; }
-    .footer-cols { display: flex; gap: 52px; flex-wrap: wrap; }
-    .footer-col { display: flex; flex-direction: column; gap: 12px; }
-    .footer-col-head { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.15em; text-transform: uppercase; color: #c6c6c6; margin-bottom: 4px; }
-    .footer-col a { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(198,198,198,0.28); text-decoration: none; transition: color 0.2s, transform 0.2s; display: inline-block; }
-    .footer-col a:hover { color: rgba(198,198,198,0.6); transform: translateX(3px); }
-    .footer-bottom { border-top: 0.5px solid rgba(198,198,198,0.05); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-    .footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(198,198,198,0.18); }
-    .footer-social { display: flex; gap: 20px; }
-    .footer-social a { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(198,198,198,0.18); text-decoration: none; transition: color 0.2s; }
-    .footer-social a:hover { color: rgba(198,198,198,0.5); }
+        nav::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: rgba(0,0,0,0.07);
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: navLineIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+        }
 
-    .reveal { opacity: 0; transform: translateY(48px); }
-    .reveal.done { opacity: 1; transform: none; transition: opacity 0.85s cubic-bezier(0.23,1,0.32,1), transform 0.85s cubic-bezier(0.23,1,0.32,1); }
-    .reveal-s1.done { transition-delay: 0.05s; } .reveal-s2.done { transition-delay: 0.12s; } .reveal-s3.done { transition-delay: 0.19s; }
-    .reveal-s4.done { transition-delay: 0.26s; } .reveal-s5.done { transition-delay: 0.33s; } .reveal-s6.done { transition-delay: 0.40s; }
-  </style>
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 1px 28px rgba(0,0,0,0.06);
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 16px;
+            color: #000;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 44px;
+        }
+
+        .nav-links a {
+            font-size: 12px;
+            font-weight: 500;
+            color: #000;
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: opacity 0.18s ease;
+        }
+
+        .nav-links a:hover { opacity: 0.35; }
+
+        .nav-cta {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #fff;
+            background: #000;
+            padding: 9px 20px;
+            border-radius: 100px;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .nav-cta:hover {
+            background: var(--accent);
+            box-shadow: 0 0 22px rgba(255,45,135,0.45);
+        }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 65fr 35fr;
+            align-items: center;
+            padding: calc(var(--nav-h) + 28px) 56px 60px;
+            background: #fff;
+            overflow: clip;
+        }
+
+        /* ── CONTENT ── */
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-right: 40px;
+        }
+
+        /* Pre-headline glow tag */
+        .hero-pretag {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            margin-bottom: 34px;
+            opacity: 0;
+            animation: heroFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+        }
+
+        .pretag-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--pink);
+            box-shadow: 0 0 10px 4px rgba(255, 45, 135, 0.55);
+            flex-shrink: 0;
+        }
+
+        .pretag-line {
+            display: block;
+            width: 24px;
+            height: 1px;
+            background: var(--pink);
+            box-shadow: 0 0 6px 1px rgba(255, 45, 135, 0.65);
+            flex-shrink: 0;
+        }
+
+        .pretag-text {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #999;
+            white-space: nowrap;
+        }
+
+        /* Headline — Urbanist 500 (Neue Haas Grotesk inspired, lighter weight) */
+        .hero-headline {
+            font-family: 'Urbanist', sans-serif;
+            font-size: clamp(38px, 5.5vw, 80px);
+            font-weight: 500;
+            color: #111111;
+            line-height: 1.04;
+            letter-spacing: -0.025em;
+            margin-bottom: 28px;
+            opacity: 0;
+            animation: heroFadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+        }
+
+        /* Italic word — accent colour creates a brand signature */
+        .hero-headline .ital {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--accent);
+        }
+
+        /* Subline — Outfit 400 for weight contrast */
+        .hero-subline {
+            font-size: 17px;
+            font-weight: 400;
+            color: #000000;
+            line-height: 1.72;
+            margin-bottom: 48px;
+            max-width: 380px;
+            opacity: 0;
+            animation: heroFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.55s both;
+        }
+
+        /* ── CTAs ── */
+        .hero-ctas {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: heroFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.72s both;
+        }
+
+        .cta-primary {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #fff;
+            background: #000;
+            padding: 18px 44px;
+            border-radius: 6px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.22);
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.28s ease, box-shadow 0.28s ease;
+            white-space: nowrap;
+        }
+
+        .cta-primary:hover {
+            background: var(--accent);
+            box-shadow: 0 4px 28px rgba(255,45,135,0.6), 0 0 60px rgba(255,45,135,0.2);
+        }
+
+        .cta-text-link {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            color: #000;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding-bottom: 3px;
+            border-bottom: 1px solid rgba(0,0,0,0.25);
+            transition: opacity 0.18s ease;
+            white-space: nowrap;
+        }
+
+        .cta-text-link:hover { opacity: 0.45; }
+
+        /* ── SOCIAL PROOF ── */
+        .hero-trust {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 20px;
+            opacity: 0;
+            animation: heroFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.86s both;
+        }
+
+        .trust-avatars {
+            display: flex;
+            align-items: center;
+        }
+
+        .trust-avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            margin-left: -8px;
+            flex-shrink: 0;
+        }
+
+        .trust-avatar:first-child { margin-left: 0; background: rgba(255,45,135,0.18); }
+        .trust-avatar:nth-child(2) { background: rgba(0,230,118,0.18); }
+        .trust-avatar:nth-child(3) { background: rgba(255,75,31,0.18); }
+
+        .trust-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            color: #aaa;
+            letter-spacing: 0.02em;
+        }
+
+        /* ── GLOWING STAT STRIPS ── */
+        .hero-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            margin-top: 58px;
+            width: 100%;
+            opacity: 0;
+            animation: heroFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.95s both;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .stat-line-short {
+            display: block;
+            width: 30px;
+            height: 1px;
+            flex-shrink: 0;
+        }
+
+        .stat-line-long {
+            flex: 1;
+            height: 1px;
+            display: block;
+        }
+
+        .stat-line-short.pink { background: var(--pink); box-shadow: 0 0 7px 2px rgba(255,45,135,0.4); }
+        .stat-line-short.green { background: var(--green); box-shadow: 0 0 7px 2px rgba(0,230,118,0.4); }
+        .stat-line-long.pink { background: linear-gradient(to right, var(--pink), rgba(255,45,135,0)); box-shadow: 0 0 7px 2px rgba(255,45,135,0.2); }
+        .stat-line-long.green { background: linear-gradient(to right, var(--green), rgba(0,230,118,0)); box-shadow: 0 0 7px 2px rgba(0,230,118,0.2); }
+
+        .stat-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #666;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* ── VIDEO (same position/treatment as the image was) ── */
+        .hero-media-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            overflow: visible;
+            min-width: 0; /* Prevents video natural size from overriding the fr grid column */
+            opacity: 0;
+            animation: heroFadeIn 1.2s ease 0.25s both;
+        }
+
+        .hero-video {
+            height: clamp(560px, 92vh, 1060px);
+            width: auto;
+            max-width: none;
+            flex-shrink: 0;
+            display: block;
+            /* Multiply blends the near-white video background into the white page */
+            mix-blend-mode: multiply;
+            filter: brightness(1.05) contrast(1.05) saturate(1.12);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 18%);
+            mask-image: linear-gradient(to right, transparent 0%, black 18%);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            nav, nav::after, .hero-pretag, .hero-headline, .hero-subline,
+            .hero-ctas, .hero-trust, .hero-stats, .hero-media-wrap, .scroll-cue {
+                opacity: 1 !important;
+                transform: none !important;
+                animation: none !important;
+            }
+            .scroll-cue-track::after { animation: none !important; }
+        }
+
+        /* ── SCROLL CUE ── */
+        .scroll-cue {
+            position: absolute;
+            bottom: 40px;
+            left: 56px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            animation: heroFadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 1.3s both;
+        }
+
+        .scroll-cue-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 8px;
+            font-weight: 600;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #bbb;
+        }
+
+        .scroll-cue-track {
+            position: relative;
+            width: 1px;
+            height: 48px;
+            background: rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .scroll-cue-track::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            animation: scrollSlide 2s cubic-bezier(0.4, 0, 0.6, 1) infinite 1.6s;
+        }
+
+        /* ── MOBILE ── */
+        @media (max-width: 860px) {
+            nav { padding: 0 28px; }
+            .nav-links { gap: 22px; }
+            .scroll-cue { display: none; }
+            .nav-cta { display: none; }
+            .hero-trust { margin-top: 16px; }
+            .nav-links li:first-child,
+            .nav-links li:nth-child(2) { display: none; }
+
+            .hero {
+                grid-template-columns: 1fr;
+                min-height: 100svh;
+                padding: calc(var(--nav-h) + 16px) 28px 56px;
+                align-content: flex-start;
+            }
+
+            .hero-media-wrap {
+                grid-row: 1;
+                justify-content: center;
+                padding-top: 8px;
+            }
+
+            .hero-video {
+                /* Mobile: override desktop left-fade with a bottom fade instead */
+                -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+                mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+            }
+
+            .hero-video {
+                height: auto;
+                width: 72vw;
+                max-width: 300px;
+                flex-shrink: 1;
+            }
+
+            .hero-content {
+                grid-row: 2;
+                padding-right: 0;
+            }
+
+            .hero-headline {
+                font-size: clamp(36px, 10vw, 52px);
+                letter-spacing: -0.02em;
+                margin-bottom: 20px;
+            }
+
+            .hero-subline {
+                font-size: 16px;
+                margin-bottom: 36px;
+                max-width: 100%;
+            }
+
+            .pretag-text {
+                font-size: 8.5px;
+                letter-spacing: 0.12em;
+                white-space: nowrap;
+            }
+
+            .hero-stats { margin-top: 40px; }
+        }
+
+        @media (max-width: 400px) {
+            .nav-links li:nth-child(3) { display: none; }
+            .hero-headline { font-size: 38px; }
+            .hero-ctas { flex-direction: column; align-items: flex-start; gap: 16px; }
+        }
+    </style>
 </head>
 <body>
 
-<div id="loader">
-  <div class="ld-brand">KDO DIGITAL</div>
-  <div class="ld-bar"><div class="ld-fill"></div></div>
-  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;color:rgba(198,198,198,0.18);text-transform:uppercase;">Initialising experience</div>
-</div>
+    <!-- ── Fixed Nav ── -->
+    <nav aria-label="Main navigation">
+        <a href="#" class="nav-logo">KDO Digital</a>
+        <ul class="nav-links">
+            <li><a href="#">Work</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <a href="#" class="nav-cta">Start a Project</a>
+    </nav>
 
-<nav id="nav">
-  <div class="nav-inner">
-    <div class="nav-brand liquid-silver">KDO DIGITAL</div>
-    <div class="nav-links">
-      <a href="#services">Services</a>
-      <a href="#work">Work</a>
-      <a href="#process">Process</a>
-      <a href="#about">About</a>
-    </div>
-    <button class="btn-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">START PROJECT</button>
-  </div>
-</nav>
+    <!-- ── Hero ── -->
+    <section class="hero" aria-label="Hero">
 
-<section id="hero">
-  <div id="logo-wrap">
-    <div id="logo-canvas" aria-label="KDO Digital brand graphic"></div>
-    <p id="logo-agency-label">Digital Agency</p>
-  </div>
-  <p class="hero-label label-tag" id="hero-label" style="opacity:0">Isle of Man · Est. 2024</p>
-  <h1 class="liquid-silver" id="hero-h1" style="opacity:0;transform:translateY(40px)">Architects of the<br>Digital Infinite</h1>
-  <p class="sub" id="hero-sub" style="opacity:0;transform:translateY(30px)">We build elite digital experiences for Isle of Man businesses that demand precision, performance, and lasting impact. Not just websites — digital statements.</p>
-  <div class="hero-btns" id="hero-btns" style="opacity:0;transform:translateY(24px)">
-    <button class="btn-primary" onclick="document.getElementById('work').scrollIntoView({behavior:'smooth'})">VIEW OUR WORK</button>
-    <button class="btn-outline" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">DISCUSS A PROJECT</button>
-  </div>
-  <div class="scroll-cue" id="scroll-cue" style="opacity:0">
-    <span>Scroll</span>
-    <div class="scroll-line"></div>
-  </div>
-</section>
+        <div class="hero-content">
 
-<section>
-  <div class="section-wrap">
-    <div class="stats-grid">
-      <div class="stat-card glass reveal reveal-s1">
-        <span class="label-tag">Precision</span>
-        <div class="stat-val liquid-silver">0.01%</div>
-        <div class="stat-sub">Standard</div>
-        <p class="stat-body">We craft digital products at the exact intersection of precision engineering and high-fashion aesthetics. Every pixel earns its place.</p>
-      </div>
-      <div class="stat-card glass reveal reveal-s2">
-        <span class="label-tag">Identity</span>
-        <div class="stat-val liquid-silver">Silver</div>
-        <div class="stat-sub">Core</div>
-        <p class="stat-body">Liquid silver materiality meets pure black voids. Visual systems that command instant authority and hold value over time.</p>
-      </div>
-      <div class="stat-card glass reveal reveal-s3">
-        <span class="label-tag">Velocity</span>
-        <div class="stat-val liquid-silver">Rapid</div>
-        <div class="stat-sub">Growth</div>
-        <p class="stat-body">Accelerating brand value through immersive digital strategy, avant-garde development, and ruthless performance optimisation.</p>
-      </div>
-    </div>
-  </div>
-</section>
+            <!-- Pre-headline glow tag -->
+            <div class="hero-pretag">
+                <span class="pretag-dot"></span>
+                <span class="pretag-line"></span>
+                <span class="pretag-text">Isle of Man · Full Service Digital Agency</span>
+            </div>
 
-<section id="services" style="padding-top:0">
-  <div class="section-wrap">
-    <div class="section-head reveal">
-      <span class="label-tag">What We Build</span>
-      <h2 class="liquid-silver">Services Built for Serious Business</h2>
-    </div>
-    <div class="svc-grid">
-      <div class="svc-card glass reveal reveal-s1"><div class="svc-icon">&#x2B21;</div><h3>Web Development</h3><p>Bespoke websites and web apps built for performance, security, and conversion. Every interaction intentional, every detail deliberate.</p></div>
-      <div class="svc-card glass reveal reveal-s2"><div class="svc-icon">&#x25C8;</div><h3>App Development</h3><p>Native iOS and Android experiences that feel alive. From concept to App Store — we own the entire journey alongside you.</p></div>
-      <div class="svc-card glass reveal reveal-s3"><div class="svc-icon">&#x25CE;</div><h3>Digital Marketing</h3><p>Organic growth strategies, paid acquisition, and content systems engineered for long-term brand authority and compounding returns.</p></div>
-      <div class="svc-card glass reveal reveal-s4"><div class="svc-icon">&#x2B19;</div><h3>Brand Identity</h3><p>Visual identity systems that telegraph premium. Logos, typography, colour, and the invisible grammar that makes brands iconic.</p></div>
-      <div class="svc-card glass reveal reveal-s5"><div class="svc-icon">&#x25C7;</div><h3>UX / UI Design</h3><p>Research-led design that removes friction and guides users to act. Beautiful and purposeful — never merely decorative.</p></div>
-      <div class="svc-card glass reveal reveal-s6"><div class="svc-icon">&#x25B3;</div><h3>SEO &amp; Growth</h3><p>Technical SEO, content architecture, and growth engineering that delivers measurable organic results month after month.</p></div>
-    </div>
-  </div>
-</section>
+            <h1 class="hero-headline">Full Service <span class="ital">Digital.</span><br>Built for Growth.</h1>
 
-<section id="process" style="padding-top:0">
-  <div class="section-wrap">
-    <div class="section-head reveal">
-      <span class="label-tag">How We Work</span>
-      <h2 class="liquid-silver">The KDO Process</h2>
-    </div>
-    <div class="process-grid">
-      <div class="process-step reveal reveal-s1"><div class="step-num">01</div><div class="step-title">Discovery</div><p class="step-body">Deep research into your business, market, and users. We only start building when we fully understand the problem.</p><div class="step-line"></div></div>
-      <div class="process-step reveal reveal-s2"><div class="step-num">02</div><div class="step-title">Strategy</div><p class="step-body">Architecture, tech stack, feature prioritisation. A clear plan documented and agreed before a line is written.</p><div class="step-line"></div></div>
-      <div class="process-step reveal reveal-s3"><div class="step-num">03</div><div class="step-title">Design</div><p class="step-body">High-fidelity prototypes reviewed and approved. No surprises during build — you see it before we build it.</p><div class="step-line"></div></div>
-      <div class="process-step reveal reveal-s4"><div class="step-num">04</div><div class="step-title">Build</div><p class="step-body">Clean, secure, scalable code. Regular demos throughout. Supabase, Vercel, and modern stacks built to last.</p><div class="step-line"></div></div>
-      <div class="process-step reveal reveal-s5"><div class="step-num">05</div><div class="step-title">Launch</div><p class="step-body">Full testing, deployment, and post-launch monitoring. We stay available until everything runs perfectly.</p><div class="step-line"></div></div>
-    </div>
-  </div>
-</section>
+            <p class="hero-subline">One agency, everything digital,<br>handled under one roof.</p>
 
-<section id="work" style="padding-top:0">
-  <div class="section-wrap">
-    <div class="bento-head reveal">
-      <div><span class="label-tag">Selected Work</span><h2 class="liquid-silver" style="margin-top:16px">Curated Projects</h2></div>
-      <a href="#">All Projects &rarr;</a>
-    </div>
-    <div class="bento">
-      <div class="bento-cell glass reveal" style="grid-column:1/8;grid-row:1;height:480px">
-        <img src="https://replicate.delivery/xezq/3o1kqc7Iu7LwOhucINFGYAmUYfkRSIfHxxtDZnyPrGRAPwrWA/tmp79m0h0gd.webp" alt="Nexus Commerce" loading="lazy">
-        <div class="bento-overlay"></div><div class="bento-blue-tint"></div>
-        <div class="bento-info"><h4>NEXUS COMMERCE</h4><span class="label-tag">E-Commerce Platform</span></div>
-      </div>
-      <div class="bento-cell glass reveal reveal-s1" style="grid-column:8/13;grid-row:1;height:480px">
-        <img src="https://replicate.delivery/xezq/HzBm3gJXVI6eX6NiDt1dTxaQjl9CjwwgWelEfp7KRfvu8AvaB/tmpjotjz1g3.webp" alt="Velocity Brand" loading="lazy">
-        <div class="bento-overlay"></div><div class="bento-blue-tint"></div>
-        <div class="bento-info"><h4>VELOCITY BRAND</h4><span class="label-tag">Identity &amp; Web App</span></div>
-      </div>
-      <div class="bento-cell glass reveal reveal-s2" style="grid-column:1/5;grid-row:2;height:420px">
-        <img src="https://replicate.delivery/xezq/hAv415cXXCK4FltWAmpZ2jEwkcfvN7IHp7tLkJvwpI1qH4VLA/tmpccn2mz88.webp" alt="Aura Mobile" loading="lazy">
-        <div class="bento-overlay"></div><div class="bento-blue-tint"></div>
-        <div class="bento-info"><h4>AURA MOBILE</h4><span class="label-tag">iOS &amp; Android App</span></div>
-      </div>
-      <div class="bento-cell glass reveal reveal-s3" style="grid-column:5/13;grid-row:2;height:420px">
-        <img src="https://replicate.delivery/xezq/eNnFEJGf38jTfonmqFXbVA0o1c9WF7XfhY9ficexaRZd4D8qF/tmpns6mi8pp.webp" alt="Quantum Infra" loading="lazy">
-        <div class="bento-overlay"></div><div class="bento-blue-tint"></div>
-        <div class="bento-info"><h4>QUANTUM INFRA</h4><span class="label-tag">Enterprise Dashboard</span></div>
-      </div>
-    </div>
-  </div>
-</section>
+            <div class="hero-ctas">
+                <a href="#" class="cta-primary">Get in Touch</a>
+                <a href="#" class="cta-text-link">Explore Services &nbsp;→</a>
+            </div>
 
-<section id="about" style="padding-top:0">
-  <div class="section-wrap">
-    <div class="about-grid">
-      <div class="about-copy">
-        <div class="reveal">
-          <span class="label-tag">About KDO Digital</span>
-          <h2 class="liquid-silver" style="margin:16px 0 28px;font-size:clamp(30px,4vw,52px)">Isle of Man's Elite Digital Studio</h2>
-          <p>We're a boutique digital agency rooted in the Isle of Man. Small by design, exceptional by necessity. Every project gets the full attention of our senior team — no account managers, no juniors passing your work around.</p>
-          <p>We work with ambitious local businesses who understand the difference between a website that exists and one that performs. If you want cheap and quick, we're not the right fit. If you want exceptional, let's talk.</p>
-          <button class="btn-outline" style="margin-top:36px" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">GET IN TOUCH &rarr;</button>
+            <!-- Social proof -->
+            <div class="hero-trust">
+                <div class="trust-avatars">
+                    <span class="trust-avatar"></span>
+                    <span class="trust-avatar"></span>
+                    <span class="trust-avatar"></span>
+                </div>
+                <span class="trust-text">Trusted by Isle of Man businesses</span>
+            </div>
+
+            <!-- Glowing stat strips -->
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-line-short green"></span>
+                    <span class="stat-label">Web &amp; App Development</span>
+                    <span class="stat-line-long green"></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-line-short pink"></span>
+                    <span class="stat-label">From Strategy to Launch</span>
+                    <span class="stat-line-long pink"></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-line-short green"></span>
+                    <span class="stat-label">Isle of Man · UK · Remote</span>
+                    <span class="stat-line-long green"></span>
+                </div>
+            </div>
+
         </div>
-      </div>
-      <div class="reveal reveal-s1">
-        <div class="about-stats">
-          <div class="astat glass"><div class="astat-val liquid-silver">5+</div><div class="astat-lbl">Years building</div></div>
-          <div class="astat glass"><div class="astat-val liquid-silver">40+</div><div class="astat-lbl">Projects shipped</div></div>
-          <div class="astat glass"><div class="astat-val liquid-silver">98%</div><div class="astat-lbl">Client retention</div></div>
-          <div class="astat glass"><div class="astat-val liquid-silver">IOM</div><div class="astat-lbl">Based &amp; proud</div></div>
+
+        <!-- Video — same position and blend as the image was -->
+        <div class="hero-media-wrap">
+            <video
+                class="hero-video"
+                autoplay
+                loop
+                muted
+                playsinline
+                disablepictureinpicture
+                preload="auto"
+            >
+                <source src="video assets/02178078478223500000000000000000000ffffc0a8787b4bfc5a.mp4" type="video/mp4">
+            </video>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<section id="cta">
-  <div class="cta-glow"></div>
-  <div class="section-wrap" style="position:relative;z-index:1">
-    <div class="reveal" style="text-align:center;max-width:780px;margin:0 auto">
-      <span class="label-tag">Ready to Begin?</span>
-      <h2 class="liquid-silver">Elevate Your Legacy.</h2>
-      <p class="sub">Limited availability. We take on a select number of projects each quarter so every client receives exceptional results, not just a completed brief.</p>
-      <div class="cta-form" id="cta-form">
-        <input type="email" class="cta-input" id="cta-email" placeholder="your@email.com">
-        <button class="btn-primary" onclick="handleEnquiry()">ENQUIRE NOW</button>
-      </div>
-      <div class="cta-thanks" id="cta-thanks">&#10003; RECEIVED &mdash; WE'LL BE IN TOUCH WITHIN 24 HOURS</div>
-      <p class="cta-note">Or email: hello@kdodigital.im</p>
-    </div>
-  </div>
-</section>
+        <!-- Scroll cue -->
+        <div class="scroll-cue" aria-hidden="true">
+            <span class="scroll-cue-text">Scroll</span>
+            <span class="scroll-cue-track"></span>
+        </div>
 
-<footer>
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <div class="footer-brand-name liquid-silver">KDO DIGITAL</div>
-      <p>The boutique standard<br>for precise digital architecture<br>and brand positioning.<br>Isle of Man.</p>
-    </div>
-    <div class="footer-cols">
-      <div class="footer-col">
-        <div class="footer-col-head">Solutions</div>
-        <a href="#services">Web Development</a><a href="#services">App Development</a>
-        <a href="#services">Digital Marketing</a><a href="#services">Brand Identity</a>
-        <a href="#services">UX/UI Design</a>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-head">Agency</div>
-        <a href="#about">About</a><a href="#process">Process</a>
-        <a href="#work">Case Studies</a><a href="#cta">Contact</a>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-head">Legal</div>
-        <a href="#">Privacy Policy</a><a href="#">Terms &amp; Conditions</a><a href="#">Cookie Policy</a>
-      </div>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span class="footer-copy">&copy; 2024 KDO Digital Ltd &middot; Isle of Man &middot; All rights reserved</span>
-    <div class="footer-social">
-      <a href="#">LinkedIn</a><a href="#">Instagram</a><a href="#">X (Twitter)</a>
-    </div>
-  </div>
-</footer>
+    </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script>
-gsap.registerPlugin(ScrollTrigger);
 
-// ─────────────────────────────────────────────────────────────────────────────
-// PURPLE ENERGY ORB — Three.js + GSAP
-// Swirling violet/purple particle vortex with energy wisps and glowing core.
-// Matches the reference design: purple plasma orb with white hot center.
-// ─────────────────────────────────────────────────────────────────────────────
-(function initLogo() {
-  if (!window.THREE) return;
-  const mount = document.getElementById('logo-canvas');
-  if (!mount) return;
 
-  const isMobile = window.innerWidth < 768;
-  const W = 420, H = 360;
+    <script>
+        if (history.scrollRestoration) history.scrollRestoration = 'manual';
+        window.scrollTo(0, 0);
 
-  // ── Scene / Camera ───────────────────────────────────────────────────────
-  const scene  = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(50, W / H, 0.01, 50);
-  camera.position.z = 3.0;
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 10);
+        }, { passive: true });
+    </script>
 
-  // ── Renderer ─────────────────────────────────────────────────────────────
-  const renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(W, H);
-  renderer.setClearColor(0x000000, 0);
-  renderer.domElement.style.cssText = 'display:block;width:100%;height:100%;';
-  mount.appendChild(renderer.domElement);
-
-  // ── Glow spheres — concentric additive-blended shells ────────────────────
-  const GLOW_DEF = [
-    [0.055, 0xffffff, 1.00],
-    [0.130, 0xf0ccff, 0.82],
-    [0.280, 0xcc66ff, 0.40],
-    [0.520, 0x9922ee, 0.18],
-    [0.880, 0x6600aa, 0.08],
-    [1.350, 0x330066, 0.035],
-  ];
-  const coreMeshes = GLOW_DEF.map(([r, hex, op]) => {
-    const m = new THREE.Mesh(
-      new THREE.SphereGeometry(r, 32, 32),
-      new THREE.MeshBasicMaterial({
-        color: hex, transparent: true, opacity: op,
-        blending: THREE.AdditiveBlending, depthWrite: false,
-      })
-    );
-    scene.add(m);
-    return m;
-  });
-
-  // ── Particle vortex ──────────────────────────────────────────────────────
-  const NPTS = isMobile ? 5000 : 12000;
-  const aPos   = new Float32Array(NPTS * 3);
-  const aCol   = new Float32Array(NPTS * 3);
-  const aSz    = new Float32Array(NPTS);
-  const aPhase = new Float32Array(NPTS);
-
-  for (let i = 0; i < NPTS; i++) {
-    const r     = Math.pow(Math.random(), 1.3) * 1.5;
-    const phi   = Math.acos(2 * Math.random() - 1);
-    const theta = Math.random() * Math.PI * 2;
-    aPos[i*3]   = r * Math.sin(phi) * Math.cos(theta);
-    aPos[i*3+1] = r * Math.cos(phi) * 0.55;
-    aPos[i*3+2] = r * Math.sin(phi) * Math.sin(theta);
-    aPhase[i]   = Math.random() * Math.PI * 2;
-
-    if (r < 0.18) {
-      aCol[i*3]=1.00; aCol[i*3+1]=0.88; aCol[i*3+2]=1.00;
-    } else if (r < 0.55) {
-      const f=(r-0.18)/0.37;
-      aCol[i*3]=0.92-f*0.28; aCol[i*3+1]=(1-f)*0.28; aCol[i*3+2]=1.00;
-    } else {
-      const f=Math.min(1,(r-0.55)/0.95);
-      aCol[i*3]=0.55-f*0.35; aCol[i*3+1]=0; aCol[i*3+2]=0.9-f*0.3;
-    }
-    aSz[i] = r < 0.25 ? 4.5 : r < 0.7 ? 3.0 : 1.8;
-  }
-
-  const pGeo = new THREE.BufferGeometry();
-  pGeo.setAttribute('position', new THREE.BufferAttribute(aPos,   3));
-  pGeo.setAttribute('aColor',   new THREE.BufferAttribute(aCol,   3));
-  pGeo.setAttribute('aSize',    new THREE.BufferAttribute(aSz,    1));
-  pGeo.setAttribute('aPhase',   new THREE.BufferAttribute(aPhase, 1));
-
-  const pMat = new THREE.ShaderMaterial({
-    uniforms: { uTime: { value: 0 }, uProgress: { value: 0 } },
-    vertexShader: `
-      attribute vec3  aColor;
-      attribute float aSize;
-      attribute float aPhase;
-      varying   vec3  vColor;
-      varying   float vAlpha;
-      uniform   float uTime;
-      uniform   float uProgress;
-      void main() {
-        vColor = aColor;
-        float xzR = length(position.xz);
-        float spd  = 0.55 / (xzR + 0.08);
-        float ang  = atan(position.z, position.x) + uTime * spd;
-        vec3 p = vec3(xzR * cos(ang), position.y + sin(uTime * 0.7 + aPhase) * 0.05, xzR * sin(ang));
-        p *= uProgress;
-        vAlpha = uProgress * smoothstep(1.6, 0.05, length(position));
-        vec4 mv = modelViewMatrix * vec4(p, 1.0);
-        gl_PointSize = aSize * (260.0 / -mv.z) * uProgress;
-        gl_Position  = projectionMatrix * mv;
-      }
-    `,
-    fragmentShader: `
-      varying vec3  vColor;
-      varying float vAlpha;
-      void main() {
-        vec2 uv = gl_PointCoord - 0.5;
-        float d = length(uv);
-        if (d > 0.5) discard;
-        float a = smoothstep(0.5, 0.0, d) * vAlpha * 0.88;
-        gl_FragColor = vec4(vColor, a);
-      }
-    `,
-    blending: THREE.AdditiveBlending, transparent: true, depthWrite: false,
-  });
-  scene.add(new THREE.Points(pGeo, pMat));
-
-  // ── Energy wisps — CatmullRom splines ────────────────────────────────────
-  const WCOLS = [0xee66ff,0xcc44ff,0x9922dd,0xbb44ee,0xff88ff,0x8811cc,0xaa33ee,0xdd77ff,0xcc22ff,0xee55dd];
-  const wispList = [];
-  const NUM_WISPS = isMobile ? 5 : 10;
-
-  for (let w = 0; w < NUM_WISPS; w++) {
-    const turns  = 1.2 + Math.random() * 2.0;
-    const radius = 0.35 + Math.random() * 0.8;
-    const elev   = (Math.random() - 0.5) * 0.9;
-    const pts    = [];
-    for (let k = 0; k < 100; k++) {
-      const t = k / 99;
-      const a = t * Math.PI * 2 * turns;
-      const r = radius * (0.4 + t * 0.7);
-      const e = elev * Math.sin(t * Math.PI) + (Math.random() - 0.5) * 0.06;
-      pts.push(new THREE.Vector3(Math.cos(a) * r, e, Math.sin(a) * r));
-    }
-    const mesh = new THREE.Mesh(
-      new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 60, 0.005 + Math.random() * 0.004, 4, false),
-      new THREE.MeshBasicMaterial({
-        color: WCOLS[w % WCOLS.length], transparent: true,
-        opacity: 0.12 + Math.random() * 0.20,
-        blending: THREE.AdditiveBlending, depthWrite: false,
-      })
-    );
-    mesh.rotation.set((Math.random()-0.5)*0.8, Math.random()*Math.PI*2, (Math.random()-0.5)*0.5);
-    scene.add(mesh);
-    wispList.push({ mesh, speed: (0.08 + Math.random()*0.12) * (Math.random() < 0.5 ? 1 : -1), baseY: mesh.rotation.y });
-  }
-
-  // ── Mouse tracking ───────────────────────────────────────────────────────
-  let gmx=0, gmy=0, smx=0, smy=0;
-  document.addEventListener('mousemove', e => {
-    gmx = (e.clientX / window.innerWidth  - 0.5) * 2;
-    gmy = (e.clientY / window.innerHeight - 0.5) * 2;
-  });
-
-  // ── Render loop ──────────────────────────────────────────────────────────
-  const clock = new THREE.Clock();
-  (function tick() {
-    requestAnimationFrame(tick);
-    const t = clock.getElapsedTime();
-
-    smx += (gmx - smx) * 0.055;
-    smy += (gmy - smy) * 0.055;
-
-    pMat.uniforms.uTime.value     = t;
-    pMat.uniforms.uProgress.value = Math.min(1, t / 2.2);
-
-    // Subtle mouse parallax inside the scene
-    scene.rotation.y += (smx * 0.22 - scene.rotation.y) * 0.04;
-    scene.rotation.x += (-smy * 0.10 - scene.rotation.x) * 0.04;
-
-    // Wisps rotate at individual speeds
-    wispList.forEach(w => { w.mesh.rotation.y = w.baseY + t * w.speed; });
-
-    // Core pulse
-    const pulse = 1 + Math.sin(t * 1.8) * 0.06;
-    coreMeshes[0].scale.setScalar(pulse);
-    coreMeshes[1].scale.setScalar(1 + Math.sin(t * 1.4 + 0.5) * 0.04);
-
-    // Gentle breathing
-    scene.scale.setScalar(1 + Math.sin(t * 0.55) * 0.02);
-
-    renderer.render(scene, camera);
-  })();
-
-  // ── Label fade in after orb forms ────────────────────────────────────────
-  setTimeout(() => {
-    const lbl = document.getElementById('logo-agency-label');
-    if (lbl) lbl.style.opacity = '1';
-  }, 2400);
-})();
-
-// ── Mouse tilt via GSAP quickSetters (composes with entrance scale) ───────────
-// Using GSAP's transform system for both entrance + tilt means they never fight.
-(function initTilt() {
-  const wrap = document.getElementById('logo-wrap');
-  gsap.set(wrap, { transformPerspective: 900 });
-  const setRotY = gsap.quickSetter(wrap, 'rotateY', 'deg');
-  const setRotX = gsap.quickSetter(wrap, 'rotateX', 'deg');
-  let tx = 0, ty = 0, stx = 0, sty = 0;
-  document.addEventListener('mousemove', e => {
-    tx = (e.clientX / window.innerWidth  - 0.5) * 2;
-    ty = (e.clientY / window.innerHeight - 0.5) * 2;
-  });
-  (function loop() {
-    requestAnimationFrame(loop);
-    stx += (tx - stx) * 0.07;
-    sty += (ty - sty) * 0.07;
-    setRotX(-sty * 6);
-    setRotY( stx * 6);
-  })();
-})();
-
-// ── Hero entrance ─────────────────────────────────────────────────────────────
-window.addEventListener('load', () => {
-  setTimeout(() => document.getElementById('loader').classList.add('out'), 400);
-
-  // Graphic: starts as a near-invisible point, GSAP zooms it up with expo.out —
-  // the fastest deceleration curve: rockets in then snaps to rest. The canvas
-  // internal intro (spiral arms unfurling + spin burst) runs in parallel.
-  gsap.set('#logo-wrap', { scale: 0.04, opacity: 0 });
-  gsap.to('#logo-wrap', {
-    scale:   1,
-    opacity: 1,
-    duration: 1.5,
-    ease:    'expo.out',
-    delay:   0.2,
-  });
-
-  // Text content staggers in after the graphic has mostly arrived
-  const tl = gsap.timeline({ delay: 0.85 });
-  tl.to('#hero-label', { opacity:1, duration:0.7, ease:'power3.out' })
-    .to('#hero-h1',    { opacity:1, y:0, duration:1.0, ease:'power3.out' }, '-=0.4')
-    .to('#hero-sub',   { opacity:1, y:0, duration:0.9, ease:'power3.out' }, '-=0.55')
-    .to('#hero-btns',  { opacity:1, y:0, duration:0.8, ease:'power3.out' }, '-=0.5')
-    .to('#scroll-cue', { opacity:1, duration:1.0, ease:'power3.out' }, '-=0.2');
-});
-
-// ── Nav ───────────────────────────────────────────────────────────────────────
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
-}, { passive: true });
-
-// ── Scroll reveals ────────────────────────────────────────────────────────────
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('done'); obs.unobserve(e.target); } });
-}, { rootMargin: '-70px 0px', threshold: 0.05 });
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-// ── CTA form ──────────────────────────────────────────────────────────────────
-function handleEnquiry() {
-  const v = document.getElementById('cta-email').value.trim();
-  if (!v || !v.includes('@')) return;
-  document.getElementById('cta-form').style.display = 'none';
-  document.getElementById('cta-thanks').classList.add('show');
-}
-document.getElementById('cta-email')?.addEventListener('keydown', e => { if (e.key === 'Enter') handleEnquiry(); });
-</script>
 </body>
 </html>
