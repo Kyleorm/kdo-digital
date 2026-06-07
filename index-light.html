@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="KDO Digital builds websites, apps, and Meta ad campaigns for Isle of Man businesses. AI-powered speed. Local accountability. No hidden fees." />
+  <meta property="og:title" content="KDO Digital - Isle of Man's Digital Agency" />
+  <meta property="og:description" content="Websites, apps, and Meta campaigns that grow Isle of Man businesses. No mainland markup." />
+  <meta property="og:type" content="website" />
+  <title>KDO Digital - Isle of Man's Digital Agency</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Playfair+Display:ital@1&display=swap" rel="stylesheet" />
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+  <link rel="stylesheet" href="assets/css/light-theme.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav" id="nav" role="banner">
+    <div class="nav-inner">
+      <a href="index-light.html" class="nav-logo" aria-label="KDO Digital home">
+        <span class="logo-kdo">KDO</span><span class="logo-dot"> </span><span class="logo-dig">Digital</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="pages/services.html" class="nav-link">Services</a>
+        <a href="pages/pricing.html" class="nav-link">Pricing</a>
+        <a href="pages/case-studies.html" class="nav-link">Work</a>
+        <a href="pages/contact.html" class="btn-nav" aria-label="Start a project with KDO Digital">Start a Project</a>
+      </nav>
+      <button class="nav-ham" id="navHam" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mob-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation" aria-hidden="true">
+    <div class="mob-menu-inner">
+      <a href="pages/services.html" class="mob-link">Services</a>
+      <a href="pages/pricing.html" class="mob-link">Pricing</a>
+      <a href="pages/case-studies.html" class="mob-link">Work</a>
+      <a href="pages/contact.html" class="mob-link">Contact</a>
+      <a href="pages/contact.html" class="btn-primary mob-cta">Start a Project</a>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ═══ HERO ═══ -->
+    <section class="hero" id="hero" aria-label="Hero">
+
+      <!-- Holographic chrome orbs -->
+      <div class="hero-aurora" aria-hidden="true">
+        <div class="a1"></div>
+        <div class="a2"></div>
+        <div class="a3"></div>
+      </div>
+
+      <div class="hero-body">
+        <div class="hero-content">
+
+          <div class="hero-label" aria-hidden="true">
+            <span class="label-pip"></span>
+            Digital Agency · Isle of Man
+          </div>
+
+          <h1 class="hero-h1">
+            <span class="h1-line">
+              <span class="h1-word">DIGITAL</span>
+              <span class="h1-word">THAT</span>
+            </span>
+            <span class="h1-line h1-italic-line">
+              <em class="h1-italic">actually works.</em>
+            </span>
+          </h1>
+
+          <p class="hero-sub">
+            Websites, apps, and Meta campaigns built for Isle of Man businesses.
+            No mainland markup. No hidden fees. Just results.
+          </p>
+
+          <div class="hero-actions">
+            <a href="pages/contact.html" class="btn-primary">Start a Project</a>
+            <a href="pages/services.html" class="btn-ghost">Explore Services</a>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="hero-stats" aria-label="Agency stats">
+        <div class="stat">
+          <span class="stat-n" data-count="14" data-suffix="+">14+</span>
+          <span class="stat-l">IOM businesses<br>served</span>
+        </div>
+        <div class="stat-sep" aria-hidden="true"></div>
+        <div class="stat">
+          <span class="stat-n">100%</span>
+          <span class="stat-l">On-time<br>delivery</span>
+        </div>
+        <div class="stat-sep" aria-hidden="true"></div>
+        <div class="stat">
+          <span class="stat-n">&lt;3s</span>
+          <span class="stat-l">Page load<br>target</span>
+        </div>
+        <div class="stat-sep" aria-hidden="true"></div>
+        <div class="stat">
+          <span class="stat-n">£0</span>
+          <span class="stat-l">Hidden fees.<br>Guaranteed.</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ═══ MARQUEE ═══ -->
+    <div class="marquee-wrap" aria-hidden="true">
+      <div class="marquee-track">
+        <div class="marquee-inner">
+          <span>Web Design</span><span class="mdot">·</span>
+          <span>Mobile Apps</span><span class="mdot">·</span>
+          <span>Meta Ads</span><span class="mdot">·</span>
+          <span>Booking Systems</span><span class="mdot">·</span>
+          <span>Loyalty Schemes</span><span class="mdot">·</span>
+          <span>Analytics</span><span class="mdot">·</span>
+          <span>Isle of Man</span><span class="mdot">·</span>
+          <span>Web Design</span><span class="mdot">·</span>
+          <span>Mobile Apps</span><span class="mdot">·</span>
+          <span>Meta Ads</span><span class="mdot">·</span>
+          <span>Booking Systems</span><span class="mdot">·</span>
+          <span>Loyalty Schemes</span><span class="mdot">·</span>
+          <span>Analytics</span><span class="mdot">·</span>
+          <span>Isle of Man</span><span class="mdot">·</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SERVICES ═══ -->
+    <section class="section services-sec" id="services" aria-labelledby="svc-heading">
+      <div class="container">
+        <div class="sec-hdr">
+          <p class="eyebrow">What We Build</p>
+          <h2 id="svc-heading" class="sec-title reveal-up">Everything your<br>business needs online</h2>
+        </div>
+        <div class="svc-list">
+          <a href="pages/services.html#websites" class="svc-row reveal-up" aria-label="Custom Websites">
+            <span class="svc-n" aria-hidden="true">01</span>
+            <div class="svc-body">
+              <h3 class="svc-name">Custom Websites</h3>
+              <p class="svc-desc">Fast, mobile-first sites that convert visitors into customers.</p>
+            </div>
+            <svg class="svc-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="pages/services.html#apps" class="svc-row reveal-up" aria-label="Mobile Apps">
+            <span class="svc-n" aria-hidden="true">02</span>
+            <div class="svc-body">
+              <h3 class="svc-name">Mobile Apps</h3>
+              <p class="svc-desc">iOS and Android apps that put your business in customers' pockets.</p>
+            </div>
+            <svg class="svc-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="pages/services.html#meta" class="svc-row reveal-up" aria-label="Meta Ads Management">
+            <span class="svc-n" aria-hidden="true">03</span>
+            <div class="svc-body">
+              <h3 class="svc-name">Meta Ads Management</h3>
+              <p class="svc-desc">Facebook and Instagram campaigns targeted to the right IOM audience.</p>
+            </div>
+            <svg class="svc-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="pages/services.html#booking" class="svc-row reveal-up" aria-label="Booking Systems">
+            <span class="svc-n" aria-hidden="true">04</span>
+            <div class="svc-body">
+              <h3 class="svc-name">Booking Systems</h3>
+              <p class="svc-desc">Race-condition safe, payment-integrated booking that runs itself.</p>
+            </div>
+            <svg class="svc-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="pages/services.html#loyalty" class="svc-row reveal-up" aria-label="Loyalty Schemes">
+            <span class="svc-n" aria-hidden="true">05</span>
+            <div class="svc-body">
+              <h3 class="svc-name">Loyalty Schemes</h3>
+              <p class="svc-desc">Custom programmes that reward repeat customers and build retention.</p>
+            </div>
+            <svg class="svc-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="pages/services.html#analytics" class="svc-row reveal-up" aria-label="Analytics Dashboards">
+            <span class="svc-n" aria-hidden="true">06</span>
+            <div class="svc-body">
+              <h3 class="svc-name">Analytics Dashboards</h3>
+              <p class="svc-desc">Admin dashboards and monthly reports so you always know your numbers.</p>
+            </div>
+            <svg class="svc-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="sec-foot reveal-up">
+          <a href="pages/services.html" class="btn-ghost">View All Services</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ ABOUT ═══ -->
+    <section class="section about-sec" id="about" aria-labelledby="about-heading">
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-left">
+            <h2 id="about-heading" class="about-headline reveal-left">
+              A local agency<br>that actually<br><em class="headline-em">delivers.</em>
+            </h2>
+            <div class="accent-rule reveal-left" aria-hidden="true"></div>
+          </div>
+          <div class="about-right">
+            <p class="about-body reveal-up">
+              You're not dealing with a faceless mainland studio. I'm Kyle Ormesher, Isle of Man based, personally invested in every project, and accountable to real results.
+            </p>
+            <p class="about-body reveal-up">
+              Every project is AI-assisted for speed, hand-crafted for quality, and engineered to grow your revenue from day one.
+            </p>
+            <div class="reasons-grid">
+              <div class="reason reveal-up">
+                <div class="reason-n" aria-hidden="true">01</div>
+                <h4 class="reason-title">AI-Powered</h4>
+                <p class="reason-body">Cutting-edge AI tools on every project mean faster builds and smarter outcomes.</p>
+              </div>
+              <div class="reason reveal-up">
+                <div class="reason-n" aria-hidden="true">02</div>
+                <h4 class="reason-title">Locally Based</h4>
+                <p class="reason-body">You know who you're dealing with and can always reach me when it matters.</p>
+              </div>
+              <div class="reason reveal-up">
+                <div class="reason-n" aria-hidden="true">03</div>
+                <h4 class="reason-title">Transparent Pricing</h4>
+                <p class="reason-body">Clear upfront quotes. No scope creep, no surprises, no mainland markup.</p>
+              </div>
+              <div class="reason reveal-up">
+                <div class="reason-n" aria-hidden="true">04</div>
+                <h4 class="reason-title">Built to Grow</h4>
+                <p class="reason-body">Every project is engineered for performance, security, and long-term results.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ PROCESS ═══ -->
+    <section class="section process-sec" id="process" aria-labelledby="process-heading">
+      <div class="container">
+        <div class="sec-hdr sec-hdr--narrow">
+          <p class="eyebrow">How It Works</p>
+          <h2 id="process-heading" class="sec-title reveal-up">From idea to live<br>in four clear steps</h2>
+        </div>
+        <div class="steps-grid">
+          <div class="step reveal-up">
+            <div class="step-top"><span class="step-n" aria-hidden="true">01</span><div class="step-line" aria-hidden="true"></div></div>
+            <h3 class="step-title">Discovery</h3>
+            <p class="step-body">We talk through your goals, audience, and budget. No jargon, just clarity on exactly what you need and why.</p>
+          </div>
+          <div class="step reveal-up">
+            <div class="step-top"><span class="step-n" aria-hidden="true">02</span><div class="step-line" aria-hidden="true"></div></div>
+            <h3 class="step-title">Design</h3>
+            <p class="step-body">A clear visual direction agreed before a single line of code is written. Revisions included as standard.</p>
+          </div>
+          <div class="step reveal-up">
+            <div class="step-top"><span class="step-n" aria-hidden="true">03</span><div class="step-line" aria-hidden="true"></div></div>
+            <h3 class="step-title">Build</h3>
+            <p class="step-body">Fast, secure development using AI-assisted tools. You're kept in the loop at every milestone.</p>
+          </div>
+          <div class="step reveal-up">
+            <div class="step-top"><span class="step-n" aria-hidden="true">04</span></div>
+            <h3 class="step-title">Launch</h3>
+            <p class="step-body">Tested, deployed, and handed over with full training. Ongoing support included as standard.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ TESTIMONIALS ═══ -->
+    <section class="section testi-sec" id="testimonials" aria-label="Client testimonials">
+      <div class="container">
+        <h2 class="testi-heading reveal-up">What clients say</h2>
+        <div class="testi-grid">
+          <div class="testi-card testi-featured reveal-up">
+            <div class="testi-quote" aria-hidden="true">"</div>
+            <blockquote class="testi-text">
+              KDO Digital transformed our booking system overnight. The new platform handles everything automatically - we haven't had a double-booking since launch and it's saved us hours every week.
+            </blockquote>
+            <div class="testi-author">
+              <div class="testi-av" aria-hidden="true">SC</div>
+              <div>
+                <div class="testi-name">Sarah C.</div>
+                <div class="testi-role">Owner, IOM Wellness Studio</div>
+              </div>
+            </div>
+          </div>
+          <div class="testi-card reveal-up">
+            <div class="testi-quote" aria-hidden="true">"</div>
+            <blockquote class="testi-text">
+              Our Meta campaigns now generate three times the leads at half the cost. Kyle actually understands the Isle of Man market in a way mainland agencies just don't.
+            </blockquote>
+            <div class="testi-author">
+              <div class="testi-av" aria-hidden="true">MT</div>
+              <div>
+                <div class="testi-name">Mark T.</div>
+                <div class="testi-role">Director, IOM Trades Ltd</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CTA BAND ═══ -->
+    <section class="cta-band" aria-labelledby="cta-heading">
+      <div class="cta-glow" aria-hidden="true"></div>
+      <div class="container">
+        <div class="cta-inner">
+          <h2 id="cta-heading" class="cta-headline reveal-up">
+            Let's build something<br><em class="headline-em">worth talking about.</em>
+          </h2>
+          <p class="cta-sub reveal-up">Most projects start within a week. Transparent pricing, Isle of Man delivery.</p>
+          <div class="cta-actions reveal-up">
+            <a href="pages/contact.html" class="btn-primary btn-lg">Start a Project</a>
+            <a href="pages/pricing.html" class="btn-ghost btn-lg">See Pricing</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index-light.html" class="nav-logo footer-logo" aria-label="KDO Digital home">
+            <span class="logo-kdo">KDO</span><span class="logo-dig"> Digital</span>
+          </a>
+          <p class="footer-tagline">Isle of Man's digital agency for websites,<br>apps, and growth marketing.</p>
+        </div>
+      </div>
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h5 class="footer-col-title">Services</h5>
+          <a href="pages/services.html" class="footer-link">Custom Websites</a>
+          <a href="pages/services.html" class="footer-link">Mobile Apps</a>
+          <a href="pages/services.html" class="footer-link">Meta Ads</a>
+          <a href="pages/services.html" class="footer-link">Booking Systems</a>
+          <a href="pages/services.html" class="footer-link">Loyalty Schemes</a>
+        </div>
+        <div class="footer-col">
+          <h5 class="footer-col-title">Company</h5>
+          <a href="pages/case-studies.html" class="footer-link">Our Work</a>
+          <a href="pages/pricing.html" class="footer-link">Pricing</a>
+          <a href="pages/contact.html" class="footer-link">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h5 class="footer-col-title">Legal</h5>
+          <a href="#" class="footer-link">Privacy Policy</a>
+          <a href="#" class="footer-link">Terms &amp; Conditions</a>
+        </div>
+        <div class="footer-col">
+          <h5 class="footer-col-title">Get Started</h5>
+          <a href="mailto:hello@kdodigital.im" class="footer-link">hello@kdodigital.im</a>
+          <a href="pages/contact.html" class="footer-link">Start a Project</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2025 KDO Digital. Built on the Isle of Man.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js" defer></script>
+
+</body>
+</html>

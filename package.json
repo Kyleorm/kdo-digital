@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "framer-motion": "^12.40.0",
+    "replicate": "^1.4.0"
+  },
+  "name": "kdo-digital",
+  "version": "1.0.0",
+  "description": "**Kyle David Ormesher — Full Service Digital Agency**",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

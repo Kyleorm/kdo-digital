@@ -1,0 +1,333 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>KDO DIGITAL | Elite Digital Boutique</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-secondary-fixed": "#1a1c1c",
+                "on-secondary": "#2f3131",
+                "on-primary-container": "#757575",
+                "tertiary-fixed": "#dee1ff",
+                "on-primary-fixed-variant": "#474747",
+                "surface-variant": "#353535",
+                "on-background": "#e5e2e1",
+                "on-surface-variant": "#cfc4c5",
+                "surface-container": "#20201f",
+                "secondary-fixed": "#e2e2e2",
+                "background": "#000000",
+                "on-surface": "#e5e2e1",
+                "primary-fixed": "#e2e2e2",
+                "primary-fixed-dim": "#c6c6c6",
+                "secondary-fixed-dim": "#c6c6c6",
+                "on-primary": "#303030",
+                "on-secondary-fixed-variant": "#454747",
+                "surface": "#000000",
+                "surface-container-highest": "#353535",
+                "surface-container-lowest": "#0e0e0e",
+                "on-error-container": "#ffdad6",
+                "inverse-on-surface": "#313030",
+                "inverse-primary": "#5e5e5e",
+                "surface-container-low": "#1c1b1b",
+                "tertiary-fixed-dim": "#bac3ff",
+                "surface-tint": "#c6c6c6",
+                "outline": "#988e90",
+                "surface-bright": "#393939",
+                "error": "#ffb4ab",
+                "outline-variant": "#4c4546",
+                "surface-container-high": "#2a2a2a",
+                "surface-dim": "#000000",
+                "on-tertiary-fixed": "#001159",
+                "on-secondary-container": "#b5b5b5",
+                "primary-container": "#000000",
+                "tertiary": "#bac3ff",
+                "on-tertiary-container": "#576cda",
+                "inverse-surface": "#e5e2e1",
+                "on-error": "#690005",
+                "error-container": "#93000a",
+                "secondary-container": "#454747",
+                "primary": "#c6c6c6",
+                "on-tertiary": "#00218d",
+                "secondary": "#c6c6c6",
+                "on-primary-fixed": "#1b1b1b",
+                "tertiary-container": "#000000",
+                "on-tertiary-fixed-variant": "#223aa8",
+                "royal-blue": "#0052FF"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "unit": "8px",
+                "gutter-md": "24px",
+                "container-max": "1440px",
+                "margin-lg": "80px",
+                "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                "headline-md": ["Syne"],
+                "display-lg-mobile": ["Syne"],
+                "headline-lg": ["Syne"],
+                "label-sm": ["JetBrains Mono"],
+                "display-lg": ["Syne"],
+                "body-md": ["Inter"],
+                "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "0em", "fontWeight": "600"}],
+                "display-lg-mobile": ["44px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                "headline-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                "display-lg": ["72px", {"lineHeight": "76px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "0.01em", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            background-color: #000000;
+            color: #e5e2e1;
+            overflow-x: hidden;
+        }
+        .liquid-silver-text {
+            background: linear-gradient(135deg, #ffffff 0%, #c6c6c6 50%, #888888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-card {
+            border: 0.5px solid rgba(198, 198, 198, 0.2);
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(0, 82, 255, 0.4);
+            box-shadow: 0 0 30px rgba(0, 82, 255, 0.1);
+        }
+        .royal-glow {
+            box-shadow: 0 0 20px rgba(0, 82, 255, 0.15);
+        }
+        .silver-stroke {
+            border: 1px solid rgba(226, 226, 226, 0.15);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="font-body-md antialiased">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/10 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_20px_rgba(0,242,255,0.1)]">
+<div class="flex justify-between items-center w-full px-6 md:px-margin-desktop py-4 max-w-[1440px] mx-auto">
+<div class="font-headline-md text-headline-md font-bold text-primary-fixed tracking-tighter">
+                KDO DIGITAL
+            </div>
+<div class="hidden md:flex gap-10 items-center">
+<a class="font-headline-md text-headline-md tracking-tight text-primary-fixed border-b-2 border-primary-fixed pb-1 transition-colors duration-300" href="#">Services</a>
+<a class="font-headline-md text-headline-md tracking-tight text-on-surface-variant hover:text-primary-fixed transition-colors duration-300" href="#">Case Studies</a>
+<a class="font-headline-md text-headline-md tracking-tight text-on-surface-variant hover:text-primary-fixed transition-colors duration-300" href="#">Process</a>
+<a class="font-headline-md text-headline-md tracking-tight text-on-surface-variant hover:text-primary-fixed transition-colors duration-300" href="#">Insights</a>
+</div>
+<button class="bg-primary-fixed text-on-primary font-headline-md text-sm px-6 py-2 rounded-full font-bold tracking-tight hover:opacity-80 transition-all active:scale-95">
+                START PROJECT
+            </button>
+</div>
+</nav>
+<main class="relative">
+<!-- Hero Section -->
+<section class="min-h-screen flex flex-col items-center justify-center pt-24 px-6 relative overflow-hidden">
+<!-- Background Liquid Texture (Implicit from prompt) -->
+<div class="absolute inset-0 z-0 opacity-40">
+<div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-royal-blue/10 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-white/5 rounded-full blur-[100px]"></div>
+</div>
+<!-- Central Hero Image -->
+<div class="relative z-10 w-full max-w-[1200px] flex flex-col items-center">
+<div class="w-full max-w-[800px] mb-12">
+<img alt="Elite digital boutique logo" class="w-full h-auto object-contain animate-float" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsklV1wvhOdl-PGZp450hOYdSzV6Sy0IiUto56OtmvBk7offrIHTMlFNqupbeqmsw3v70KqbfvvcrHmK0zG2eIxd_m-OyN8ze27hYilOg6tzn4pSdYO9Be2U1hkPUQp-KF-txoPIsmlOSQGCkTUAvJswbATx_aeCqSnWiFluW-UfZN57pBZ9ZIFzJMgniIX44cvbQUOXNckeuyPEs89lfQ4V8a6E292zIl8adjEiHzuIKYJDZR9ZBxe_vC7k7ec7Io04RHzpVHcxc">
+</div>
+<div class="text-center">
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg liquid-silver-text uppercase mb-6">
+                        Architects of the<br>Digital Infinite
+                    </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+                        We define the elite tier of digital experiences for brands that command global influence. Our boutique approach merges technical precision with high-fashion aesthetics.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-6 justify-center">
+<button class="px-10 py-4 bg-white text-black font-headline-md font-bold rounded-full transition-all hover:scale-105 active:scale-95">
+                            VIEW WORK
+                        </button>
+<button class="px-10 py-4 silver-stroke text-white font-headline-md font-bold rounded-full transition-all hover:bg-white/5 active:scale-95">
+                            OUR DNA
+                        </button>
+</div>
+</div>
+</div>
+<!-- Scroll Indicator -->
+<div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-[0.3em]">EXPLORE</span>
+<div class="w-[1px] h-12 bg-gradient-to-b from-primary-fixed to-transparent"></div>
+</div>
+</section>
+<!-- Positioning / Stats Section -->
+<section class="py-32 px-6 md:px-margin-desktop max-w-[1440px] mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<div class="p-10 silver-stroke">
+<span class="font-label-sm text-label-sm text-royal-blue mb-4 block tracking-widest uppercase">Precision</span>
+<h3 class="font-headline-lg text-headline-lg mb-4">0.01% Standard</h3>
+<p class="font-body-md text-on-surface-variant">We don't build websites. We craft digital artifacts for the most discerning clients globally.</p>
+</div>
+<div class="p-10 silver-stroke relative overflow-hidden group">
+<div class="absolute inset-0 bg-royal-blue opacity-0 group-hover:opacity-5 transition-opacity duration-700"></div>
+<span class="font-label-sm text-label-sm text-royal-blue mb-4 block tracking-widest uppercase">Identity</span>
+<h3 class="font-headline-lg text-headline-lg mb-4">Silver Core</h3>
+<p class="font-body-md text-on-surface-variant">Liquid silver materiality meets pure black voids. Aesthetics that command instant authority.</p>
+</div>
+<div class="p-10 silver-stroke">
+<span class="font-label-sm text-label-sm text-royal-blue mb-4 block tracking-widest uppercase">Velocity</span>
+<h3 class="font-headline-lg text-headline-lg mb-4">Rapid Growth</h3>
+<p class="font-body-md text-on-surface-variant">Accelerating brand value through immersive digital strategy and avant-garde development.</p>
+</div>
+</div>
+</section>
+<!-- Bento Grid Showreel -->
+<section class="py-32 px-6 md:px-margin-desktop max-w-[1440px] mx-auto">
+<div class="flex justify-between items-end mb-16">
+<div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-display-lg-mobile uppercase mb-2">Curated Assets</h2>
+<p class="font-body-md text-on-surface-variant max-w-md">Selective partnerships with global visionaries.</p>
+</div>
+<div class="hidden md:block">
+<button class="flex items-center gap-4 font-label-sm uppercase tracking-widest text-primary-fixed hover:text-royal-blue transition-colors">
+                        All Projects <span class="material-symbols-outlined">north_east</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-12 grid-rows-2 gap-6 h-auto md:h-[900px]">
+<div class="col-span-12 md:col-span-7 row-span-1 relative glass-card group overflow-hidden">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A high-end cinematic close-up of a liquid silver chrome droplet frozen in mid-air against a pure black background. The lighting is dramatic and moody, with royal blue reflections highlighting the metallic curves and textures. The overall aesthetic is ultra-modern, minimalist, and expensive, suggesting high-tech boutique quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMUkYgh3D1L9vdYoxcbZAH5vRs2zLnE5qbLvbH-HOLimVBTdyZdijXl3OZhVBG3Kfot4QnP_CRTaAaMmpBE2Y1A1ovMFjSQkk8tsYwiq9nkaTA61XpxQpistUcE34PqgFz3NMLdbkElwp0zjpHOUDPsVIWurSNFO--JM-_ewWAYLPWr-tnU7h1x0hcVBFstCskwf1fo0cRGusAfH4WVV3-_nt6rn3s_DWV5T2k_57nz4egCeBuq6IAyM9rCYts1mp4M134T2JUMsw">
+<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+<div class="absolute bottom-8 left-8">
+<h4 class="font-headline-md text-headline-md text-white mb-2">LUXE VERTICAL</h4>
+<span class="font-label-sm text-label-sm uppercase text-royal-blue">E-commerce Identity</span>
+</div>
+</div>
+<div class="col-span-12 md:col-span-5 row-span-1 relative glass-card group overflow-hidden">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Abstract 3D digital render of flowing royal blue energy trails weaving through a dark, high-contrast space. The lines are sharp and precise, with subtle bokeh effects and silver metallic particles floating nearby. The mood is sophisticated and futuristic, aligning with an elite digital agency brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvG4H46ATHjJJe2zILw01ZejHdmXcvP6jzZ1csh4Q5Ul00ApqnzPJzRzF9m8xl5E1IC9pslh1pEdzdMqoHRJJUWbhsYe6_M2isUWkUYeWRzTlFBkTzcofEmcRGouSgwkPpZV9-nqoQADqTAHhMnDzBAgieQ0iAioCVhhCLG592FAAJP_SagBFFJXQ4hqt46Lr3CMLh7Yop62HFoxZNNnbQVDUaQuFf6sM7BNVGDBBoPpXQcVzx0JCciOgTN4UvQRjbcq_gyirMbZU">
+<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+<div class="absolute bottom-8 left-8">
+<h4 class="font-headline-md text-headline-md text-white mb-2">NEO GENESIS</h4>
+<span class="font-label-sm text-label-sm uppercase text-royal-blue">Web3 Ecosystem</span>
+</div>
+</div>
+<div class="col-span-12 md:col-span-4 row-span-1 relative glass-card group overflow-hidden">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A minimalist architectural interior with sharp shadows and stark white surfaces under a pitch-black ceiling. Minimalist furniture made of polished silver chrome reflects a soft royal blue ambient light. The scene is incredibly clean and quiet, representing high-end boutique design precision and luxury minimalism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCm8eV_EPufh1LBg7S5M5nr3mS5pLgsdbRlM_Nfhvse_Gc72WN-mKZ73dcmComPAmC3c8YlB80OF8Oy1GmtYJNBXwIIT1Qhp7t4ReSnGm_lldncNmhSYBTjuMcSQyUDYvVi7UMIxWvD8j2zZ5ZnJBIkxbpSOLnirx4cjfMvAKDcTp0GVLCiAZmnVYzsMe1eTNRout6x8Mn1wvwl8HHogBxTh2lgOw_mOWd5BTWZ4UZ9XqAPBPXi3fVyYuFNs6Pj6Y-rA9hRQkQIMnY">
+<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+<div class="absolute bottom-8 left-8">
+<h4 class="font-headline-md text-headline-md text-white mb-2">AURA ARCH</h4>
+<span class="font-label-sm text-label-sm uppercase text-royal-blue">Visual Narrative</span>
+</div>
+</div>
+<div class="col-span-12 md:col-span-8 row-span-1 relative glass-card group overflow-hidden">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Close-up of a high-tech microscopic surface that looks like liquid silver obsidian. The surface is textured with intricate, geometric patterns and glowing royal blue data pathways. The lighting is atmospheric and focused, creating a sense of immense technological depth and elite craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALEXwUOJ4XJaH1NDPIKihN8YSVtBUWEzMnLPb-lpzlashT9GR8emzxszcesYndAbBCzSzhZ6ktGPf4knxMCG95UWEag_znPOV8-m8NGTrLNYrI2_Rb4trLB2VQgZbP8hgOz4tb4pQncT_CAUI8YHqpBJn0e-Wvm8k6NTl6QRGZMml0a7XdU_cFdBb72CAVkTTz-v89oGqB8JxkpkO3NpDTYOOvsNehphgV5uvie92g7McNLJTwwlNpRzhu9rE8y6C691vj8C23zow">
+<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+<div class="absolute bottom-8 left-8">
+<h4 class="font-headline-md text-headline-md text-white mb-2">QUANTUM CORE</h4>
+<span class="font-label-sm text-label-sm uppercase text-royal-blue">Enterprise Data UI</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Newsletter / CTA -->
+<section class="py-48 px-6 text-center">
+<div class="max-w-4xl mx-auto">
+<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg liquid-silver-text uppercase mb-12">Elevate your legacy.</h2>
+<div class="flex flex-col md:flex-row gap-4 max-w-xl mx-auto">
+<input class="flex-1 bg-[#080808] border-none border-b border-royal-blue/30 text-white font-label-sm px-6 py-4 focus:ring-0 focus:border-royal-blue transition-all outline-none" placeholder="YOUR EMAIL" type="email">
+<button class="bg-white text-black font-headline-md font-bold px-12 py-4 rounded-full hover:bg-primary-fixed transition-colors">
+                        INQUIRE
+                    </button>
+</div>
+<p class="font-label-sm text-on-surface-variant mt-6 opacity-50 uppercase tracking-widest">Limited availability for Q4 2024</p>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant w-full py-lg">
+<div class="flex flex-col md:flex-row justify-between items-start w-full px-6 md:px-margin-desktop max-w-[1440px] mx-auto gap-md">
+<div class="flex flex-col gap-6">
+<div class="font-headline-lg text-headline-lg font-black text-on-surface">KDO DIGITAL</div>
+<p class="font-body-md text-on-surface-variant max-w-xs uppercase text-xs tracking-widest leading-loose">
+                    THE BOUTIQUE STANDARD FOR PRECISE DIGITAL ARCHITECTURE AND HIGH-STAKES BRAND POSITIONING.
+                </p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-16">
+<div class="flex flex-col gap-4">
+<span class="font-label-sm text-primary-fixed uppercase tracking-widest">Solutions</span>
+<a class="font-label-sm text-on-surface-variant hover:text-primary-fixed-dim transition-all active:translate-x-1 duration-200 uppercase" href="#">Web Dev</a>
+<a class="font-label-sm text-on-surface-variant hover:text-primary-fixed-dim transition-all active:translate-x-1 duration-200 uppercase" href="#">App Dev</a>
+<a class="font-label-sm text-on-surface-variant hover:text-primary-fixed-dim transition-all active:translate-x-1 duration-200 uppercase" href="#">Marketing</a>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-label-sm text-primary-fixed uppercase tracking-widest">Legal</span>
+<a class="font-label-sm text-on-surface-variant hover:text-primary-fixed-dim transition-all active:translate-x-1 duration-200 uppercase" href="#">Terms</a>
+<a class="font-label-sm text-on-surface-variant hover:text-primary-fixed-dim transition-all active:translate-x-1 duration-200 uppercase" href="#">Privacy</a>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-label-sm text-primary-fixed uppercase tracking-widest">Network</span>
+<a class="font-label-sm text-on-surface-variant hover:text-primary-fixed-dim transition-all active:translate-x-1 duration-200 uppercase" href="#">LinkedIn</a>
+<a class="font-label-sm text-on-surface-variant hover:text-primary-fixed-dim transition-all active:translate-x-1 duration-200 uppercase" href="#">Instagram</a>
+</div>
+</div>
+</div>
+<div class="w-full px-6 md:px-margin-desktop max-w-[1440px] mx-auto mt-16 pt-8 border-t border-outline-variant/10">
+<div class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant opacity-60">
+                © 2024 KDO DIGITAL. ALL RIGHTS RESERVED.
+            </div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for background orbs following mouse
+        document.addEventListener('mousemove', (e) => {
+            const orbs = document.querySelectorAll('.bg-royal-blue\\/10');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            orbs.forEach(orb => {
+                orb.style.transform = `translate(${x * 30}px, ${y * 30}px)`;
+            });
+        });
+
+        // Simple smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body></html>

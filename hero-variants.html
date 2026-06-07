@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KDO Digital — Hero</title>
+
+    <!-- Outfit — UI, subline, nav, labels -->
+    <!-- Hanken Grotesk — headline (Neue Haas Grotesk inspired, true italic included) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --accent:  #FF2D87;
+            --pink:    #FF2D87;
+            --green:   #00E676;
+            --nav-h:   72px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        @keyframes navSlideDown {
+            from { opacity: 0; transform: translateY(-14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes navLineIn {
+            from { transform: scaleX(0); }
+            to   { transform: scaleX(1); }
+        }
+
+        @keyframes heroFadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes heroFadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        @keyframes scrollSlide {
+            0%   { top: -100%; }
+            100% { top: 100%; }
+        }
+
+        body {
+            background: #fff;
+            color: #000;
+            font-family: 'Outfit', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            inset: 0 0 auto 0;
+            height: var(--nav-h);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 56px;
+            z-index: 200;
+            opacity: 0;
+            animation: navSlideDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0s both;
+            transition: background 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        nav::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: rgba(0,0,0,0.07);
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: navLineIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+        }
+
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 1px 28px rgba(0,0,0,0.06);
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 16px;
+            color: #000;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 44px;
+        }
+
+        .nav-links a {
+            font-size: 12px;
+            font-weight: 500;
+            color: #000;
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: opacity 0.18s ease;
+        }
+
+        .nav-links a:hover { opacity: 0.35; }
+
+        .nav-cta {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #fff;
+            background: #000;
+            padding: 9px 20px;
+            border-radius: 100px;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .nav-cta:hover {
+            background: var(--accent);
+            box-shadow: 0 0 22px rgba(255,45,135,0.45);
+        }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 65fr 35fr;
+            align-items: center;
+            padding: calc(var(--nav-h) + 28px) 56px 60px;
+            background: #fff;
+            overflow: clip;
+        }
+
+        /* ── CONTENT ── */
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-right: 40px;
+        }
+
+        /* Pre-headline glow tag */
+        .hero-pretag {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            margin-bottom: 34px;
+            opacity: 0;
+            animation: heroFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+        }
+
+        .pretag-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--pink);
+            box-shadow: 0 0 10px 4px rgba(255, 45, 135, 0.55);
+            flex-shrink: 0;
+        }
+
+        .pretag-line {
+            display: block;
+            width: 24px;
+            height: 1px;
+            background: var(--pink);
+            box-shadow: 0 0 6px 1px rgba(255, 45, 135, 0.65);
+            flex-shrink: 0;
+        }
+
+        .pretag-text {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #999;
+            white-space: nowrap;
+        }
+
+        /* Headline — Urbanist 500 (Neue Haas Grotesk inspired, lighter weight) */
+        .hero-headline {
+            font-family: 'Urbanist', sans-serif;
+            font-size: clamp(38px, 5.5vw, 80px);
+            font-weight: 500;
+            color: #111111;
+            line-height: 1.04;
+            letter-spacing: -0.025em;
+            margin-bottom: 28px;
+            opacity: 0;
+            animation: heroFadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+        }
+
+        /* Italic word — accent colour creates a brand signature */
+        .hero-headline .ital {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--accent);
+        }
+
+        /* Subline — Outfit 400 for weight contrast */
+        .hero-subline {
+            font-size: 17px;
+            font-weight: 400;
+            color: #000000;
+            line-height: 1.72;
+            margin-bottom: 48px;
+            max-width: 380px;
+            opacity: 0;
+            animation: heroFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.55s both;
+        }
+
+        /* ── CTAs ── */
+        .hero-ctas {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: heroFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.72s both;
+        }
+
+        .cta-primary {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #fff;
+            background: #000;
+            padding: 18px 44px;
+            border-radius: 6px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.22);
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.28s ease, box-shadow 0.28s ease;
+            white-space: nowrap;
+        }
+
+        .cta-primary:hover {
+            background: var(--accent);
+            box-shadow: 0 4px 28px rgba(255,45,135,0.6), 0 0 60px rgba(255,45,135,0.2);
+        }
+
+        .cta-text-link {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            color: #000;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding-bottom: 3px;
+            border-bottom: 1px solid rgba(0,0,0,0.25);
+            transition: opacity 0.18s ease;
+            white-space: nowrap;
+        }
+
+        .cta-text-link:hover { opacity: 0.45; }
+
+        /* ── SOCIAL PROOF ── */
+        .hero-trust {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 20px;
+            opacity: 0;
+            animation: heroFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.86s both;
+        }
+
+        .trust-avatars {
+            display: flex;
+            align-items: center;
+        }
+
+        .trust-avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            margin-left: -8px;
+            flex-shrink: 0;
+        }
+
+        .trust-avatar:first-child { margin-left: 0; background: rgba(255,45,135,0.18); }
+        .trust-avatar:nth-child(2) { background: rgba(0,230,118,0.18); }
+        .trust-avatar:nth-child(3) { background: rgba(255,75,31,0.18); }
+
+        .trust-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            color: #aaa;
+            letter-spacing: 0.02em;
+        }
+
+        /* ── GLOWING STAT STRIPS ── */
+        .hero-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            margin-top: 58px;
+            width: 100%;
+            opacity: 0;
+            animation: heroFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.95s both;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .stat-line-short {
+            display: block;
+            width: 30px;
+            height: 1px;
+            flex-shrink: 0;
+        }
+
+        .stat-line-long {
+            flex: 1;
+            height: 1px;
+            display: block;
+        }
+
+        .stat-line-short.pink { background: var(--pink); box-shadow: 0 0 7px 2px rgba(255,45,135,0.4); }
+        .stat-line-short.green { background: var(--green); box-shadow: 0 0 7px 2px rgba(0,230,118,0.4); }
+        .stat-line-long.pink { background: linear-gradient(to right, var(--pink), rgba(255,45,135,0)); box-shadow: 0 0 7px 2px rgba(255,45,135,0.2); }
+        .stat-line-long.green { background: linear-gradient(to right, var(--green), rgba(0,230,118,0)); box-shadow: 0 0 7px 2px rgba(0,230,118,0.2); }
+
+        .stat-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #666;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* ── VIDEO (same position/treatment as the image was) ── */
+        .hero-media-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            overflow: visible;
+            min-width: 0; /* Prevents video natural size from overriding the fr grid column */
+            opacity: 0;
+            animation: heroFadeIn 1.2s ease 0.25s both;
+        }
+
+        .hero-video {
+            height: clamp(560px, 92vh, 1060px);
+            width: auto;
+            max-width: none;
+            flex-shrink: 0;
+            display: block;
+            /* Multiply blends the near-white video background into the white page */
+            mix-blend-mode: multiply;
+            filter: brightness(1.05) contrast(1.05) saturate(1.12);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 18%);
+            mask-image: linear-gradient(to right, transparent 0%, black 18%);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            nav, nav::after, .hero-pretag, .hero-headline, .hero-subline,
+            .hero-ctas, .hero-trust, .hero-stats, .hero-media-wrap, .scroll-cue {
+                opacity: 1 !important;
+                transform: none !important;
+                animation: none !important;
+            }
+            .scroll-cue-track::after { animation: none !important; }
+        }
+
+        /* ── SCROLL CUE ── */
+        .scroll-cue {
+            position: absolute;
+            bottom: 40px;
+            left: 56px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            animation: heroFadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 1.3s both;
+        }
+
+        .scroll-cue-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 8px;
+            font-weight: 600;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #bbb;
+        }
+
+        .scroll-cue-track {
+            position: relative;
+            width: 1px;
+            height: 48px;
+            background: rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .scroll-cue-track::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            animation: scrollSlide 2s cubic-bezier(0.4, 0, 0.6, 1) infinite 1.6s;
+        }
+
+        /* ── MOBILE ── */
+        @media (max-width: 860px) {
+            nav { padding: 0 28px; }
+            .nav-links { gap: 22px; }
+            .scroll-cue { display: none; }
+            .nav-cta { display: none; }
+            .hero-trust { margin-top: 16px; }
+            .nav-links li:first-child,
+            .nav-links li:nth-child(2) { display: none; }
+
+            .hero {
+                grid-template-columns: 1fr;
+                min-height: 100svh;
+                padding: calc(var(--nav-h) + 16px) 28px 56px;
+                align-content: flex-start;
+            }
+
+            .hero-media-wrap {
+                grid-row: 1;
+                justify-content: center;
+                padding-top: 8px;
+            }
+
+            .hero-video {
+                /* Mobile: override desktop left-fade with a bottom fade instead */
+                -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+                mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+            }
+
+            .hero-video {
+                height: auto;
+                width: 72vw;
+                max-width: 300px;
+                flex-shrink: 1;
+            }
+
+            .hero-content {
+                grid-row: 2;
+                padding-right: 0;
+            }
+
+            .hero-headline {
+                font-size: clamp(36px, 10vw, 52px);
+                letter-spacing: -0.02em;
+                margin-bottom: 20px;
+            }
+
+            .hero-subline {
+                font-size: 16px;
+                margin-bottom: 36px;
+                max-width: 100%;
+            }
+
+            .pretag-text {
+                font-size: 8.5px;
+                letter-spacing: 0.12em;
+                white-space: nowrap;
+            }
+
+            .hero-stats { margin-top: 40px; }
+        }
+
+        @media (max-width: 400px) {
+            .nav-links li:nth-child(3) { display: none; }
+            .hero-headline { font-size: 38px; }
+            .hero-ctas { flex-direction: column; align-items: flex-start; gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Fixed Nav ── -->
+    <nav aria-label="Main navigation">
+        <a href="#" class="nav-logo">KDO Digital</a>
+        <ul class="nav-links">
+            <li><a href="#">Work</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <a href="#" class="nav-cta">Start a Project</a>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <section class="hero" aria-label="Hero">
+
+        <div class="hero-content">
+
+            <!-- Pre-headline glow tag -->
+            <div class="hero-pretag">
+                <span class="pretag-dot"></span>
+                <span class="pretag-line"></span>
+                <span class="pretag-text">Isle of Man · Full Service Digital Agency</span>
+            </div>
+
+            <h1 class="hero-headline">Full Service <span class="ital">Digital.</span><br>Built for Growth.</h1>
+
+            <p class="hero-subline">One agency, everything digital,<br>handled under one roof.</p>
+
+            <div class="hero-ctas">
+                <a href="#" class="cta-primary">Get in Touch</a>
+                <a href="#" class="cta-text-link">Explore Services &nbsp;→</a>
+            </div>
+
+            <!-- Social proof -->
+            <div class="hero-trust">
+                <div class="trust-avatars">
+                    <span class="trust-avatar"></span>
+                    <span class="trust-avatar"></span>
+                    <span class="trust-avatar"></span>
+                </div>
+                <span class="trust-text">Trusted by Isle of Man businesses</span>
+            </div>
+
+            <!-- Glowing stat strips -->
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-line-short green"></span>
+                    <span class="stat-label">Web &amp; App Development</span>
+                    <span class="stat-line-long green"></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-line-short pink"></span>
+                    <span class="stat-label">From Strategy to Launch</span>
+                    <span class="stat-line-long pink"></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-line-short green"></span>
+                    <span class="stat-label">Isle of Man · UK · Remote</span>
+                    <span class="stat-line-long green"></span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Video — same position and blend as the image was -->
+        <div class="hero-media-wrap">
+            <video
+                class="hero-video"
+                autoplay
+                loop
+                muted
+                playsinline
+                disablepictureinpicture
+                preload="auto"
+            >
+                <source src="video assets/02178078478223500000000000000000000ffffc0a8787b4bfc5a.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <!-- Scroll cue -->
+        <div class="scroll-cue" aria-hidden="true">
+            <span class="scroll-cue-text">Scroll</span>
+            <span class="scroll-cue-track"></span>
+        </div>
+
+    </section>
+
+
+
+    <script>
+        if (history.scrollRestoration) history.scrollRestoration = 'manual';
+        window.scrollTo(0, 0);
+
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 10);
+        }, { passive: true });
+    </script>
+
+</body>
+</html>

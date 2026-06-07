@@ -1,0 +1,9 @@
+{
+  "21st-magic": {
+    "command": "npx",
+    "args": ["-y", "@21st-dev/magic@latest"],
+    "env": {
+      "API_KEY": "121d55a7bc5abfaed31d0798ba8c526507ab12192402cd2bbe63a6b2c455de43"
+    }
+  }
+}

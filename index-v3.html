@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KDO Digital — Isle of Man Digital Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Hanken+Grotesk:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ember:#FF4B1F;--ember-dim:#CC3C18;--ember-glow:rgba(255,75,31,0.45);
+  --bone:#F2F0EB;--mist:#8A8A8A;--void:#080808;--surface:#111111;--ghost:#161616;
+}
+html{scroll-behavior:smooth}
+body{background:var(--void);color:var(--bone);font-family:'Hanken Grotesk',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;width:100%;z-index:50;background:rgba(8,8,8,0.55);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.35s ease}
+.nav-inner{max-width:1440px;margin:0 auto;padding:1.25rem 4rem;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:900;font-size:1.1rem;letter-spacing:-0.02em;color:var(--bone);text-decoration:none}
+.nav-links{display:flex;gap:2.5rem}
+.nav-links a{font-size:0.85rem;color:var(--mist);text-decoration:none;transition:color 0.2s}
+.nav-links a:hover{color:var(--bone)}
+.btn-nav{font-family:'Syne',sans-serif;font-weight:700;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.7rem 1.5rem;background:var(--ember);color:#fff;text-decoration:none;transition:background 0.2s ease;box-shadow:0 0 18px rgba(255,75,31,0.3)}
+.btn-nav:hover{background:var(--ember-dim)}
+
+/* ── HERO ── */
+.hero{position:relative;min-height:100dvh;background:var(--void);overflow:hidden;display:flex;flex-direction:column}
+#sun-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+/* gradient darkens the lower half so text is always readable */
+.hero-fade{position:absolute;bottom:0;left:0;right:0;height:52%;background:linear-gradient(to top,rgba(8,8,8,0.97) 0%,rgba(8,8,8,0.55) 50%,transparent 100%);z-index:2;pointer-events:none}
+.hero-content{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;flex:1;padding:0 2rem 8rem;text-align:center}
+.hero-over{font-family:'JetBrains Mono',monospace;font-size:0.68rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--ember);margin-bottom:1.5rem}
+.hero-hl{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(4rem,11vw,10.5rem);line-height:0.87;letter-spacing:-0.045em;color:var(--bone)}
+.hero-hl .acc{color:var(--ember)}
+.hero-sub{margin:2rem auto 2.5rem;max-width:460px;color:var(--mist);font-size:0.98rem;line-height:1.72;font-weight:300}
+.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+
+/* ── BUTTONS ── */
+.btn-primary{font-family:'Syne',sans-serif;font-weight:700;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;padding:1rem 2.5rem;background:var(--ember);color:#fff;text-decoration:none;display:inline-block;border:none;cursor:pointer;position:relative;
+  box-shadow:0 0 18px rgba(255,75,31,0.38),0 0 40px rgba(255,75,31,0.12);
+  animation:btnPulse 2.8s ease-in-out infinite;
+  transition:background 0.2s}
+.btn-primary:hover{background:var(--ember-dim)}
+.btn-primary:active{transform:translateY(1px)}
+
+.btn-ghost{font-family:'Syne',sans-serif;font-weight:700;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;padding:1rem 2.5rem;background:transparent;color:var(--bone);text-decoration:none;display:inline-block;cursor:pointer;border:1px solid rgba(255,75,31,0.3);
+  box-shadow:0 0 14px rgba(255,75,31,0.08);
+  animation:ghostPulse 3.2s ease-in-out infinite;
+  transition:border-color 0.2s,background 0.2s}
+.btn-ghost:hover{border-color:rgba(255,75,31,0.65);background:rgba(255,75,31,0.06)}
+
+@keyframes btnPulse{
+  0%,100%{box-shadow:0 0 18px rgba(255,75,31,0.38),0 0 40px rgba(255,75,31,0.12)}
+  50%{box-shadow:0 0 28px rgba(255,75,31,0.60),0 0 70px rgba(255,75,31,0.22)}
+}
+@keyframes ghostPulse{
+  0%,100%{box-shadow:0 0 14px rgba(255,75,31,0.08);border-color:rgba(255,75,31,0.3)}
+  50%{box-shadow:0 0 24px rgba(255,75,31,0.22);border-color:rgba(255,75,31,0.55)}
+}
+
+/* ── SECTION SCAFFOLD ── */
+.wrap{max-width:1440px;margin:0 auto;padding:7rem 4rem}
+.s-label{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem}
+.s-rule{width:2.5rem;height:1px;background:var(--ember);flex-shrink:0}
+.s-over{font-family:'JetBrains Mono',monospace;font-size:0.68rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--ember)}
+.s-head{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2rem,4vw,3.5rem);line-height:1.04;letter-spacing:-0.03em;color:var(--bone)}
+
+/* ── GLASS CARDS ── */
+.gc{background:rgba(255,255,255,0.025);border-top:1px solid rgba(255,75,31,0.18);padding:2.5rem;transition:border-color 0.4s,box-shadow 0.4s}
+.gc:hover{border-top-color:rgba(255,75,31,0.62);box-shadow:0 0 50px rgba(255,75,31,0.055)}
+
+/* ── PROGRESS ── */
+.prog-track{height:1px;background:rgba(255,255,255,0.07);margin-top:2rem;overflow:hidden}
+.prog-fill{height:100%;width:0;background:linear-gradient(90deg,#763218,#FF4B1F);transition:width 1.6s ease}
+
+/* ── MANIFESTO SECTION ── */
+.mf-section{position:relative}
+.mf-sticky{position:sticky;top:0;height:100dvh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--void)}
+.mf-statement{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem 3rem;pointer-events:none}
+.mf-sup{font-family:'Syne',sans-serif;font-weight:400;font-size:clamp(1.1rem,2.5vw,2rem);color:var(--mist);display:block;margin-bottom:0.6rem;letter-spacing:-0.01em}
+.mf-word{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(3.5rem,9vw,9rem);line-height:0.9;letter-spacing:-0.045em;color:var(--ember);display:block}
+.mf-sub{font-family:'Hanken Grotesk',sans-serif;font-weight:300;font-size:clamp(0.9rem,2vw,1.35rem);color:var(--mist);display:block;margin-top:1rem;letter-spacing:0.01em}
+/* number badge */
+.mf-num{font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:rgba(255,75,31,0.4);position:absolute;bottom:3rem;right:4rem}
+/* side progress bar */
+.mf-bar{position:absolute;left:2.5rem;top:50%;transform:translateY(-50%);width:2px;height:120px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden}
+.mf-bar-fill{width:100%;height:0%;background:var(--ember);border-radius:2px;transition:height 0.3s ease}
+
+/* ── METRICS ── */
+.metric-n{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2.5rem,5vw,4.5rem);color:var(--ember);line-height:1;letter-spacing:-0.02em}
+.metric-l{font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--mist);margin-top:0.5rem}
+
+/* ── CTA ── */
+.cta-card{position:relative;background:linear-gradient(135deg,var(--ghost),rgba(10,10,10,1));border:1px solid rgba(255,75,31,0.1);overflow:hidden;padding:6rem 5rem;text-align:center}
+.cta-glow{position:absolute;bottom:0;left:0;right:0;height:65%;background:linear-gradient(to top,rgba(255,75,31,0.065),transparent);pointer-events:none}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid rgba(255,255,255,0.05);background:var(--void)}
+.ft{max-width:1440px;margin:0 auto;padding:4rem;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:2.5rem}
+.ft-logo{font-family:'Syne',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:-0.03em;color:var(--bone);display:block;margin-bottom:0.75rem}
+.ft-copy{font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--mist);line-height:1.8}
+.ft-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:3rem}
+.ft-ch{font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--bone);display:block;margin-bottom:1.25rem}
+.ft-a{font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--mist);text-decoration:none;display:block;margin-bottom:0.7rem;transition:color 0.2s}
+.ft-a:hover{color:var(--bone)}
+
+/* ── MANIFESTO BACKGROUND IMAGES ── */
+.mf-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0.14;filter:blur(4px) saturate(45%);z-index:0;transition:opacity 0.6s ease}
+.mf-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 50%,transparent 20%,rgba(8,8,8,0.82) 100%)}
+.mf-statement>*:not(.mf-bg){position:relative;z-index:1}
+
+/* ── REVEAL ── */
+.jr{opacity:0;transform:translateY(28px)}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .nav-inner{padding:1rem 1.5rem}
+  .nav-links{display:none}
+  .wrap{padding:5rem 1.5rem}
+  .hero-content{padding:0 1.5rem 5.5rem}
+  .cta-card{padding:3rem 1.75rem}
+  .ft{padding:3rem 1.5rem;flex-direction:column}
+  .ft-cols{grid-template-columns:repeat(2,1fr);gap:1.5rem}
+  .mf-bar{display:none}
+  .mf-num{right:1.5rem}
+}
+</style>
+<script>tailwind.config={darkMode:'class',theme:{extend:{colors:{ember:'#FF4B1F'}}}}</script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">KDO DIGITAL</a>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#manifesto">About</a>
+      <a href="#process">Impact</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="btn-nav">Start Project</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <canvas id="sun-canvas"></canvas>
+  <div class="hero-fade"></div>
+  <div class="hero-content">
+    <p class="hero-over" id="h-over">Isle of Man &mdash; Digital Agency</p>
+    <h1 class="hero-hl">
+      <span class="block" id="h-l1">WE BUILD</span>
+      <span class="block acc" id="h-l2">DIGITAL</span>
+    </h1>
+    <p class="hero-sub" id="h-sub">Isle of Man's full-service agency for web development, apps, and digital marketing. We build products that grow businesses.</p>
+    <div class="hero-ctas" id="h-ctas">
+      <a href="#contact" class="btn-primary">Start a Project</a>
+      <a href="#services" class="btn-ghost">Our Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="wrap">
+    <div class="s-label jr">
+      <span class="s-rule"></span>
+      <span class="s-over">Our Services</span>
+    </div>
+    <h2 class="s-head jr" style="max-width:500px;margin-bottom:3.5rem">Everything you need<br>to grow online.</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:1.5rem">
+      <div class="gc jr" style="grid-column:span 7">
+        <span class="s-over" style="display:block;margin-bottom:1.5rem">01 / Web Development</span>
+        <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.5rem;color:var(--bone);margin-bottom:1rem;line-height:1.2">Bespoke websites<br>built to perform.</h3>
+        <p style="color:var(--mist);font-size:0.9rem;line-height:1.75;max-width:400px;margin-bottom:2rem">From marketing sites to booking systems and e-commerce. Every site built with performance, security, and conversion in mind. No templates. No shortcuts.</p>
+        <div class="prog-track"><div class="prog-fill" data-progress></div></div>
+      </div>
+      <div class="gc jr" style="grid-column:span 5">
+        <span class="s-over" style="display:block;margin-bottom:1.5rem">02 / App Development</span>
+        <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.35rem;color:var(--bone);margin-bottom:1rem;line-height:1.2">iOS &amp; Android apps your customers will actually use.</h3>
+        <p style="color:var(--mist);font-size:0.9rem;line-height:1.75;margin-bottom:2rem">End-to-end from wireframe to app store. Built natively or cross-platform — delivered on time, in budget.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;color:var(--ember);border:1px solid rgba(255,75,31,0.28);padding:0.3rem 0.7rem">REACT NATIVE</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;color:var(--ember);border:1px solid rgba(255,75,31,0.28);padding:0.3rem 0.7rem">iOS</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;color:var(--ember);border:1px solid rgba(255,75,31,0.28);padding:0.3rem 0.7rem">ANDROID</span>
+        </div>
+      </div>
+      <div class="gc jr" style="grid-column:span 5">
+        <span class="s-over" style="display:block;margin-bottom:1.5rem">03 / Digital Marketing</span>
+        <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.3rem;color:var(--bone);margin-bottom:1rem;line-height:1.2">Marketing that drives real results.</h3>
+        <p style="color:var(--mist);font-size:0.9rem;line-height:1.75">SEO, paid ads, and social media built around your business goals. Measurable performance, every month.</p>
+      </div>
+      <div class="gc jr" style="grid-column:span 7;display:flex;gap:2.5rem;align-items:center">
+        <div style="flex:1">
+          <span class="s-over" style="display:block;margin-bottom:1.5rem">04 / Branding &amp; Design</span>
+          <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.3rem;color:var(--bone);margin-bottom:1rem;line-height:1.2">Visual identity that makes you impossible to ignore.</h3>
+          <p style="color:var(--mist);font-size:0.9rem;line-height:1.75">Strategy, logo design, colour systems, and full brand guidelines built to work across every touchpoint.</p>
+        </div>
+        <div style="width:36%;aspect-ratio:4/3;overflow:hidden;flex-shrink:0">
+          <img src="Photo assets/cta-texture.jpg" alt="Branding" style="width:100%;height:100%;object-fit:cover;opacity:0.4;transition:opacity 0.4s"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO (scroll-driven statement builder) -->
+<section class="mf-section" id="manifesto" style="height:380vh">
+  <div class="mf-sticky">
+
+    <!-- Progress bar left side -->
+    <div class="mf-bar"><div class="mf-bar-fill" id="mf-bar-fill"></div></div>
+
+    <!-- Statement 1 -->
+    <div class="mf-statement" id="mf-0">
+      <div class="mf-bg" style="background-image:url('Photo assets/hero-bg.jpg')"></div>
+      <span class="mf-sup">We don't build websites.</span>
+      <span class="mf-word">We build<br>businesses.</span>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="mf-statement" id="mf-1">
+      <div class="mf-bg" style="background-image:url('Photo assets/cta-texture.jpg')"></div>
+      <span class="mf-word">No templates.</span>
+      <span class="mf-sub">No shortcuts. No compromises. Ever.</span>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="mf-statement" id="mf-2">
+      <div class="mf-bg" style="background-image:url('Photo assets/about-bg.jpg')"></div>
+      <span class="mf-sup">Isle of Man's</span>
+      <span class="mf-word">most ambitious</span>
+      <span class="mf-sub">digital agency.</span>
+    </div>
+
+    <!-- Statement 4 -->
+    <div class="mf-statement" id="mf-3">
+      <div class="mf-bg" style="background-image:url('Photo assets/work-hospitality.jpg')"></div>
+      <span class="mf-word">Built local.</span>
+      <span class="mf-sub">Trusted by businesses that want to grow.</span>
+    </div>
+
+    <!-- Statement 5 -->
+    <div class="mf-statement" id="mf-4">
+      <div class="mf-bg" style="background-image:url('Photo assets/work-lawfirm.jpg')"></div>
+      <span class="mf-sup">Every project.</span>
+      <span class="mf-word">Every time.</span>
+    </div>
+
+    <div class="mf-num" id="mf-counter">01 / 05</div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<section id="process" style="position:relative;overflow:hidden;padding:7rem 0">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(255,75,31,0.055) 0%,transparent 55%);pointer-events:none"></div>
+  <div style="max-width:1440px;margin:0 auto;padding:0 4rem;position:relative;z-index:1">
+    <div class="jr" style="text-align:center;margin-bottom:4rem">
+      <h2 style="font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(4rem,9vw,8.5rem);line-height:0.88;letter-spacing:-0.045em;color:var(--bone)">IMPACT</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center">
+      <div class="jr"><div class="metric-n" data-count="40">40+</div><div class="metric-l">Projects Delivered</div></div>
+      <div class="jr"><div class="metric-n" data-count="15">15+</div><div class="metric-l">Happy Clients</div></div>
+      <div class="jr"><div class="metric-n">4</div><div class="metric-l">Core Services</div></div>
+      <div class="jr"><div class="metric-n">IOM</div><div class="metric-l">Isle of Man Based</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="contact">
+  <div class="wrap" style="padding-top:2rem">
+    <div class="cta-card jr">
+      <div class="cta-glow"></div>
+      <div style="position:relative;z-index:1">
+        <span class="s-over" style="display:block;margin-bottom:1.5rem">Get in touch</span>
+        <h2 class="s-head" style="margin-bottom:1.25rem;max-width:560px;margin-left:auto;margin-right:auto">Ready to grow your<br>business online?</h2>
+        <p style="color:var(--mist);font-size:0.95rem;line-height:1.75;max-width:400px;margin:0 auto 2.5rem">Free consultation with the KDO Digital team — no obligation, no pressure. Let's see what we can build together.</p>
+        <a href="mailto:kyle.orm@turbolt.co.uk" class="btn-primary" style="font-size:0.72rem;padding:1.1rem 3rem">Start Your Project</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft">
+    <div>
+      <span class="ft-logo">KDO DIGITAL</span>
+      <p class="ft-copy">© 2025 KDO Digital. All rights reserved.<br>Isle of Man.</p>
+    </div>
+    <div class="ft-cols">
+      <div>
+        <span class="ft-ch">Services</span>
+        <a href="#services" class="ft-a">Web Dev</a>
+        <a href="#services" class="ft-a">App Dev</a>
+        <a href="#services" class="ft-a">Marketing</a>
+        <a href="#services" class="ft-a">Branding</a>
+      </div>
+      <div>
+        <span class="ft-ch">Legal</span>
+        <a href="#" class="ft-a">Terms</a>
+        <a href="#" class="ft-a">Privacy</a>
+      </div>
+      <div>
+        <span class="ft-ch">Connect</span>
+        <a href="mailto:kyle.orm@turbolt.co.uk" class="ft-a">Email</a>
+        <a href="#" class="ft-a">Instagram</a>
+        <a href="#" class="ft-a">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- THREE.JS SUN (improved fire shader) -->
+<script>
+(function(){
+  var canvas = document.getElementById('sun-canvas');
+  if(!canvas || typeof THREE === 'undefined') return;
+
+  var renderer = new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+
+  var uniforms = {
+    uTime:       {value:0.0},
+    uMouse:      {value:new THREE.Vector2(0,0)},
+    uResolution: {value:new THREE.Vector2(1,1)}
+  };
+
+  function resize(){
+    var w = canvas.offsetWidth, h = canvas.offsetHeight;
+    renderer.setSize(w,h,false);
+    uniforms.uResolution.value.set(w,h);
+  }
+
+  var scene  = new THREE.Scene();
+  var camera = new THREE.OrthographicCamera(-1,1,1,-1,0.1,10);
+  camera.position.z = 1;
+
+  /* ── VERTEX SHADER ── */
+  var vSrc = [
+    'varying vec2 vUv;',
+    'void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}'
+  ].join('\n');
+
+  /* ── FRAGMENT SHADER ── */
+  var fSrc = [
+    'precision highp float;',
+    'uniform float uTime;',
+    'uniform vec2  uMouse;',
+    'uniform vec2  uResolution;',
+    'varying vec2  vUv;',
+
+    /* simplex noise helpers */
+    'vec3 _m3(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}',
+    'vec2 _m2(vec2 x){return x-floor(x*(1.0/289.0))*289.0;}',
+    'vec3 _p(vec3 x){return _m3(((x*34.0)+1.0)*x);}',
+
+    'float sn(vec2 v){',
+    '  const vec4 C=vec4(0.211324865405187,0.366025403784439,-0.577350269189626,0.024390243902439);',
+    '  vec2 i=floor(v+dot(v,C.yy));',
+    '  vec2 x0=v-i+dot(i,C.xx);',
+    '  vec2 i1=(x0.x>x0.y)?vec2(1.0,0.0):vec2(0.0,1.0);',
+    '  vec4 x12=x0.xyxy+C.xxzz; x12.xy-=i1;',
+    '  i=_m2(i);',
+    '  vec3 pp=_p(_p(i.y+vec3(0.0,i1.y,1.0))+i.x+vec3(0.0,i1.x,1.0));',
+    '  vec3 m=max(0.5-vec3(dot(x0,x0),dot(x12.xy,x12.xy),dot(x12.zw,x12.zw)),0.0);',
+    '  m=m*m;m=m*m;',
+    '  vec3 x2=2.0*fract(pp*C.www)-1.0;',
+    '  vec3 h=abs(x2)-0.5;',
+    '  vec3 ox=floor(x2+0.5);',
+    '  vec3 a0=x2-ox;',
+    '  m*=1.79284291400159-0.85373472095314*(a0*a0+h*h);',
+    '  vec3 g;',
+    '  g.x=a0.x*x0.x+h.x*x0.y;',
+    '  g.yz=a0.yz*x12.xz+h.yz*x12.yw;',
+    '  return 130.0*dot(m,g);',
+    '}',
+
+    /* fbm - 5 octaves */
+    'float fbm(vec2 p){',
+    '  float v=0.0;',
+    '  v+=0.5000*sn(p);',
+    '  v+=0.2500*sn(p*2.03);',
+    '  v+=0.1250*sn(p*4.11);',
+    '  v+=0.0625*sn(p*8.23);',
+    '  v+=0.0313*sn(p*16.5);',
+    '  return v;',
+    '}',
+
+    'void main(){',
+    '  vec2 uv=vUv;',
+    '  vec2 c=(uv-0.5)*2.0;',
+    '  c.x*=uResolution.x/uResolution.y;',
+
+    /* shift star centre to upper area of canvas */
+    '  vec2 sc=c-vec2(0.0,0.30);',
+    '  float dist=length(sc);',
+
+    '  float t=uTime*0.08;',
+    '  vec2 mOff=uMouse*0.16;',
+    '  vec2 np=sc*2.3+mOff;',
+
+    /* triple-layer domain warp for organic fire */
+    '  float qa=fbm(np+vec2(0.0,0.0)+t*0.7);',
+    '  float qb=fbm(np+vec2(5.2,1.3)+t*0.45);',
+    '  vec2 q=vec2(qa,qb);',
+    '  float ra=fbm(np+3.8*q+vec2(1.7,9.2)+t*0.9);',
+    '  float rb=fbm(np+3.8*q+vec2(8.3,2.8)-t*0.6);',
+    '  float plasma=fbm(np+3.0*vec2(ra,rb)+t);',
+    '  plasma=plasma*0.5+0.5;',
+
+    /* pulsing radius — the sun breathes */
+    '  float pulse=0.012*sin(t*3.5+plasma*6.28);',
+    '  float R=0.30+pulse;',
+
+    /* disc with plasma-modulated edge */
+    '  float edge=R+(plasma-0.5)*0.07;',
+    '  float disc=1.0-smoothstep(edge-0.022,edge+0.048,dist);',
+
+    /* limb darkening — realistic stellar physics */
+    '  float limb=pow(max(0.0,1.0-dist/R),0.20);',
+
+    /* inner bright core */
+    '  float core=pow(max(0.0,1.0-dist/(R*0.55)),2.5);',
+
+    /* corona — multiple layers */
+    '  float cr1=pow(max(0.0,1.0-dist/(R*2.2)),3.0)*(plasma*0.6+0.4)*(1.0-disc);',
+    '  float cr2=pow(max(0.0,1.0-dist/(R*3.5)),5.5)*(plasma*0.4+0.3)*(1.0-disc);',
+
+    /* fire tendrils — upward bias (fire rises) */
+    '  vec2 fDir=sc+vec2(mOff.x*0.3,0.4);',
+    '  float fAngle=atan(fDir.y+0.3,fDir.x);',
+    '  float fN=fbm(vec2(fAngle*2.2+t*0.55,dist*2.8-t*0.3));',
+    '  float flare=max(0.0,fN-0.08)*smoothstep(R*0.85,R*1.05,dist)*(1.0-smoothstep(R*1.08,R*2.1,dist));',
+
+    /* extra radial sparks */
+    '  float sAngle=atan(sc.y+mOff.y*0.2,sc.x+mOff.x*0.2);',
+    '  float spark=max(0.0,fbm(vec2(sAngle*3.5-t*0.4,dist*3.5)))*smoothstep(R*0.9,R*1.02,dist)*(1.0-smoothstep(R*1.03,R*1.65,dist));',
+
+    /* colour palette — white hot core → orange → brand ember → dark corona */
+    '  float rn=clamp(dist/R,0.0,1.0);',
+    '  vec3 cCore  =vec3(1.00,0.97,0.85);',
+    '  vec3 cHot   =vec3(1.00,0.75,0.25);',
+    '  vec3 cMid   =vec3(1.00,0.45,0.10);',
+    '  vec3 cEdge  =vec3(1.00,0.27,0.10);',
+    '  vec3 cCor   =vec3(0.65,0.09,0.01);',
+    '  vec3 cFlare =vec3(1.00,0.40,0.08);',
+    '  vec3 cSpark =vec3(1.00,0.60,0.15);',
+
+    '  vec3 dCol=mix(cCore,cHot,smoothstep(0.0,0.25,rn));',
+    '       dCol=mix(dCol,cMid,smoothstep(0.25,0.6,rn));',
+    '       dCol=mix(dCol,cEdge,smoothstep(0.6,1.0,rn));',
+    '  dCol*=(0.45+plasma*1.0)*limb;',
+    '  dCol+=cCore*core*0.55;',
+
+    /* ── NUCLEAR LIGHT BEAMS ── */
+    '  float bAng=atan(sc.y+mOff.y*0.1,sc.x+mOff.x*0.1);',
+    /* 12 sharp primary rays — slow rotation */
+    '  float b1=pow(max(0.0,sin(bAng*6.0+t*0.38)),10.0);',
+    '  b1*=(1.0-smoothstep(R,R*6.5,dist))*smoothstep(R*0.7,R*1.05,dist);',
+    /* 7 wider secondary rays — counter-rotating */
+    '  float b2=pow(max(0.0,sin(bAng*3.5-t*0.22+0.9)),6.0);',
+    '  b2*=(1.0-smoothstep(R,R*9.5,dist))*smoothstep(R*0.7,R*1.1,dist);',
+    /* 18 fine hair rays — fast rotation */
+    '  float b3=pow(max(0.0,sin(bAng*9.0+t*0.58+1.6)),13.0);',
+    '  b3*=(1.0-smoothstep(R,R*4.5,dist))*smoothstep(R*0.7,R*1.02,dist);',
+    /* plasma flicker modulation */
+    '  float beams=(b1*1.2+b2*0.85+b3*0.55)*(plasma*0.5+0.5);',
+
+    /* ── WIDE NUCLEAR AMBIENT GLOW ── */
+    '  float amb=exp(-dist*2.2/R)*0.22*(1.0-disc*0.4);',
+
+    /* ── BEAM + AMBIENT COLOURS ── */
+    '  vec3 cBeam=mix(vec3(1.0,0.78,0.32),vec3(0.88,0.15,0.02),smoothstep(R,R*5.0,dist));',
+    '  vec3 cAmb=vec3(0.98,0.30,0.05);',
+
+    '  vec3 color=dCol*disc',
+    '            +cCor*(cr1*1.3+cr2*0.85)',
+    '            +cFlare*flare*0.9',
+    '            +cSpark*spark*0.65',
+    '            +cBeam*beams*1.25',
+    '            +cAmb*amb;',
+
+    '  float alpha=clamp(disc+cr1*0.93+cr2*0.68+flare*0.65+spark*0.45+beams*0.88+amb*0.55,0.0,1.0);',
+    '  color*=1.32;',
+    '  color=clamp(color,0.0,1.0);',
+    '  gl_FragColor=vec4(color,alpha);',
+    '}'
+  ].join('\n');
+
+  var geo = new THREE.PlaneGeometry(2,2);
+  var mat = new THREE.ShaderMaterial({
+    uniforms:uniforms,vertexShader:vSrc,fragmentShader:fSrc,
+    transparent:true,depthTest:false,depthWrite:false
+  });
+  scene.add(new THREE.Mesh(geo,mat));
+
+  resize();
+  window.addEventListener('resize',resize);
+  window.addEventListener('load',resize);
+
+  var target = new THREE.Vector2(0,0);
+  window.addEventListener('mousemove',function(e){
+    target.x=(e.clientX/window.innerWidth)*2-1;
+    target.y=-((e.clientY/window.innerHeight)*2-1);
+  });
+  window.addEventListener('touchmove',function(e){
+    var t=e.touches[0];
+    target.x=(t.clientX/window.innerWidth)*2-1;
+    target.y=-((t.clientY/window.innerHeight)*2-1);
+  },{passive:true});
+
+  var clock = new THREE.Clock();
+  (function loop(){
+    requestAnimationFrame(loop);
+    uniforms.uTime.value=clock.getElapsedTime();
+    uniforms.uMouse.value.lerp(target,0.032);
+    renderer.render(scene,camera);
+  })();
+})();
+</script>
+
+<!-- GSAP ANIMATIONS -->
+<script>
+(function(){
+  if(typeof gsap === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ── HERO LOAD ── */
+  gsap.set(['#h-over','#h-l1','#h-l2','#h-sub','#h-ctas'],{opacity:0,y:55,filter:'blur(16px)'});
+  var tl=gsap.timeline({defaults:{ease:'expo.out'}});
+  tl.to('#h-over', {opacity:1,y:0,filter:'blur(0px)',duration:1.3},0.5)
+    .to('#h-l1',   {opacity:1,y:0,filter:'blur(0px)',duration:1.45},0.75)
+    .to('#h-l2',   {opacity:1,y:0,filter:'blur(0px)',duration:1.45},0.95)
+    .to('#h-sub',  {opacity:1,y:0,filter:'blur(0px)',duration:1.1},1.18)
+    .to('#h-ctas', {opacity:1,y:0,filter:'blur(0px)',duration:0.9},1.32);
+
+  /* ── SCROLL REVEALS ── */
+  gsap.utils.toArray('.jr').forEach(function(el){
+    gsap.fromTo(el,{opacity:0,y:30},{
+      opacity:1,y:0,duration:0.85,ease:'power3.out',
+      scrollTrigger:{trigger:el,start:'top 87%',toggleActions:'play none none none'}
+    });
+  });
+
+  /* ── PROGRESS BARS ── */
+  document.querySelectorAll('[data-progress]').forEach(function(bar){
+    ScrollTrigger.create({trigger:bar,start:'top 80%',
+      onEnter:function(){gsap.to(bar,{width:'78%',duration:1.7,ease:'power2.out'});}
+    });
+  });
+
+  /* ── METRICS COUNT UP ── */
+  document.querySelectorAll('[data-count]').forEach(function(el){
+    var target=parseInt(el.getAttribute('data-count'));
+    ScrollTrigger.create({trigger:el,start:'top 80%',
+      onEnter:function(){
+        gsap.fromTo({v:0},{v:target},{duration:1.8,ease:'power2.out',
+          onUpdate:function(){el.textContent=Math.round(this.targets()[0].v)+'+';}
+        });
+      }
+    });
+  });
+
+  /* ── NAV SCROLL ── */
+  ScrollTrigger.create({start:'top -50',
+    onUpdate:function(s){
+      document.getElementById('main-nav').style.background=
+        s.scroll()>50?'rgba(8,8,8,0.97)':'rgba(8,8,8,0.55)';
+    }
+  });
+
+  /* ── MANIFESTO SCROLL-DRIVEN STATEMENT BUILDER ── */
+  var ids    = ['mf-0','mf-1','mf-2','mf-3','mf-4'];
+  var dirs   = [
+    {enter:{y:90,x:0},  exit:{y:-90,x:0}},   // 0: up
+    {enter:{x:110,y:0}, exit:{x:-110,y:0}},   // 1: from right
+    {enter:{y:-90,x:0}, exit:{y:90,x:0}},     // 2: down
+    {enter:{x:-110,y:0},exit:{x:110,y:0}},    // 3: from left
+    {enter:{y:90,x:0},  exit:{y:-90,x:0}}     // 4: up again
+  ];
+  var total = ids.length;
+  var counter = document.getElementById('mf-counter');
+  var barFill = document.getElementById('mf-bar-fill');
+
+  /* set all hidden */
+  ids.forEach(function(id,i){
+    gsap.set(document.getElementById(id),{
+      opacity:0,
+      x: dirs[i].enter.x||0,
+      y: dirs[i].enter.y||0
+    });
+  });
+
+  /* build scrub timeline */
+  var mfTl = gsap.timeline({
+    scrollTrigger:{
+      trigger:'#manifesto',
+      start:'top top',
+      end:'bottom bottom',
+      scrub:1.4
+    }
+  });
+
+  /* pause at start — show first statement */
+  mfTl.to(document.getElementById(ids[0]),{opacity:1,x:0,y:0,duration:1,ease:'power3.out'});
+  mfTl.to({},{duration:0.7}); /* hold */
+
+  for(var i=0;i<total-1;i++){
+    var curr=document.getElementById(ids[i]);
+    var next=document.getElementById(ids[i+1]);
+    var exitDir=dirs[i].exit;
+    var enterDir=dirs[i+1].enter;
+
+    mfTl
+      .to(curr,{opacity:0,x:exitDir.x||0,y:exitDir.y||0,duration:0.8,ease:'power2.in'})
+      .to(next,{opacity:1,x:0,y:0,duration:1,ease:'power3.out'},'<0.15')
+      .to({},{duration:1.5}); /* hold on each statement */
+  }
+
+  /* update counter + progress bar based on scroll position */
+  ScrollTrigger.create({
+    trigger:'#manifesto',
+    start:'top top',
+    end:'bottom bottom',
+    onUpdate:function(self){
+      var prog=self.progress;
+      var idx=Math.min(Math.floor(prog*total),total-1);
+      if(counter) counter.textContent='0'+(idx+1)+' / 0'+total;
+      if(barFill) barFill.style.height=(prog*100)+'%';
+    }
+  });
+
+})();
+</script>
+</body>
+</html>

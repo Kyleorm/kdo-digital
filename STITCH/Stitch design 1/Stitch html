@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KDO DIGITAL | Powering Innovation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&amp;family=Hanken+Grotesk:wght@400;500;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #000000;
+            color: #e2e2e2;
+            overflow-x: hidden;
+        }
+
+        .solar-glow {
+            background: radial-gradient(circle, rgba(255, 77, 0, 0.15) 0%, rgba(255, 77, 0, 0) 70%);
+            pointer-events: none;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 181, 158, 0.2);
+        }
+
+        .flare-hover:hover {
+            box-shadow: 0 0 40px rgba(255, 77, 0, 0.2);
+            border-top-color: rgba(255, 77, 0, 0.6);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 20px rgba(255, 181, 158, 0.4);
+        }
+
+        .progress-burn {
+            background: linear-gradient(90deg, #763218 0%, #ff571a 100%);
+        }
+
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.1); }
+        }
+
+        .animate-pulse-slow {
+            animation: pulse-slow 8s infinite ease-in-out;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#763218",
+                        "tertiary-container": "#d1795a",
+                        "secondary": "#ffdb9d",
+                        "on-primary-fixed": "#3a0b00",
+                        "on-tertiary": "#591d05",
+                        "primary": "#ffb59e",
+                        "secondary-container": "#feb700",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "inverse-surface": "#e2e2e2",
+                        "on-tertiary-container": "#501601",
+                        "tertiary": "#ffb59c",
+                        "primary-container": "#ff571a",
+                        "on-secondary-container": "#6b4b00",
+                        "on-tertiary-fixed": "#380c00",
+                        "surface-dim": "#131313",
+                        "surface-container-high": "#2a2a2a",
+                        "outline-variant": "#5c4037",
+                        "error": "#ffb4ab",
+                        "surface-bright": "#393939",
+                        "outline": "#ad897e",
+                        "surface-tint": "#ffb59e",
+                        "tertiary-fixed-dim": "#ffb59c",
+                        "surface-container-low": "#1b1b1b",
+                        "inverse-primary": "#ae3200",
+                        "inverse-on-surface": "#303030",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container-highest": "#353535",
+                        "surface": "#131313",
+                        "on-secondary-fixed-variant": "#5e4200",
+                        "on-primary": "#5e1700",
+                        "secondary-fixed-dim": "#ffba20",
+                        "primary-fixed-dim": "#ffb59e",
+                        "primary-fixed": "#ffdbd0",
+                        "on-surface": "#e2e2e2",
+                        "secondary-fixed": "#ffdea8",
+                        "background": "#131313",
+                        "surface-container": "#1f1f1f",
+                        "on-surface-variant": "#e6beb2",
+                        "on-background": "#e2e2e2",
+                        "surface-variant": "#353535",
+                        "on-primary-fixed-variant": "#852400",
+                        "tertiary-fixed": "#ffdbcf",
+                        "on-secondary": "#412d00",
+                        "on-primary-container": "#521300",
+                        "on-secondary-fixed": "#271900"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "section-gap": "128px",
+                        "unit": "8px",
+                        "gutter": "32px",
+                        "margin-mobile": "20px",
+                        "base": "24px",
+                        "lg": "48px",
+                        "margin-desktop": "80px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Syne"],
+                        "label-caps": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Syne"],
+                        "headline-lg": ["Syne"],
+                        "body-md": ["Hanken Grotesk"],
+                        "display-lg": ["Syne"],
+                        "button": ["Syne"],
+                        "body-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500" }],
+                        "display-lg-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["80px", { "lineHeight": "88px", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+                        "button": ["16px", { "lineHeight": "20px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-black text-on-surface selection:bg-primary-container selection:text-white">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/10 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_20px_rgba(0,242,255,0.1)]">
+<div class="flex justify-between items-center w-full px-margin-desktop py-base max-w-[1440px] mx-auto">
+<div class="font-headline-md text-headline-md font-bold text-primary-fixed tracking-tighter">
+                KDO DIGITAL
+            </div>
+<div class="hidden md:flex gap-gutter items-center">
+<a class="font-headline-md text-headline-md tracking-tight text-primary-fixed border-b-2 border-primary-fixed pb-1 transition-colors duration-300" href="#">Services</a>
+<a class="font-headline-md text-headline-md tracking-tight text-on-surface-variant hover:text-primary-fixed transition-colors duration-300" href="#">Case Studies</a>
+<a class="font-headline-md text-headline-md tracking-tight text-on-surface-variant hover:text-primary-fixed transition-colors duration-300" href="#">Process</a>
+<a class="font-headline-md text-headline-md tracking-tight text-on-surface-variant hover:text-primary-fixed transition-colors duration-300" href="#">Insights</a>
+</div>
+<button class="bg-primary-container text-on-primary-container font-button text-button px-6 py-3 rounded-DEFAULT hover:opacity-80 active:scale-95 transition-all">
+                START PROJECT
+            </button>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative min-h-screen flex flex-col items-center justify-center pt-32 overflow-hidden">
+<!-- Volumetric Background Light -->
+<div class="solar-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] aspect-square animate-pulse-slow"></div>
+<div class="relative z-10 w-full max-w-container-max px-margin-desktop text-center">
+<!-- Hero Asset Integration -->
+<div class="relative w-full max-w-[1000px] mx-auto mb-lg">
+<img alt="KDO Digital Universal Scale Solar Flare" class="w-full h-auto mix-blend-screen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1aVeY0g3KVH4qONnn1EsduC9hKetDa_T-nLokxKR6OWqyV0oa5BaMA3CLqOnM7Qegf-fOCV97ylkCvmEWXBcTmJad4_AVf7RDG0UqTT3pdN5fEjzCMdAxFLJRwhtwk9dcql5HaGmA1DfxsYXpz6vy7rql6f5Z1m8ppyJpW1mV9FovqtNWWQJD_C3EwI7j_3YyGLif6l2dBn-8BSd1eMfcMLtPti0GDQ3d0psv40PUsWAIRCE5AeY7q3EvVy_gbpkLHIkeRhwjqa4"/>
+<!-- Branding overlay integrated with image -->
+<div class="absolute bottom-0 left-0 right-0 py-8">
+<h2 class="font-display-lg text-display-lg text-white text-glow mb-4">
+                        DIGITAL <span class="text-primary">NEXUS</span>
+</h2>
+<p class="font-label-caps text-label-caps tracking-[0.4em] text-primary-fixed-dim">
+                        POWERING INNOVATION
+                    </p>
+</div>
+</div>
+<div class="max-w-2xl mx-auto mt-lg">
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-lg">
+                    Harnessing the raw energy of high-performance digital architecture. We build universal-scale tech solutions that redefine the boundaries of what's possible.
+                </p>
+<div class="flex flex-col md:flex-row gap-4 justify-center">
+<button class="bg-primary-container text-on-primary-container font-button text-button uppercase px-12 py-5 hover:opacity-90 transition-all">
+                        Launch Nexus
+                    </button>
+<button class="border border-primary font-button text-button text-primary uppercase px-12 py-5 hover:bg-primary/10 transition-all">
+                        The Process
+                    </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Core Solutions - Bento Grid -->
+<section class="relative py-section-gap px-margin-desktop max-w-container-max mx-auto">
+<div class="flex items-center gap-4 mb-lg">
+<span class="w-12 h-[1px] bg-primary"></span>
+<h3 class="font-headline-lg text-headline-lg uppercase text-white">Universal Solutions</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Large Card -->
+<div class="md:col-span-8 group relative overflow-hidden glass-card flare-hover p-lg transition-all duration-500">
+<div class="absolute -top-20 -right-20 w-64 h-64 solar-glow group-hover:opacity-100 opacity-20 transition-opacity"></div>
+<span class="font-label-caps text-label-caps text-primary mb-4 block">01 / ARCHITECTURE</span>
+<h4 class="font-headline-lg text-headline-lg text-white mb-6">Quantum Cloud Infrastructure</h4>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-lg mb-8">
+                    Scalable, resilient ecosystems built on distributed ledger principles. Our infrastructure is designed to survive the intensity of massive data surges.
+                </p>
+<div class="w-full h-1 bg-surface-container-highest overflow-hidden">
+<div class="h-full progress-burn w-[75%] transition-all duration-1000"></div>
+</div>
+</div>
+<!-- Tall Card -->
+<div class="md:col-span-4 group relative overflow-hidden glass-card flare-hover p-lg transition-all duration-500">
+<span class="font-label-caps text-label-caps text-primary mb-4 block">02 / INTERFACE</span>
+<h4 class="font-headline-md text-headline-md text-white mb-6">Cinematic Experiences</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg">
+                    Interfaces that breathe. We design for immersion, focusing on volumetric depth and tactile motion.
+                </p>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 border border-primary/30 text-primary font-label-caps text-[10px] rounded-full">3D ENGINE</span>
+<span class="px-3 py-1 border border-primary/30 text-primary font-label-caps text-[10px] rounded-full">REAL-TIME</span>
+</div>
+</div>
+<!-- Small Detail Cards -->
+<div class="md:col-span-4 group relative overflow-hidden glass-card flare-hover p-lg transition-all duration-500">
+<span class="material-symbols-outlined text-primary text-4xl mb-4" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<h4 class="font-headline-md text-headline-md text-white mb-2">High Velocity</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Development cycles optimized for rapid deployment and continuous scaling.</p>
+</div>
+<div class="md:col-span-8 group relative overflow-hidden glass-card flare-hover p-lg transition-all duration-500 flex flex-col md:flex-row items-center gap-lg">
+<div class="flex-1">
+<span class="font-label-caps text-label-caps text-primary mb-4 block">04 / STRATEGY</span>
+<h4 class="font-headline-md text-headline-md text-white mb-4">Digital Transformation Flare</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Igniting brands through strategic technological pivots that disrupt established orbits.</p>
+</div>
+<div class="w-full md:w-1/3 aspect-video border border-outline-variant/30 flex items-center justify-center">
+<img class="w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" data-alt="A macro cinematic shot of a glowing orange fiber optic network against a pitch black background. The light trails are sharp and vibrant, creating a sense of ultra-high-speed data transmission and futuristic connectivity. The aesthetic is dark, premium, and intense, mirroring a solar flare event." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA95kUAFur0RWZfFZgY34fIC23G4bJIAaxFy6FrL63lqYf2MV4IJaqCwfiWrRglKgT8STqZYqhNrS2zJsB5q6WNP7KgtXWTQOFwTV4fU6yRNcEY7mo8huJ4V3bjRNHn4vpbaaPv4FT7hXMorjnRbLmA73VvIM0wH8ADwDEvwC12-NuoFg2uOe5h160pvA5yPuZMHCxIRgyz4y7JDFN6U_vPHcjzYxxa1A6ZsaoZ81L7UH_JrbBwRukgOThqvLdrEUFup2fcClTXcBA"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Solar Impact Section -->
+<section class="py-section-gap relative overflow-hidden">
+<div class="solar-glow absolute bottom-0 left-0 w-full h-[50%] opacity-20"></div>
+<div class="max-w-container-max mx-auto px-margin-desktop relative z-10">
+<div class="text-center mb-section-gap">
+<h2 class="font-display-lg text-display-lg text-white mb-6">SYSTEM METRICS</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter mt-lg">
+<div>
+<div class="font-display-lg text-headline-lg text-primary mb-2">99.9%</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">UPTIME FOCUS</div>
+</div>
+<div>
+<div class="font-display-lg text-headline-lg text-primary mb-2">12M+</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">DATA NODES</div>
+</div>
+<div>
+<div class="font-display-lg text-headline-lg text-primary mb-2">400+</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">SYSTEMS BUILT</div>
+</div>
+<div>
+<div class="font-display-lg text-headline-lg text-primary mb-2">24/7</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">ACTIVE ORBIT</div>
+</div>
+</div>
+</div>
+<!-- CTA Card -->
+<div class="relative p-lg md:p-24 overflow-hidden rounded-lg bg-surface-container-lowest border border-primary/20 flex flex-col items-center text-center">
+<div class="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent"></div>
+<h3 class="relative z-10 font-headline-lg text-headline-lg text-white mb-8">Ready to ignite your next digital era?</h3>
+<button class="relative z-10 bg-primary text-on-primary font-button text-button uppercase px-16 py-6 hover:scale-105 transition-transform duration-300">
+                    Enter the Nexus
+                </button>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full py-lg border-t border-outline-variant bg-surface-container-lowest">
+<div class="flex flex-col md:flex-row justify-between items-start w-full px-margin-desktop max-w-[1440px] mx-auto gap-md">
+<div class="flex flex-col gap-4">
+<div class="font-headline-lg text-headline-lg font-black text-on-surface">KDO DIGITAL</div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">© 2024 KDO DIGITAL. ALL RIGHTS RESERVED.</p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-lg">
+<div class="flex flex-col gap-2">
+<span class="font-label-caps text-label-caps text-white mb-2">Expertise</span>
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-all active:translate-x-1 duration-200" href="#">Web Dev</a>
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-all active:translate-x-1 duration-200" href="#">App Dev</a>
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-all active:translate-x-1 duration-200" href="#">Marketing</a>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-label-caps text-label-caps text-white mb-2">Legal</span>
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-all active:translate-x-1 duration-200" href="#">Terms</a>
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-all active:translate-x-1 duration-200" href="#">Privacy</a>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-label-caps text-label-caps text-white mb-2">Connect</span>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary-fixed-dim cursor-pointer hover:text-white transition-colors">hub</span>
+<span class="material-symbols-outlined text-primary-fixed-dim cursor-pointer hover:text-white transition-colors">language</span>
+<span class="material-symbols-outlined text-primary-fixed-dim cursor-pointer hover:text-white transition-colors">alternate_email</span>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Simple parallax and glow tracking
+        document.addEventListener('mousemove', (e) => {
+            const glows = document.querySelectorAll('.solar-glow');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            glows.forEach(glow => {
+                const speed = 20;
+                const xPos = (x - 0.5) * speed;
+                const yPos = (y - 0.5) * speed;
+                glow.style.transform = `translate(${xPos}px, ${yPos}px)`;
+            });
+        });
+
+        // Progress bar animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelector('.progress-burn')?.classList.add('w-[75%]');
+                    entry.target.querySelector('.progress-burn')?.classList.remove('w-0');
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.glass-card').forEach(card => observer.observe(card));
+    </script>
+</body></html>
