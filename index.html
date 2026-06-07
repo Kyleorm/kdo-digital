@@ -545,18 +545,28 @@
             color: #111;
         }
 
-        .loader-dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: var(--pink);
-            box-shadow: 0 0 10px 3px rgba(255,45,135,0.55);
-            animation: loaderPulse 1s ease-in-out infinite;
+        .loader-bar-wrap {
+            width: 120px;
+            height: 2px;
+            background: rgba(0,0,0,0.08);
+            border-radius: 100px;
+            overflow: hidden;
         }
 
-        @keyframes loaderPulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50%       { transform: scale(1.6); opacity: 0.4; }
+        .loader-bar {
+            height: 100%;
+            width: 0%;
+            border-radius: 100px;
+            background: var(--pink);
+            box-shadow: 0 0 8px rgba(255,45,135,0.6);
+            animation: loaderFill 1.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes loaderFill {
+            0%   { width: 0%; }
+            60%  { width: 75%; }
+            85%  { width: 90%; }
+            100% { width: 90%; }
         }
 
         @media (max-width: 400px) {
@@ -571,7 +581,9 @@
     <!-- ── Site loader ── -->
     <div class="site-loader" id="siteLoader">
         <span class="loader-logo">KDO Digital</span>
-        <span class="loader-dot"></span>
+        <div class="loader-bar-wrap">
+            <div class="loader-bar" id="loaderBar"></div>
+        </div>
     </div>
 
     <!-- ── Fixed Nav ── -->
@@ -674,11 +686,15 @@
 
         function dismissLoader() {
             if (!siteLoader || siteLoader.classList.contains('hidden')) return;
-            siteLoader.classList.add('hidden');
+            const bar = document.getElementById('loaderBar');
+            if (bar) { bar.style.transition = 'width 0.25s ease'; bar.style.width = '100%'; }
             setTimeout(() => {
-                siteLoader.remove();
-                document.body.classList.add('loaded'); // starts all animations
-            }, 500);
+                siteLoader.classList.add('hidden');
+                setTimeout(() => {
+                    siteLoader.remove();
+                    document.body.classList.add('loaded');
+                }, 500);
+            }, 260);
         }
 
         const nav = document.querySelector('nav');
