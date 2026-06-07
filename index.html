@@ -381,6 +381,29 @@
             mask-image: linear-gradient(to right, transparent 0%, black 18%);
         }
 
+        /* Animations paused until loader fades — then body.loaded triggers them */
+        nav, nav::after,
+        .hero-pretag, .hero-headline, .hero-subline,
+        .hero-ctas, .hero-trust, .hero-stats,
+        .hero-media-wrap, .scroll-cue,
+        .scroll-cue-track::after {
+            animation-play-state: paused;
+        }
+
+        body.loaded nav,
+        body.loaded nav::after,
+        body.loaded .hero-pretag,
+        body.loaded .hero-headline,
+        body.loaded .hero-subline,
+        body.loaded .hero-ctas,
+        body.loaded .hero-trust,
+        body.loaded .hero-stats,
+        body.loaded .hero-media-wrap,
+        body.loaded .scroll-cue,
+        body.loaded .scroll-cue-track::after {
+            animation-play-state: running;
+        }
+
         @media (prefers-reduced-motion: reduce) {
             nav, nav::after, .hero-pretag, .hero-headline, .hero-subline,
             .hero-ctas, .hero-trust, .hero-stats, .hero-media-wrap, .scroll-cue {
@@ -646,13 +669,17 @@
 
         // Loader — hides rough initial load on mobile
         const siteLoader = document.getElementById('siteLoader');
-        const dismissLoader = () => {
+        window.addEventListener('load', () => setTimeout(dismissLoader, 150));
+        setTimeout(dismissLoader, 2000);
+
+        function dismissLoader() {
             if (!siteLoader || siteLoader.classList.contains('hidden')) return;
             siteLoader.classList.add('hidden');
-            setTimeout(() => siteLoader.remove(), 500);
-        };
-        window.addEventListener('load', () => setTimeout(dismissLoader, 150));
-        setTimeout(dismissLoader, 2000); // hard cap — never blocks more than 2s
+            setTimeout(() => {
+                siteLoader.remove();
+                document.body.classList.add('loaded'); // starts all animations
+            }, 500);
+        }
 
         const nav = document.querySelector('nav');
         window.addEventListener('scroll', () => {
