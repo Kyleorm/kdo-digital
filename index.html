@@ -1741,16 +1741,29 @@
           }
         }());
 
-        /* Mobile canvas renderer — draws video frames via HTML canvas so both the
-           animation and the page background share the same CSS colour pipeline,
-           eliminating the iOS hardware-video colour mismatch at any screen brightness.
-           Video is kept at 1x1px/opacity:0 so iOS will play it (display:none stops autoplay). */
+        /* Mobile canvas renderer.
+           Problem: iOS renders <video> through a separate hardware pipeline that applies
+           different tone curves from CSS at reduced screen brightness, making the video
+           area appear whiter than the rest of the page.
+           Fix: reparent the video into a zero-size off-screen container BEFORE calling
+           play(), so iOS never creates a hardware video layer inside the visible hero area.
+           The canvas draws frames from the video via drawImage, which uses the normal
+           CSS compositor pipeline — both canvas and page shift identically at any brightness. */
         (function () {
             if (!window.matchMedia('(max-width: 860px)').matches) return;
 
             var video = document.querySelector('.hero-video');
             var img   = document.querySelector('.hero-img-mobile');
             if (!video || !img) return;
+
+            /* Move video to a zero-size clipped off-screen container BEFORE play().
+               iOS creates the compositing layer at the element's location when play()
+               is called — moving it first means the layer never touches the visible page. */
+            var sink = document.createElement('div');
+            sink.setAttribute('aria-hidden', 'true');
+            sink.style.cssText = 'position:fixed;left:-9999px;top:0;width:0;height:0;overflow:hidden;pointer-events:none;';
+            document.body.appendChild(sink);
+            sink.appendChild(video);
 
             var dpr  = Math.min(window.devicePixelRatio || 1, 2);
             var size = 300 * dpr;
@@ -1765,7 +1778,7 @@
             var started = false;
 
             function drawLoop() {
-                ctx.drawImage(video, 0, 0, size, size);
+                try { ctx.drawImage(video, 0, 0, size, size); } catch (e) {}
                 requestAnimationFrame(drawLoop);
             }
 
@@ -1776,7 +1789,6 @@
                 drawLoop();
             }
 
-            /* timeupdate fires when frames are actually rendering — most reliable iOS signal */
             video.addEventListener('timeupdate', function onFrame() {
                 video.removeEventListener('timeupdate', onFrame);
                 start();
