@@ -392,8 +392,14 @@
             /* Multiply blends the near-white video background into the white page */
             mix-blend-mode: multiply;
             filter: brightness(1.15) contrast(1.0) saturate(1.1);
-            -webkit-mask-image: radial-gradient(ellipse 95% 92% at 58% 50%, black 85%, transparent 100%);
-            mask-image: radial-gradient(ellipse 95% 92% at 58% 50%, black 85%, transparent 100%);
+            -webkit-mask-image:
+                linear-gradient(to right,  transparent 0%, black 6%, black 94%, transparent 100%),
+                linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+            -webkit-mask-composite: source-in;
+            mask-image:
+                linear-gradient(to right,  transparent 0%, black 6%, black 94%, transparent 100%),
+                linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+            mask-composite: intersect;
         }
 
         /* Animations paused until loader fades — then body.loaded triggers them */
@@ -495,8 +501,14 @@
             }
 
             .hero-video {
-                -webkit-mask-image: radial-gradient(ellipse 95% 90% at 50% 50%, black 85%, transparent 100%);
-                mask-image: radial-gradient(ellipse 95% 90% at 50% 50%, black 85%, transparent 100%);
+                -webkit-mask-image:
+                    linear-gradient(to right,  transparent 0%, black 6%, black 94%, transparent 100%),
+                    linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+                -webkit-mask-composite: source-in;
+                mask-image:
+                    linear-gradient(to right,  transparent 0%, black 6%, black 94%, transparent 100%),
+                    linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+                mask-composite: intersect;
             }
             .hero-media-wrap::after {
                 inset: 0;
