@@ -502,12 +502,14 @@
                 min-height: 260px;
             }
 
-            /* Video is kept alive so iOS will play it — canvas draws its frames instead */
+            /* Video kept alive so iOS plays it — moved off-screen so hardware
+               pipeline never touches visible pixels; canvas draws its frames instead */
             .hero-video {
-                position: absolute !important;
+                position: fixed !important;
+                left: -9999px !important;
+                top: 0 !important;
                 width: 1px !important;
                 height: 1px !important;
-                overflow: hidden;
                 opacity: 0 !important;
                 pointer-events: none;
             }
@@ -1591,7 +1593,24 @@
 
     <script>
         (function () {
+          try {
             gsap.registerPlugin(ScrollTrigger);
+
+            /* Mobile: detach svc-link buttons from text panels and move them
+               directly into the stage so they can be animated below the image */
+            var stage = document.querySelector('.services-stage');
+            if (stage && window.matchMedia('(max-width: 860px)').matches) {
+                document.querySelectorAll('.svc-panel .svc-link').forEach(function(link) {
+                    stage.appendChild(link);
+                    link.style.position  = 'absolute';
+                    link.style.top       = '0';
+                    link.style.left      = '0';
+                    link.style.right     = '0';
+                    link.style.display   = 'block';
+                    link.style.textAlign = 'center';
+                    link.style.margin    = '0';
+                });
+            }
 
             const panels = gsap.utils.toArray('.svc-panel');
             const imgs   = gsap.utils.toArray('.svc-img');
@@ -1604,20 +1623,17 @@
             const navH     = navEl.getBoundingClientRect().height;
             const marqueeH = marqueeEl.getBoundingClientRect().height;
 
-            /* Pin fires when svcTopInViewport px of stage are above the viewport */
             const svcTopInViewport = navH + marqueeH + 80;
 
-            /* Detect mobile — use different layout: text top, image bottom */
             const isMobile = window.matchMedia('(max-width: 860px)').matches;
             const visH     = window.innerHeight - svcTopInViewport;
 
-            let panelCY, imgCY, offY, imgStartX;
+            let panelCY, imgCY, linkY, offY, imgStartX;
 
             if (isMobile) {
-                /* Text panel centred in the top 38% of visible area;
-                   image centred in the lower 65% */
                 panelCY   = visH * 0.22;
                 imgCY     = visH * 0.62;
+                linkY     = visH * 0.88;
                 offY      = 130;
                 imgStartX = 0;
             } else {
@@ -1626,48 +1642,72 @@
                 const visualCentre = navH + (window.innerHeight - navH) / 2;
                 panelCY   = visualCentre - svcTopInViewport - padT;
                 imgCY     = panelCY;
+                linkY     = 0;
                 offY      = 260;
                 imgStartX = 220;
             }
 
-            /* First panel + image: visible at their starting positions */
+            /* On mobile, links are now direct children of the stage */
+            const links = isMobile ? gsap.utils.toArray('.services-stage > .svc-link') : [];
+
+            /* First panel + image + link: visible at resting positions */
             gsap.set(panels[0], { autoAlpha: 1, yPercent: -50, y: panelCY });
             gsap.set(imgs[0],   { autoAlpha: 1, yPercent: -50, y: imgCY, x: 0 });
+            if (links[0]) gsap.set(links[0], { autoAlpha: 1, yPercent: -50, y: linkY });
             dots[0].classList.add('active');
 
-            /* Rest: hidden, waiting to fly in */
-            gsap.set(panels.slice(1), { autoAlpha: 0, yPercent: -50, y: panelCY - offY });
+            /* Rest: hidden — mobile enters from below, desktop from above */
+            gsap.set(panels.slice(1), { autoAlpha: 0, yPercent: -50,
+                                        y: isMobile ? panelCY + offY : panelCY - offY });
             gsap.set(imgs.slice(1),   { autoAlpha: 0, yPercent: -50,
-                                        y: isMobile ? imgCY - offY : imgCY,
+                                        y: isMobile ? imgCY + offY : imgCY,
                                         x: imgStartX });
+            if (links.length > 1) gsap.set(links.slice(1), { autoAlpha: 0, yPercent: -50,
+                                                              y: linkY + offY });
 
             const tl = gsap.timeline();
 
             panels.forEach((panel, i) => {
-                const img = imgs[i];
+                const img  = imgs[i];
+                const link = links[i] || null;
 
                 if (i === 0) {
                     tl.to({}, { duration: 0.5 });
-                    tl.to(panel, { autoAlpha: 0, y: panelCY + offY, duration: 0.5, ease: 'power2.in' })
-                      .to(img,   {
+                    /* Exit: mobile slides UP, desktop slides DOWN */
+                    tl.to(panel, { autoAlpha: 0,
+                                   y: isMobile ? panelCY - offY : panelCY + offY,
+                                   duration: 0.5, ease: 'power2.in' })
+                      .to(img, {
                           autoAlpha: 0,
-                          ...(isMobile ? { y: imgCY + offY } : { x: -30 }),
+                          ...(isMobile ? { y: imgCY - offY } : { x: -30 }),
                           duration: isMobile ? 0.5 : 0.4,
                           ease: 'power2.in'
                       }, '<');
+                    if (link) tl.to(link, { autoAlpha: 0, y: linkY - offY,
+                                            duration: 0.5, ease: 'power2.in' }, '<');
                 } else {
-                    tl.to(panel, { autoAlpha: 1, y: panelCY, duration: 0.55, ease: 'power3.out' })
-                      .to(img,   { autoAlpha: 1, y: imgCY, x: 0, duration: isMobile ? 0.55 : 0.65, ease: 'power3.out' }, isMobile ? '<' : '<0.08');
+                    /* Entry: mobile slides UP into place, desktop slides DOWN */
+                    tl.to(panel, { autoAlpha: 1, y: panelCY,
+                                   duration: 0.55, ease: 'power3.out' })
+                      .to(img, { autoAlpha: 1, y: imgCY, x: 0,
+                                 duration: isMobile ? 0.55 : 0.65,
+                                 ease: 'power3.out' }, isMobile ? '<' : '<0.08');
+                    if (link) tl.to(link, { autoAlpha: 1, y: linkY,
+                                            duration: 0.55, ease: 'power3.out' }, '<');
 
                     if (i < n - 1) {
                         tl.to({}, { duration: 0.4 });
-                        tl.to(panel, { autoAlpha: 0, y: panelCY + offY, duration: 0.5, ease: 'power2.in' })
-                          .to(img,   {
+                        tl.to(panel, { autoAlpha: 0,
+                                       y: isMobile ? panelCY - offY : panelCY + offY,
+                                       duration: 0.5, ease: 'power2.in' })
+                          .to(img, {
                               autoAlpha: 0,
-                              ...(isMobile ? { y: imgCY + offY } : { x: -30 }),
+                              ...(isMobile ? { y: imgCY - offY } : { x: -30 }),
                               duration: isMobile ? 0.5 : 0.4,
                               ease: 'power2.in'
                           }, '<');
+                        if (link) tl.to(link, { autoAlpha: 0, y: linkY - offY,
+                                                duration: 0.5, ease: 'power2.in' }, '<');
                     }
                 }
             });
@@ -1698,12 +1738,15 @@
                     start: 'top 80%',
                 }
             });
+          } catch (e) {
+            /* Isolated so a services-animation error never kills the canvas renderer below */
+          }
         }());
 
         /* Mobile canvas renderer — draws video frames via HTML canvas so both the
            animation and the page background share the same CSS colour pipeline,
            eliminating the iOS hardware-video colour mismatch at any screen brightness.
-           Video is kept at 1x1px/opacity:0 so iOS will actually play it (display:none stops autoplay). */
+           Video is positioned off-screen so iOS plays it but it never touches visible pixels. */
         (function () {
             if (!window.matchMedia('(max-width: 860px)').matches) return;
 
@@ -1721,24 +1764,22 @@
             canvas.setAttribute('aria-hidden', 'true');
 
             var ctx     = canvas.getContext('2d');
-            var started = false;
+            var drawing = false;
 
             function drawLoop() {
-                ctx.drawImage(video, 0, 0, size, size);
+                /* Wrap in try/catch — drawImage throws if video has no decoded frame yet */
+                try { ctx.drawImage(video, 0, 0, size, size); } catch (e) {}
                 requestAnimationFrame(drawLoop);
             }
 
-            function start() {
-                if (started) return;
-                started = true;
-                img.parentNode.replaceChild(canvas, img);
-                drawLoop();
-            }
+            /* Replace static image with canvas immediately — canvas starts transparent
+               (= white page shows through) and fills in as soon as video frames arrive */
+            img.parentNode.replaceChild(canvas, img);
 
-            /* timeupdate fires when frames are actually rendering — most reliable iOS signal */
+            /* Start the draw loop once frames are actually flowing */
             video.addEventListener('timeupdate', function onFrame() {
                 video.removeEventListener('timeupdate', onFrame);
-                start();
+                if (!drawing) { drawing = true; drawLoop(); }
             });
 
             /* Kick off playback — works on iOS for muted+playsinline videos */
