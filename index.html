@@ -383,13 +383,15 @@
             z-index: 2;
         }
 
+        /* Mobile static image — hidden on desktop */
+        .hero-img-mobile { display: none; }
+
         .hero-video {
             height: clamp(560px, 92vh, 1060px);
             width: auto;
             max-width: none;
             flex-shrink: 0;
             display: block;
-            /* Multiply blends the near-white video background into the white page */
             mix-blend-mode: multiply;
             filter: brightness(1.15) contrast(1.0) saturate(1.1);
             -webkit-mask-image:
@@ -500,27 +502,27 @@
                 min-height: 260px;
             }
 
-            .hero-video {
-                -webkit-mask-image: none;
-                mask-image: none;
-                -webkit-mask-composite: initial;
-                mask-composite: initial;
-            }
-            .hero-media-wrap::after {
-                inset: 0;
-                background:
-                    linear-gradient(to right,  #fff 0%, rgba(255,255,255,0) 8%),
-                    linear-gradient(to left,   #fff 0%, rgba(255,255,255,0) 8%),
-                    linear-gradient(to bottom, #fff 0%, rgba(255,255,255,0) 8%),
-                    linear-gradient(to top,    #fff 0%, rgba(255,255,255,0) 8%);
-            }
+            /* Hide video on mobile — use static image instead to avoid iOS hardware video colour pipeline mismatch */
+            .hero-video { display: none; }
 
-            .hero-video {
-                height: auto;
+            .hero-img-mobile {
+                display: block;
                 width: 72vw;
                 max-width: 300px;
+                height: auto;
                 flex-shrink: 1;
+                mix-blend-mode: multiply;
+                filter: brightness(1.15) contrast(1.0) saturate(1.1);
+                -webkit-mask-image:
+                    linear-gradient(to right,  transparent 0%, black 6%, black 94%, transparent 100%),
+                    linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+                -webkit-mask-composite: source-in;
+                mask-image:
+                    linear-gradient(to right,  transparent 0%, black 6%, black 94%, transparent 100%),
+                    linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+                mask-composite: intersect;
             }
+
 
             .hero-content {
                 grid-row: 2;
@@ -1399,6 +1401,7 @@
             >
                 <source src="video assets/02178078478223500000000000000000000ffffc0a8787b4bfc5a.mp4" type="video/mp4">
             </video>
+            <img class="hero-img-mobile" src="Photo assets/hero-mobile-opt.png" alt="3D abstract form" aria-hidden="true">
         </div>
 
         <!-- Scroll cue -->
