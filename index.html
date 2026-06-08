@@ -1682,6 +1682,56 @@
                 }
             });
         }());
+
+        /* Mobile canvas renderer — draws video frames via HTML canvas so both the
+           animation and the page background go through the same CSS colour pipeline,
+           eliminating the iOS hardware-video colour mismatch at any screen brightness */
+        (function () {
+            if (!window.matchMedia('(max-width: 860px)').matches) return;
+
+            var video  = document.querySelector('.hero-video');
+            var img    = document.querySelector('.hero-img-mobile');
+            if (!video || !img) return;
+
+            var dpr    = Math.min(window.devicePixelRatio || 1, 2);
+            var size   = 300 * dpr;
+
+            var canvas = document.createElement('canvas');
+            canvas.width  = size;
+            canvas.height = size;
+            canvas.className = img.className;
+            canvas.setAttribute('aria-hidden', 'true');
+
+            var ctx       = canvas.getContext('2d');
+            var lastTime  = -1;
+            var running   = false;
+
+            function drawLoop() {
+                if (!running) return;
+                if (video.currentTime !== lastTime) {
+                    ctx.drawImage(video, 0, 0, size, size);
+                    lastTime = video.currentTime;
+                }
+                requestAnimationFrame(drawLoop);
+            }
+
+            function start() {
+                if (running) return;
+                running = true;
+                img.parentNode.replaceChild(canvas, img);
+                video.play().catch(function () {});
+                drawLoop();
+            }
+
+            video.load();
+
+            if (video.readyState >= 2) {
+                start();
+            } else {
+                video.addEventListener('loadeddata', start, { once: true });
+                setTimeout(function () { if (!running && video.readyState >= 2) start(); }, 3000);
+            }
+        }());
     </script>
 
 </body>
