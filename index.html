@@ -1638,7 +1638,7 @@
             /* Rest: hidden, waiting to fly in */
             gsap.set(panels.slice(1), { autoAlpha: 0, yPercent: -50, y: panelCY - offY });
             gsap.set(imgs.slice(1),   { autoAlpha: 0, yPercent: -50,
-                                        y: isMobile ? imgCY + 55 : imgCY,
+                                        y: isMobile ? imgCY - offY : imgCY,
                                         x: imgStartX });
 
             const tl = gsap.timeline();
@@ -1649,15 +1649,25 @@
                 if (i === 0) {
                     tl.to({}, { duration: 0.5 });
                     tl.to(panel, { autoAlpha: 0, y: panelCY + offY, duration: 0.5, ease: 'power2.in' })
-                      .to(img,   { autoAlpha: 0, x: isMobile ? 0 : -30, duration: 0.4, ease: 'power2.in' }, '<');
+                      .to(img,   {
+                          autoAlpha: 0,
+                          ...(isMobile ? { y: imgCY + offY } : { x: -30 }),
+                          duration: isMobile ? 0.5 : 0.4,
+                          ease: 'power2.in'
+                      }, '<');
                 } else {
                     tl.to(panel, { autoAlpha: 1, y: panelCY, duration: 0.55, ease: 'power3.out' })
-                      .to(img,   { autoAlpha: 1, y: imgCY,   x: 0,       duration: 0.65, ease: 'power3.out' }, '<0.08');
+                      .to(img,   { autoAlpha: 1, y: imgCY, x: 0, duration: isMobile ? 0.55 : 0.65, ease: 'power3.out' }, isMobile ? '<' : '<0.08');
 
                     if (i < n - 1) {
                         tl.to({}, { duration: 0.4 });
                         tl.to(panel, { autoAlpha: 0, y: panelCY + offY, duration: 0.5, ease: 'power2.in' })
-                          .to(img,   { autoAlpha: 0, x: isMobile ? 0 : -30, duration: 0.4, ease: 'power2.in' }, '<');
+                          .to(img,   {
+                              autoAlpha: 0,
+                              ...(isMobile ? { y: imgCY + offY } : { x: -30 }),
+                              duration: isMobile ? 0.5 : 0.4,
+                              ease: 'power2.in'
+                          }, '<');
                     }
                 }
             });
