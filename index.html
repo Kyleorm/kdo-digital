@@ -502,8 +502,15 @@
                 min-height: 260px;
             }
 
-            /* Hide video on mobile — use static image instead to avoid iOS hardware video colour pipeline mismatch */
-            .hero-video { display: none; }
+            /* Video is kept alive so iOS will play it — canvas draws its frames instead */
+            .hero-video {
+                position: absolute !important;
+                width: 1px !important;
+                height: 1px !important;
+                overflow: hidden;
+                opacity: 0 !important;
+                pointer-events: none;
+            }
 
             .hero-img-mobile {
                 display: block;
@@ -1684,17 +1691,18 @@
         }());
 
         /* Mobile canvas renderer — draws video frames via HTML canvas so both the
-           animation and the page background go through the same CSS colour pipeline,
-           eliminating the iOS hardware-video colour mismatch at any screen brightness */
+           animation and the page background share the same CSS colour pipeline,
+           eliminating the iOS hardware-video colour mismatch at any screen brightness.
+           Video is kept at 1x1px/opacity:0 so iOS will actually play it (display:none stops autoplay). */
         (function () {
             if (!window.matchMedia('(max-width: 860px)').matches) return;
 
-            var video  = document.querySelector('.hero-video');
-            var img    = document.querySelector('.hero-img-mobile');
+            var video = document.querySelector('.hero-video');
+            var img   = document.querySelector('.hero-img-mobile');
             if (!video || !img) return;
 
-            var dpr    = Math.min(window.devicePixelRatio || 1, 2);
-            var size   = 300 * dpr;
+            var dpr  = Math.min(window.devicePixelRatio || 1, 2);
+            var size = 300 * dpr;
 
             var canvas = document.createElement('canvas');
             canvas.width  = size;
@@ -1702,35 +1710,30 @@
             canvas.className = img.className;
             canvas.setAttribute('aria-hidden', 'true');
 
-            var ctx       = canvas.getContext('2d');
-            var lastTime  = -1;
-            var running   = false;
+            var ctx     = canvas.getContext('2d');
+            var started = false;
 
             function drawLoop() {
-                if (!running) return;
-                if (video.currentTime !== lastTime) {
-                    ctx.drawImage(video, 0, 0, size, size);
-                    lastTime = video.currentTime;
-                }
+                ctx.drawImage(video, 0, 0, size, size);
                 requestAnimationFrame(drawLoop);
             }
 
             function start() {
-                if (running) return;
-                running = true;
+                if (started) return;
+                started = true;
                 img.parentNode.replaceChild(canvas, img);
-                video.play().catch(function () {});
                 drawLoop();
             }
 
-            video.load();
-
-            if (video.readyState >= 2) {
+            /* timeupdate fires when frames are actually rendering — most reliable iOS signal */
+            video.addEventListener('timeupdate', function onFrame() {
+                video.removeEventListener('timeupdate', onFrame);
                 start();
-            } else {
-                video.addEventListener('loadeddata', start, { once: true });
-                setTimeout(function () { if (!running && video.readyState >= 2) start(); }, 3000);
-            }
+            });
+
+            /* Kick off playback — works on iOS for muted+playsinline videos */
+            video.muted = true;
+            video.play().catch(function () {});
         }());
     </script>
 
