@@ -392,8 +392,8 @@
             /* Multiply blends the near-white video background into the white page */
             mix-blend-mode: multiply;
             filter: brightness(1.15) contrast(1.0) saturate(1.1);
-            -webkit-mask-image: none;
-            mask-image: none;
+            -webkit-mask-image: radial-gradient(ellipse 95% 92% at 58% 50%, black 85%, transparent 100%);
+            mask-image: radial-gradient(ellipse 95% 92% at 58% 50%, black 85%, transparent 100%);
         }
 
         /* Animations paused until loader fades — then body.loaded triggers them */
@@ -495,8 +495,8 @@
             }
 
             .hero-video {
-                -webkit-mask-image: none;
-                mask-image: none;
+                -webkit-mask-image: radial-gradient(ellipse 95% 90% at 50% 50%, black 85%, transparent 100%);
+                mask-image: radial-gradient(ellipse 95% 90% at 50% 50%, black 85%, transparent 100%);
             }
             .hero-media-wrap::after {
                 inset: 0;
