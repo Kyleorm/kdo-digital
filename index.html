@@ -374,11 +374,11 @@
             content: '';
             position: absolute;
             inset: -5% -2% -5% -10%;
-            background: radial-gradient(ellipse 58% 62% at 58% 52%,
-                transparent 32%,
-                rgba(255,255,255,0.55) 55%,
-                rgba(255,255,255,0.88) 70%,
-                #fff 84%);
+            background: radial-gradient(ellipse 52% 54% at 58% 52%,
+                transparent 20%,
+                rgba(255,255,255,0.45) 40%,
+                rgba(255,255,255,0.82) 58%,
+                #fff 72%);
             pointer-events: none;
             z-index: 2;
         }
@@ -392,8 +392,8 @@
             /* Multiply blends the near-white video background into the white page */
             mix-blend-mode: multiply;
             filter: brightness(1.15) contrast(1.0) saturate(1.1);
-            -webkit-mask-image: radial-gradient(ellipse 82% 80% at 58% 50%, black 28%, transparent 78%);
-            mask-image: radial-gradient(ellipse 82% 80% at 58% 50%, black 28%, transparent 78%);
+            -webkit-mask-image: radial-gradient(ellipse 68% 66% at 58% 50%, black 18%, transparent 62%);
+            mask-image: radial-gradient(ellipse 68% 66% at 58% 50%, black 18%, transparent 62%);
         }
 
         /* Animations paused until loader fades — then body.loaded triggers them */
@@ -495,16 +495,16 @@
             }
 
             .hero-video {
-                -webkit-mask-image: radial-gradient(ellipse 88% 78% at 50% 44%, black 28%, transparent 78%);
-                mask-image: radial-gradient(ellipse 88% 78% at 50% 44%, black 28%, transparent 78%);
+                -webkit-mask-image: radial-gradient(ellipse 72% 64% at 50% 44%, black 16%, transparent 58%);
+                mask-image: radial-gradient(ellipse 72% 64% at 50% 44%, black 16%, transparent 58%);
             }
             .hero-media-wrap::after {
                 inset: -5% -5% -5% -5%;
-                background: radial-gradient(ellipse 62% 56% at 50% 46%,
-                    transparent 30%,
-                    rgba(255,255,255,0.55) 52%,
-                    rgba(255,255,255,0.88) 68%,
-                    #fff 82%);
+                background: radial-gradient(ellipse 52% 48% at 50% 46%,
+                    transparent 18%,
+                    rgba(255,255,255,0.45) 38%,
+                    rgba(255,255,255,0.85) 56%,
+                    #fff 70%);
             }
 
             .hero-video {
