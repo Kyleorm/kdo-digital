@@ -1065,15 +1065,32 @@
         @media (max-width: 860px) {
             .services-stage {
                 grid-template-columns: 1fr;
-                padding: 80px 28px 56px;
+                padding: 56px 24px 0;
                 height: 100svh;
             }
-            .services-visual { display: none; }
-            .svc-section-label { left: 28px; }
-            .svc-progress { right: 28px; }
-            .svc-title { font-size: clamp(38px, 10vw, 54px); }
+            /* Both halves overlay the full stage so GSAP can place
+               text in the top area and image in the bottom area */
+            .services-copy {
+                position: absolute;
+                inset: 0;
+                height: auto;
+            }
+            .services-visual {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                height: auto;
+            }
+            .svc-img {
+                width: 64%;
+                max-width: 260px;
+            }
+            .svc-section-label { left: 24px; }
+            .svc-progress { display: none; }
+            .svc-title { font-size: clamp(34px, 8.5vw, 48px); }
             .svc-desc { font-size: 15px; max-width: 100%; }
             .svc-panel { padding-right: 0; }
+            .svc-link { display: none; }
         }
 
         /* ──────────── FAMILIAR / PAIN-POINTS SECTION ──────────── */
@@ -1246,14 +1263,21 @@
         }
 
         @media (max-width: 860px) {
-            .familiar { padding: 80px 0; }
-            .familiar-inner { padding: 0 24px; }
+            .familiar { padding: 72px 0; }
+            .familiar-inner { padding: 0 16px; }
             .fam-bento { grid-template-columns: 1fr; gap: 10px; }
-            .fc-hero { grid-column: 1; min-height: auto; padding: 44px 36px; }
-            .fc-p1 { min-height: auto; }
-            .fc-p2, .fc-p3, .fc-p4 { min-height: auto; }
-            .fc-cta { grid-column: 1; flex-direction: column; align-items: flex-start; padding: 44px 36px; }
-            .fc-heading { font-size: 40px; }
+            .fc-hero { grid-column: 1; min-height: 260px; padding: 40px 32px; justify-content: flex-end; }
+            .fc-heading { font-size: 38px; }
+            .fc-sub { font-size: 15px; }
+            .fc-p1 { min-height: 190px; padding: 28px 28px 36px; }
+            .fc-p2, .fc-p3, .fc-p4 { min-height: 190px; padding: 28px 28px 36px; }
+            .fc-num { font-size: 68px; }
+            .fc-p2 .fc-num, .fc-p3 .fc-num { opacity: 0.22; }
+            .fc-p4 .fc-num { opacity: 0.1; }
+            .fc-pain { font-size: 21px; line-height: 1.25; }
+            .fc-cta { grid-column: 1; flex-direction: column; align-items: flex-start; padding: 36px 28px; gap: 24px; }
+            .fc-cta-text { font-size: 24px; }
+            .fc-cta-btn { font-size: 11px; padding: 16px 28px; }
         }
     </style>
 </head>
@@ -1532,41 +1556,49 @@
             const imgs   = gsap.utils.toArray('.svc-img');
             const dots   = gsap.utils.toArray('.svc-dot');
             const n      = panels.length;
-            const offY   = 260;
 
-            /* ── Work out where to pin and how to centre ──
-               Pin fires when nav bottom aligns with marquee top.
-               At that scroll position the services-pin top is still
-               (marqueeH + servicesMT + navH) px below the viewport top.
-               We then use cY to translate both panels and images so
-               their centres sit exactly on the visual centre of the screen. */
             const navEl     = document.querySelector('nav');
             const marqueeEl = document.querySelector('.marquee-strip');
-            const stageEl   = document.querySelector('.services-stage');
 
-            const navH       = navEl.getBoundingClientRect().height;
-            const marqueeH   = marqueeEl.getBoundingClientRect().height;
-            const padT       = parseFloat(getComputedStyle(stageEl).paddingTop) || 0;
+            const navH     = navEl.getBoundingClientRect().height;
+            const marqueeH = marqueeEl.getBoundingClientRect().height;
 
-            /* When the pin fires (nav bottom === marquee top), the services
-               section top is exactly navH + marqueeH + 80 (its margin-top)
-               below the viewport top. No complex offsetTop needed. */
+            /* Pin fires when svcTopInViewport px of stage are above the viewport */
             const svcTopInViewport = navH + marqueeH + 80;
 
-            /* Visual centre of the visible area below the nav */
-            const visualCentre = navH + (window.innerHeight - navH) / 2;
+            /* Detect mobile — use different layout: text top, image bottom */
+            const isMobile = window.matchMedia('(max-width: 860px)').matches;
+            const visH     = window.innerHeight - svcTopInViewport;
 
-            /* y to place element centres on the visual centre */
-            const cY = visualCentre - svcTopInViewport - padT;
+            let panelCY, imgCY, offY, imgStartX;
 
-            /* First panel + image: visible and centred */
-            gsap.set(panels[0], { autoAlpha: 1, yPercent: -50, y: cY });
-            gsap.set(imgs[0],   { autoAlpha: 1, yPercent: -50, y: cY, x: 0 });
+            if (isMobile) {
+                /* Text panel centred in the top 38% of visible area;
+                   image centred in the lower 65% */
+                panelCY   = visH * 0.20;
+                imgCY     = visH * 0.66;
+                offY      = 130;
+                imgStartX = 0;
+            } else {
+                const stageEl      = document.querySelector('.services-stage');
+                const padT         = parseFloat(getComputedStyle(stageEl).paddingTop) || 0;
+                const visualCentre = navH + (window.innerHeight - navH) / 2;
+                panelCY   = visualCentre - svcTopInViewport - padT;
+                imgCY     = panelCY;
+                offY      = 260;
+                imgStartX = 220;
+            }
+
+            /* First panel + image: visible at their starting positions */
+            gsap.set(panels[0], { autoAlpha: 1, yPercent: -50, y: panelCY });
+            gsap.set(imgs[0],   { autoAlpha: 1, yPercent: -50, y: imgCY, x: 0 });
             dots[0].classList.add('active');
 
-            /* Rest: wait above, ready to fly in */
-            gsap.set(panels.slice(1), { autoAlpha: 0, yPercent: -50, y: cY - offY });
-            gsap.set(imgs.slice(1),   { autoAlpha: 0, yPercent: -50, y: cY, x: 220 });
+            /* Rest: hidden, waiting to fly in */
+            gsap.set(panels.slice(1), { autoAlpha: 0, yPercent: -50, y: panelCY - offY });
+            gsap.set(imgs.slice(1),   { autoAlpha: 0, yPercent: -50,
+                                        y: isMobile ? imgCY + 55 : imgCY,
+                                        x: imgStartX });
 
             const tl = gsap.timeline();
 
@@ -1575,16 +1607,16 @@
 
                 if (i === 0) {
                     tl.to({}, { duration: 0.5 });
-                    tl.to(panel, { autoAlpha: 0, y: cY + offY, duration: 0.5, ease: 'power2.in' })
-                      .to(img,   { autoAlpha: 0, x: -30,       duration: 0.4, ease: 'power2.in' }, '<');
+                    tl.to(panel, { autoAlpha: 0, y: panelCY + offY, duration: 0.5, ease: 'power2.in' })
+                      .to(img,   { autoAlpha: 0, x: isMobile ? 0 : -30, duration: 0.4, ease: 'power2.in' }, '<');
                 } else {
-                    tl.to(panel, { autoAlpha: 1, y: cY,  duration: 0.55, ease: 'power3.out' })
-                      .to(img,   { autoAlpha: 1, x: 0,   duration: 0.65, ease: 'power3.out' }, '<0.08');
+                    tl.to(panel, { autoAlpha: 1, y: panelCY, duration: 0.55, ease: 'power3.out' })
+                      .to(img,   { autoAlpha: 1, y: imgCY,   x: 0,       duration: 0.65, ease: 'power3.out' }, '<0.08');
 
                     if (i < n - 1) {
                         tl.to({}, { duration: 0.4 });
-                        tl.to(panel, { autoAlpha: 0, y: cY + offY, duration: 0.5, ease: 'power2.in' })
-                          .to(img,   { autoAlpha: 0, x: -30,       duration: 0.4, ease: 'power2.in' }, '<');
+                        tl.to(panel, { autoAlpha: 0, y: panelCY + offY, duration: 0.5, ease: 'power2.in' })
+                          .to(img,   { autoAlpha: 0, x: isMobile ? 0 : -30, duration: 0.4, ease: 'power2.in' }, '<');
                     }
                 }
             });
@@ -1602,7 +1634,8 @@
                     dots.forEach((d, j) => d.classList.toggle('active', j === idx));
                 }
             });
-            // Pain-point bento cards — stagger fade up on scroll into view
+
+            /* Pain-point bento cards — stagger fade up on scroll into view */
             gsap.from('.fam-card', {
                 y: 52,
                 opacity: 0,
