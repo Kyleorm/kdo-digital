@@ -376,9 +376,9 @@
             display: block;
             /* Multiply blends the near-white video background into the white page */
             mix-blend-mode: multiply;
-            filter: brightness(1.05) contrast(1.05) saturate(1.12);
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 18%);
-            mask-image: linear-gradient(to right, transparent 0%, black 18%);
+            filter: brightness(1.15) contrast(1.0) saturate(1.1);
+            -webkit-mask-image: radial-gradient(ellipse 82% 80% at 58% 50%, black 28%, transparent 78%);
+            mask-image: radial-gradient(ellipse 82% 80% at 58% 50%, black 28%, transparent 78%);
         }
 
         /* Animations paused until loader fades — then body.loaded triggers them */
@@ -480,9 +480,8 @@
             }
 
             .hero-video {
-                /* Mobile: override desktop left-fade with a bottom fade instead */
-                -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
-                mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+                -webkit-mask-image: radial-gradient(ellipse 88% 78% at 50% 44%, black 28%, transparent 78%);
+                mask-image: radial-gradient(ellipse 88% 78% at 50% 44%, black 28%, transparent 78%);
             }
 
             .hero-video {
@@ -1086,7 +1085,7 @@
                 width: 64%;
                 max-width: 260px;
             }
-            .svc-section-label { left: 24px; }
+            .svc-section-label { display: none; }
             .svc-progress { display: none; }
             .svc-title { font-size: clamp(34px, 8.5vw, 48px); }
             .svc-desc { font-size: 15px; max-width: 100%; }
@@ -1576,8 +1575,8 @@
             if (isMobile) {
                 /* Text panel centred in the top 38% of visible area;
                    image centred in the lower 65% */
-                panelCY   = visH * 0.20;
-                imgCY     = visH * 0.66;
+                panelCY   = visH * 0.22;
+                imgCY     = visH * 0.62;
                 offY      = 130;
                 imgStartX = 0;
             } else {
