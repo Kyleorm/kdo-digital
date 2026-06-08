@@ -502,14 +502,12 @@
                 min-height: 260px;
             }
 
-            /* Video kept alive so iOS plays it — moved off-screen so hardware
-               pipeline never touches visible pixels; canvas draws its frames instead */
+            /* Video kept alive so iOS plays it — canvas draws its frames instead */
             .hero-video {
-                position: fixed !important;
-                left: -9999px !important;
-                top: 0 !important;
+                position: absolute !important;
                 width: 1px !important;
                 height: 1px !important;
+                overflow: hidden;
                 opacity: 0 !important;
                 pointer-events: none;
             }
@@ -1746,7 +1744,7 @@
         /* Mobile canvas renderer — draws video frames via HTML canvas so both the
            animation and the page background share the same CSS colour pipeline,
            eliminating the iOS hardware-video colour mismatch at any screen brightness.
-           Video is positioned off-screen so iOS plays it but it never touches visible pixels. */
+           Video is kept at 1x1px/opacity:0 so iOS will play it (display:none stops autoplay). */
         (function () {
             if (!window.matchMedia('(max-width: 860px)').matches) return;
 
@@ -1764,25 +1762,26 @@
             canvas.setAttribute('aria-hidden', 'true');
 
             var ctx     = canvas.getContext('2d');
-            var drawing = false;
+            var started = false;
 
             function drawLoop() {
-                /* Wrap in try/catch — drawImage throws if video has no decoded frame yet */
-                try { ctx.drawImage(video, 0, 0, size, size); } catch (e) {}
+                ctx.drawImage(video, 0, 0, size, size);
                 requestAnimationFrame(drawLoop);
             }
 
-            /* Replace static image with canvas immediately — canvas starts transparent
-               (= white page shows through) and fills in as soon as video frames arrive */
-            img.parentNode.replaceChild(canvas, img);
+            function start() {
+                if (started) return;
+                started = true;
+                img.parentNode.replaceChild(canvas, img);
+                drawLoop();
+            }
 
-            /* Start the draw loop once frames are actually flowing */
+            /* timeupdate fires when frames are actually rendering — most reliable iOS signal */
             video.addEventListener('timeupdate', function onFrame() {
                 video.removeEventListener('timeupdate', onFrame);
-                if (!drawing) { drawing = true; drawLoop(); }
+                start();
             });
 
-            /* Kick off playback — works on iOS for muted+playsinline videos */
             video.muted = true;
             video.play().catch(function () {});
         }());
