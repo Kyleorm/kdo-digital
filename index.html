@@ -1692,7 +1692,7 @@
     </script>
 
     <!-- Three.js — neural network WebGL hero -->
-    <script src="https://unpkg.com/three@0.170.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
     <script>
     /* ── NEURAL NETWORK ── */
     (function () {
@@ -1712,8 +1712,9 @@
         scene.add(group);
 
         function resize() {
-            var w = canvas.parentElement.offsetWidth;
-            var h = canvas.parentElement.offsetHeight;
+            var w = canvas.parentElement.offsetWidth  || window.innerWidth;
+            var h = canvas.parentElement.offsetHeight || window.innerHeight;
+            if (h < 100) h = window.innerHeight;
             renderer.setSize(w, h);
             camera.aspect = w / h;
             camera.updateProjectionMatrix();
