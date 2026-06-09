@@ -895,8 +895,13 @@
         }
         .svc-link:active { background: #ffffff; color: var(--accent); }
 
-        /* When mobile JS moves links into the stage grid — prevent full-width stretch */
-        .services-stage > .svc-link { justify-self: center; }
+        /* When mobile JS moves links into the stage grid — center the button */
+        .services-stage > .svc-link {
+            display: block;
+            width: fit-content;
+            margin: 0 auto;
+            justify-self: center;
+        }
 
         /* ── Right visuals ── */
         .services-visual {
