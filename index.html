@@ -50,7 +50,7 @@
         }
 
         body {
-            background: #fff;
+            background: #04080F;
             color: #000;
             font-family: 'Outfit', sans-serif;
             -webkit-font-smoothing: antialiased;
@@ -715,10 +715,10 @@
             z-index: 90;
             width: 100%;
             overflow: hidden;
-            border-top: 1px solid rgba(0,0,0,0.07);
-            border-bottom: 1px solid rgba(0,0,0,0.07);
+            border-top: 1px solid rgba(255,255,255,0.07);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
             padding: 20px 0;
-            background: #fff;
+            background: #04080F;
         }
 
         .marquee-track {
@@ -740,18 +740,18 @@
             font-weight: 600;
             letter-spacing: 0.24em;
             text-transform: uppercase;
-            color: #111;
+            color: rgba(255,255,255,0.38);
             padding: 0 28px;
         }
 
         .mq-dot {
             font-style: normal;
-            color: var(--accent);
+            color: var(--cyan);
             margin: 0 22px;
             font-size: 16px;
             font-weight: 400;
             line-height: 1;
-            text-shadow: 0 0 10px rgba(255,45,135,0.55);
+            text-shadow: 0 0 10px rgba(0,207,255,0.7);
         }
 
         @keyframes marqueeScroll {
@@ -762,7 +762,7 @@
         /* ──────────── SERVICES PINNED ──────────── */
         .services-pin {
             position: relative;
-            background: #fff;
+            background: linear-gradient(to bottom, #04080F 0px, #ffffff 160px);
             margin-top: 80px;
         }
 
@@ -795,6 +795,7 @@
         .services-copy {
             position: relative;
             height: 100%;
+            counter-reset: svc-counter;
         }
 
         .svc-panel {
@@ -807,6 +808,24 @@
             opacity: 0;
         }
 
+        /* Big watermark number behind each service panel */
+        .svc-panel::before {
+            counter-increment: svc-counter;
+            content: counter(svc-counter, decimal-leading-zero);
+            position: absolute;
+            top: -0.18em;
+            left: -0.04em;
+            font-family: 'Urbanist', sans-serif;
+            font-size: clamp(130px, 20vw, 260px);
+            font-weight: 700;
+            letter-spacing: -0.06em;
+            line-height: 1;
+            color: rgba(26,111,255,0.06);
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+        }
+
         .svc-num {
             display: block;
             font-family: 'Outfit', sans-serif;
@@ -814,8 +833,11 @@
             font-weight: 600;
             letter-spacing: 0.24em;
             text-transform: uppercase;
-            color: #bbb;
+            color: var(--accent);
+            text-shadow: 0 0 14px rgba(26,111,255,0.5);
             margin-bottom: 22px;
+            position: relative;
+            z-index: 1;
         }
 
         .svc-title {
@@ -826,6 +848,8 @@
             letter-spacing: -0.03em;
             color: #111;
             margin-bottom: 26px;
+            position: relative;
+            z-index: 1;
         }
 
         .svc-title em {
@@ -842,6 +866,8 @@
             line-height: 1.72;
             max-width: 380px;
             margin-bottom: 38px;
+            position: relative;
+            z-index: 1;
         }
 
         .svc-link {
@@ -856,6 +882,8 @@
             padding-bottom: 4px;
             display: inline-block;
             transition: color 0.2s ease, border-color 0.2s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .svc-link:hover { color: var(--accent); border-color: var(--accent); }
@@ -1115,6 +1143,12 @@
             .svc-title { font-size: clamp(34px, 8.5vw, 48px); }
             .svc-desc { font-size: 15px; max-width: 100%; }
             .svc-panel { padding: 0 32px; text-align: center; }
+            .svc-panel::before {
+                font-size: clamp(100px, 30vw, 160px);
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+            }
             .svc-link { display: inline-block; margin-top: 22px; }
         }
 
