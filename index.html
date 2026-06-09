@@ -895,13 +895,8 @@
         }
         .svc-link:active { background: #ffffff; color: var(--accent); }
 
-        /* When mobile JS moves links into the stage grid — center the button */
-        .services-stage > .svc-link {
-            display: block;
-            width: fit-content;
-            margin: 0 auto;
-            justify-self: center;
-        }
+        /* Mobile: links moved into stage by JS, positioned via left:50%+xPercent:-50 */
+        .services-stage > .svc-link { width: max-content; }
 
         /* ── Right visuals ── */
         .services-visual {
@@ -1620,13 +1615,9 @@
             if (stage && window.matchMedia('(max-width: 860px)').matches) {
                 document.querySelectorAll('.svc-panel .svc-link').forEach(function(link) {
                     stage.appendChild(link);
-                    link.style.position  = 'absolute';
-                    link.style.top       = '0';
-                    link.style.left      = '0';
-                    link.style.right     = '0';
-                    link.style.display   = 'block';
-                    link.style.textAlign = 'center';
-                    link.style.margin    = '0';
+                    link.style.position = 'absolute';
+                    link.style.top      = '0';
+                    link.style.left     = '50%';
                 });
             }
 
@@ -1651,7 +1642,7 @@
             if (isMobile) {
                 panelCY   = visH * 0.22;
                 imgCY     = visH * 0.62;
-                linkY     = visH * 0.88;
+                linkY     = visH * 0.91;
                 offY      = 130;
                 imgStartX = 0;
             } else {
@@ -1671,7 +1662,7 @@
             /* First panel + image + link: visible at resting positions */
             gsap.set(panels[0], { autoAlpha: 1, yPercent: -50, y: panelCY });
             gsap.set(imgs[0],   { autoAlpha: 1, yPercent: -50, y: imgCY, x: 0 });
-            if (links[0]) gsap.set(links[0], { autoAlpha: 1, yPercent: -50, y: linkY });
+            if (links[0]) gsap.set(links[0], { autoAlpha: 1, xPercent: -50, yPercent: -50, y: linkY });
             dots[0].classList.add('active');
 
             /* Rest: hidden — mobile enters from below, desktop from above */
@@ -1680,8 +1671,8 @@
             gsap.set(imgs.slice(1),   { autoAlpha: 0, yPercent: -50,
                                         y: isMobile ? imgCY + offY : imgCY,
                                         x: imgStartX });
-            if (links.length > 1) gsap.set(links.slice(1), { autoAlpha: 0, yPercent: -50,
-                                                              y: linkY + offY });
+            if (links.length > 1) gsap.set(links.slice(1), { autoAlpha: 0, xPercent: -50,
+                                                              yPercent: -50, y: linkY + offY });
 
             const tl = gsap.timeline();
 
