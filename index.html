@@ -872,21 +872,31 @@
 
         .svc-link {
             font-family: 'Outfit', sans-serif;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 700;
-            letter-spacing: 0.16em;
+            letter-spacing: 0.10em;
             text-transform: uppercase;
-            color: #111;
+            color: #fff;
             text-decoration: none;
-            border-bottom: 1.5px solid #111;
-            padding-bottom: 4px;
+            background: var(--accent);
+            padding: 13px 28px;
+            border-radius: 8px;
             display: inline-block;
-            transition: color 0.2s ease, border-color 0.2s ease;
+            width: fit-content;
+            box-shadow: 0 4px 24px rgba(26,111,255,0.4);
+            transition: background 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
             position: relative;
             z-index: 1;
         }
 
-        .svc-link:hover { color: var(--accent); border-color: var(--accent); }
+        .svc-link:hover {
+            background: #1060d0;
+            box-shadow: 0 4px 32px rgba(26,111,255,0.65);
+        }
+        .svc-link:active { background: #ffffff; color: var(--accent); }
+
+        /* When mobile JS moves links into the stage grid — prevent full-width stretch */
+        .services-stage > .svc-link { justify-self: center; }
 
         /* ── Right visuals ── */
         .services-visual {
