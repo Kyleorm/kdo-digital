@@ -1155,9 +1155,9 @@
             .svc-panel { padding: 0 32px; text-align: center; }
             .svc-panel::before {
                 font-size: clamp(100px, 30vw, 160px);
-                top: 50%;
+                top: 0;
                 left: 50%;
-                transform: translate(-50%, -50%);
+                transform: translateX(-50%);
             }
             .svc-link { display: inline-block; margin-top: 22px; }
         }
@@ -1640,7 +1640,7 @@
             let panelCY, imgCY, linkY, offY, imgStartX;
 
             if (isMobile) {
-                panelCY   = visH * 0.22;
+                panelCY   = visH * 0.30;
                 imgCY     = visH * 0.62;
                 linkY     = visH * 0.91;
                 offY      = 130;
