@@ -1681,7 +1681,7 @@
                 const link = links[i] || null;
 
                 if (i === 0) {
-                    tl.to({}, { duration: 0.5 });
+                    if (!isMobile) tl.to({}, { duration: 0.5 }); /* desktop settling pause only */
                     /* Exit: mobile slides UP, desktop slides DOWN */
                     tl.to(panel, { autoAlpha: 0,
                                    y: isMobile ? panelCY - offY : panelCY + offY,
@@ -1726,9 +1726,9 @@
                 trigger: '.services-pin',
                 pin: true,
                 pinSpacing: true,
-                scrub: 1.8,
+                scrub: isMobile ? 0.4 : 1.8,
                 start: `top top+=${svcTopInViewport}`,
-                end: `+=${(n - 1) * 500 + 300}`,
+                end: `+=${isMobile ? (n - 1) * 380 + 150 : (n - 1) * 500 + 300}`,
                 onUpdate(self) {
                     const idx = Math.min(Math.floor(self.progress * n), n - 1);
                     dots.forEach((d, j) => d.classList.toggle('active', j === idx));
