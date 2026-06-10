@@ -1167,7 +1167,7 @@
             padding: 120px 0;
             background: #f6f6f6;
             position: relative;
-            z-index: 20;
+            z-index: 100;
             box-shadow: 0 -28px 80px rgba(0,0,0,0.14);
         }
 
@@ -1737,27 +1737,23 @@
                 pinSpacing: true,
                 scrub: isMobile ? 0.4 : 1.8,
                 start: `top top+=${svcTopInViewport}`,
-                end: `+=${isMobile ? (n - 1) * 380 + 150 : (n - 1) * 500 + 300}`,
+                end: `+=${(isMobile ? (n - 1) * 380 + 150 : (n - 1) * 500 + 300) + window.innerHeight}`,
                 onUpdate(self) {
-                    const idx = Math.min(Math.floor(self.progress * n), n - 1);
+                    var panelEnd = isMobile ? (n - 1) * 380 + 150 : (n - 1) * 500 + 300;
+                    var totalEnd = panelEnd + window.innerHeight;
+                    var panelFrac = Math.min(self.progress * totalEnd / panelEnd, 1);
+                    const idx = Math.min(Math.floor(panelFrac * n), n - 1);
                     dots.forEach((d, j) => d.classList.toggle('active', j === idx));
                 }
             });
 
-            /* Familiar section — card slides up from viewport bottom, scrub-linked */
-            gsap.fromTo('.familiar',
-                { y: '50vh' },
-                {
-                    y: 0,
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: '.familiar',
-                        start: 'top 50%',
-                        end: 'top top',
-                        scrub: 1
-                    }
-                }
-            );
+            /* Pull familiar up so its natural scroll position aligns with the
+               end of the services pin — it rises over the pinned Brand Identity
+               panel purely via scroll, no separate animation needed */
+            var famEl = document.querySelector('.familiar');
+            if (famEl) {
+                famEl.style.marginTop = -(window.innerHeight + svcTopInViewport) + 'px';
+            }
 
             /* Pain-point bento cards — stagger fade up on scroll into view */
             gsap.from('.fam-card', {
