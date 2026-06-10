@@ -1217,6 +1217,12 @@
             margin: 0;
         }
 
+        .fc-heading em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--accent);
+        }
+
         .fc-sub {
             font-family: 'Outfit', sans-serif;
             font-size: 17px;
@@ -1534,8 +1540,8 @@
                 <!-- Hero card -->
                 <div class="fam-card fc-hero">
                     <span class="fc-tag">Sound familiar?</span>
-                    <h2 class="fc-heading">Good enough<br>used to work.</h2>
-                    <p class="fc-sub">It doesn't anymore. The businesses pulling ahead aren't bigger than you — they're just more visible.</p>
+                    <h2 class="fc-heading">Good enough<br>used to work.<br><em>It doesn't anymore.</em></h2>
+                    <p class="fc-sub">The businesses pulling ahead aren't bigger than you — they're just more visible.</p>
                 </div>
 
                 <!-- Pain 01 — pink accent -->
@@ -1732,6 +1738,17 @@
                 onUpdate(self) {
                     const idx = Math.min(Math.floor(self.progress * n), n - 1);
                     dots.forEach((d, j) => d.classList.toggle('active', j === idx));
+                }
+            });
+
+            /* Familiar section — whole section rushes up as it enters viewport */
+            gsap.from('.familiar', {
+                y: 110,
+                duration: 1.1,
+                ease: 'expo.out',
+                scrollTrigger: {
+                    trigger: '.familiar',
+                    start: 'top 95%',
                 }
             });
 
