@@ -1166,6 +1166,9 @@
         .familiar {
             padding: 120px 0;
             background: #f6f6f6;
+            position: relative;
+            z-index: 20;
+            box-shadow: 0 -28px 80px rgba(0,0,0,0.14);
         }
 
         .familiar-inner {
@@ -1741,16 +1744,20 @@
                 }
             });
 
-            /* Familiar section — whole section rushes up as it enters viewport */
-            gsap.from('.familiar', {
-                y: 110,
-                duration: 1.1,
-                ease: 'expo.out',
-                scrollTrigger: {
-                    trigger: '.familiar',
-                    start: 'top 95%',
+            /* Familiar section — card slides up from viewport bottom, scrub-linked */
+            gsap.fromTo('.familiar',
+                { y: '50vh' },
+                {
+                    y: 0,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: '.familiar',
+                        start: 'top 50%',
+                        end: 'top top',
+                        scrub: 1
+                    }
                 }
-            });
+            );
 
             /* Pain-point bento cards — stagger fade up on scroll into view */
             gsap.from('.fam-card', {
