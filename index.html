@@ -1730,27 +1730,27 @@
                 }
             });
 
-            var panelEnd     = isMobile ? (n - 1) * 380 + 150 : (n - 1) * 500 + 300;
-            var famRevealDist = window.innerHeight;
-            var famEl         = document.querySelector('.familiar');
-            var svcPinEl      = document.querySelector('.services-pin');
+            var panelEnd      = isMobile ? (n - 1) * 380 + 150 : (n - 1) * 500 + 300;
+            var famRevealDist  = window.innerHeight;
+            var famEl          = document.querySelector('.familiar');
+            var svcPinEl       = document.querySelector('.services-pin');
 
-            /* Pin familiar off-screen below viewport (fixed) and add its
-               rise to the end of the services timeline so both are scrubbed
-               in perfect sync by the same ScrollTrigger. */
+            /* Set familiar off-screen below viewport */
             if (famEl) {
                 gsap.set(famEl, {
                     position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
                     yPercent: 100, zIndex: 1001
                 });
-
-                /* Proportional duration so familiar uses exactly famRevealDist
-                   pixels of the extended pin */
-                var famDuration = tl.duration() * (famRevealDist / panelEnd);
-                tl.to(famEl, { yPercent: 0, ease: 'none', duration: famDuration });
             }
 
-            ScrollTrigger.create({
+            /* Idle tween holds Brand Identity visible while familiar rises —
+               keeps panel animation timing identical to before the extension */
+            var famDuration = tl.duration() * (famRevealDist / panelEnd);
+            tl.to({}, { duration: famDuration });
+
+            /* Services ScrollTrigger — panels + idle hold, slow scrub for
+               smooth panel transitions */
+            var svcST = ScrollTrigger.create({
                 animation: tl,
                 trigger: '.services-pin',
                 pin: true,
@@ -1758,27 +1758,6 @@
                 scrub: isMobile ? 0.4 : 1.8,
                 start: `top top+=${svcTopInViewport}`,
                 end: `+=${panelEnd + famRevealDist}`,
-                onLeave() {
-                    if (!famEl || !svcPinEl) return;
-                    /* Seamlessly swap from position:fixed to normal flow.
-                       margin-top = -(svcPinH + svcTopInViewport) places familiar's
-                       layout-top exactly at the viewport top at pin-end scroll. */
-                    var svcPinH = svcPinEl.offsetHeight || window.innerHeight;
-                    famEl.style.marginTop = -(svcPinH + svcTopInViewport) + 'px';
-                    gsap.set(famEl, {
-                        position: 'relative', top: 'auto', left: 'auto',
-                        right: 'auto', bottom: 'auto', yPercent: 0, zIndex: 100
-                    });
-                },
-                onEnterBack() {
-                    if (!famEl) return;
-                    /* Restore fixed so the reverse scrub can slide familiar back down */
-                    famEl.style.marginTop = '0';
-                    gsap.set(famEl, {
-                        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-                        yPercent: 0, zIndex: 1001
-                    });
-                },
                 onUpdate(self) {
                     var totalEnd  = panelEnd + famRevealDist;
                     var panelFrac = Math.min(self.progress * totalEnd / panelEnd, 1);
@@ -1786,6 +1765,40 @@
                     dots.forEach((d, j) => d.classList.toggle('active', j === idx));
                 }
             });
+
+            /* Familiar card-rise — SEPARATE trigger with fast scrub so it
+               moves in near 1:1 sync with scroll, not the slow panel scrub.
+               start/end are absolute scroll positions from svcST. */
+            if (famEl && svcST) {
+                gsap.fromTo(famEl,
+                    { yPercent: 100 },
+                    {
+                        yPercent: 0,
+                        ease: 'none',
+                        scrollTrigger: {
+                            start: () => svcST.start + panelEnd,
+                            end:   () => svcST.end,
+                            scrub: 0.5,
+                            onLeave() {
+                                if (!svcPinEl) return;
+                                var svcPinH = svcPinEl.offsetHeight || window.innerHeight;
+                                famEl.style.marginTop = -(svcPinH + svcTopInViewport) + 'px';
+                                gsap.set(famEl, {
+                                    position: 'relative', top: 'auto', left: 'auto',
+                                    right: 'auto', bottom: 'auto', yPercent: 0, zIndex: 100
+                                });
+                            },
+                            onEnterBack() {
+                                famEl.style.marginTop = '0';
+                                gsap.set(famEl, {
+                                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                                    yPercent: 0, zIndex: 1001
+                                });
+                            }
+                        }
+                    }
+                );
+            }
           } catch (e) {
             /* Isolated so a services-animation error never kills the canvas renderer below */
           }
