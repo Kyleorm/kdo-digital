@@ -806,6 +806,7 @@
             padding-right: 56px;
             visibility: hidden;
             opacity: 0;
+            will-change: transform, opacity;
         }
 
         /* Big watermark number behind each service panel */
@@ -917,6 +918,7 @@
             max-width: 520px;
             aspect-ratio: 1 / 1;
             will-change: transform, opacity;
+            will-change: transform, opacity;
             visibility: hidden;
             opacity: 0;
         }
@@ -924,6 +926,7 @@
         .svc-img img {
             width: 100%;
             height: 100%;
+            transform: translateZ(0);
             object-fit: contain;
             display: block;
             user-select: none;
