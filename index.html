@@ -1730,6 +1730,27 @@
                 }
             });
 
+            var panelEnd     = isMobile ? (n - 1) * 380 + 150 : (n - 1) * 500 + 300;
+            var famRevealDist = window.innerHeight;
+            var famEl         = document.querySelector('.familiar');
+            var svcPinEl      = document.querySelector('.services-pin');
+
+            /* Pin familiar off-screen below viewport (fixed) and add its
+               rise to the end of the services timeline so both are scrubbed
+               in perfect sync by the same ScrollTrigger. */
+            if (famEl) {
+                gsap.set(famEl, {
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    yPercent: 100, zIndex: 1001
+                });
+                gsap.set('.fam-card', { y: 52, autoAlpha: 0 });
+
+                /* Proportional duration so familiar uses exactly famRevealDist
+                   pixels of the extended pin */
+                var famDuration = tl.duration() * (famRevealDist / panelEnd);
+                tl.to(famEl, { yPercent: 0, ease: 'none', duration: famDuration });
+            }
+
             ScrollTrigger.create({
                 animation: tl,
                 trigger: '.services-pin',
@@ -1737,34 +1758,38 @@
                 pinSpacing: true,
                 scrub: isMobile ? 0.4 : 1.8,
                 start: `top top+=${svcTopInViewport}`,
-                end: `+=${(isMobile ? (n - 1) * 380 + 150 : (n - 1) * 500 + 300) + window.innerHeight}`,
+                end: `+=${panelEnd + famRevealDist}`,
+                onLeave() {
+                    if (!famEl || !svcPinEl) return;
+                    /* Seamlessly swap from position:fixed to normal flow.
+                       margin-top = -(svcPinH + svcTopInViewport) places familiar's
+                       layout-top exactly at the viewport top at pin-end scroll. */
+                    var svcPinH = svcPinEl.offsetHeight || window.innerHeight;
+                    famEl.style.marginTop = -(svcPinH + svcTopInViewport) + 'px';
+                    gsap.set(famEl, {
+                        position: 'relative', top: 'auto', left: 'auto',
+                        right: 'auto', bottom: 'auto', yPercent: 0, zIndex: 100
+                    });
+                    gsap.to('.fam-card', {
+                        y: 0, autoAlpha: 1, duration: 0.78,
+                        stagger: 0.07, ease: 'power3.out'
+                    });
+                },
+                onEnterBack() {
+                    if (!famEl) return;
+                    /* Restore fixed so the reverse scrub can slide familiar back down */
+                    famEl.style.marginTop = '0';
+                    gsap.set(famEl, {
+                        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                        yPercent: 0, zIndex: 1001
+                    });
+                    gsap.set('.fam-card', { y: 52, autoAlpha: 0 });
+                },
                 onUpdate(self) {
-                    var panelEnd = isMobile ? (n - 1) * 380 + 150 : (n - 1) * 500 + 300;
-                    var totalEnd = panelEnd + window.innerHeight;
+                    var totalEnd  = panelEnd + famRevealDist;
                     var panelFrac = Math.min(self.progress * totalEnd / panelEnd, 1);
                     const idx = Math.min(Math.floor(panelFrac * n), n - 1);
                     dots.forEach((d, j) => d.classList.toggle('active', j === idx));
-                }
-            });
-
-            /* Pull familiar up so its natural scroll position aligns with the
-               end of the services pin — it rises over the pinned Brand Identity
-               panel purely via scroll, no separate animation needed */
-            var famEl = document.querySelector('.familiar');
-            if (famEl) {
-                famEl.style.marginTop = -(window.innerHeight + svcTopInViewport) + 'px';
-            }
-
-            /* Pain-point bento cards — stagger fade up on scroll into view */
-            gsap.from('.fam-card', {
-                y: 52,
-                opacity: 0,
-                duration: 0.78,
-                stagger: 0.07,
-                ease: 'power3.out',
-                scrollTrigger: {
-                    trigger: '.familiar',
-                    start: 'top 80%',
                 }
             });
           } catch (e) {
