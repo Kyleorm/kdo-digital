@@ -1169,6 +1169,7 @@
             position: relative;
             z-index: 100;
             box-shadow: 0 -28px 80px rgba(0,0,0,0.14);
+            will-change: transform;
         }
 
         .familiar-inner {
@@ -1755,7 +1756,7 @@
                 trigger: '.services-pin',
                 pin: true,
                 pinSpacing: true,
-                scrub: isMobile ? 0.4 : 1.8,
+                scrub: isMobile ? true : 1.8,
                 start: `top top+=${svcTopInViewport}`,
                 end: `+=${panelEnd + famRevealDist}`,
                 onUpdate(self) {
@@ -1778,7 +1779,7 @@
                         scrollTrigger: {
                             start: () => svcST.start + panelEnd,
                             end:   () => svcST.end,
-                            scrub: 0.5,
+                            scrub: isMobile ? true : 0.5,
                             onLeave() {
                                 if (!svcPinEl) return;
                                 var svcPinH = svcPinEl.offsetHeight || window.innerHeight;
