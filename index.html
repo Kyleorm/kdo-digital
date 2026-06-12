@@ -1154,17 +1154,21 @@
                 height: 100svh;
             }
             /* Both halves overlay the full stage so GSAP can place
-               text in the top area and image in the bottom area */
+               text in the top area and image in the bottom area.
+               services-copy must be above services-visual so panel
+               text (incl. numbers) renders on top of image layers */
             .services-copy {
                 position: absolute;
                 inset: 0;
                 height: auto;
+                z-index: 2;
             }
             .services-visual {
                 position: absolute;
                 inset: 0;
                 display: flex;
                 height: auto;
+                z-index: 1;
             }
             .svc-img {
                 width: 64%;
@@ -1659,6 +1663,10 @@
                 });
             }
 
+            /* Defer height-dependent setup until custom fonts are rendered —
+               prevents yPercent from baking a stale pre-font height into the matrix */
+            document.fonts.ready.then(function () { try {
+
             const panels = gsap.utils.toArray('.svc-panel');
             const imgs   = gsap.utils.toArray('.svc-img');
             const dots   = gsap.utils.toArray('.svc-dot');
@@ -1678,7 +1686,12 @@
             let panelCY, imgCY, linkY, offY, imgStartX;
 
             if (isMobile) {
-                panelCY   = visH * 0.18;
+                /* Shrink stage to the visible area so bottom-anchored elements
+                   (progress bar, button) land within the viewport */
+                var stageEl = document.querySelector('.services-stage');
+                if (stageEl) stageEl.style.height = visH + 'px';
+
+                panelCY   = visH * 0.22;
                 imgCY     = visH * 0.62;
                 linkY     = visH * 0.91;
                 offY      = 130;
@@ -1697,20 +1710,30 @@
             /* On mobile, links are now direct children of the stage */
             const links = isMobile ? gsap.utils.toArray('.services-stage > .svc-link') : [];
 
+            /* Pre-compute half-heights now that fonts are loaded — avoids
+               GSAP baking a stale pre-font height into the transform matrix */
+            var panelHalfH = Math.round(panels[0].offsetHeight / 2);
+            var imgHalfH   = Math.round(imgs[0].offsetHeight   / 2);
+            var linkHalfH  = links[0] ? Math.round(links[0].offsetHeight / 2) : 0;
+            /* Clamp so panel top is always ≥ 20px inside the stage on small screens */
+            var pY = Math.max(panelCY - panelHalfH, 20);
+            var iY = imgCY   - imgHalfH;
+            var lY = linkY   - linkHalfH;
+
             /* First panel + image + link: visible at resting positions */
-            gsap.set(panels[0], { autoAlpha: 1, yPercent: -50, y: panelCY });
-            gsap.set(imgs[0],   { autoAlpha: 1, yPercent: -50, y: imgCY, x: 0 });
-            if (links[0]) gsap.set(links[0], { autoAlpha: 1, xPercent: -50, yPercent: -50, y: linkY });
+            gsap.set(panels[0], { autoAlpha: 1, y: pY });
+            gsap.set(imgs[0],   { autoAlpha: 1, y: iY, x: 0 });
+            if (links[0]) gsap.set(links[0], { autoAlpha: 1, xPercent: -50, y: lY });
             dots[0].classList.add('active');
 
             /* Rest: hidden — mobile enters from below, desktop from above */
-            gsap.set(panels.slice(1), { autoAlpha: 0, yPercent: -50,
-                                        y: isMobile ? panelCY + offY : panelCY - offY });
-            gsap.set(imgs.slice(1),   { autoAlpha: 0, yPercent: -50,
-                                        y: isMobile ? imgCY + offY : imgCY,
+            gsap.set(panels.slice(1), { autoAlpha: 0,
+                                        y: isMobile ? pY + offY : pY - offY });
+            gsap.set(imgs.slice(1),   { autoAlpha: 0,
+                                        y: isMobile ? iY + offY : iY,
                                         x: imgStartX });
-            if (links.length > 1) gsap.set(links.slice(1), { autoAlpha: 0, xPercent: -50,
-                                                              yPercent: -50, y: linkY + offY });
+            if (links.length > 1) gsap.set(links.slice(1), { autoAlpha: 0,
+                                                              xPercent: -50, y: lY + offY });
 
             const tl = gsap.timeline();
 
@@ -1719,41 +1742,41 @@
                 const link = links[i] || null;
 
                 if (i === 0) {
-                    if (!isMobile) tl.to({}, { duration: 0.5 }); /* desktop settling pause only */
+                    tl.to({}, { duration: isMobile ? 0.6 : 0.5 }); /* hold panel-0 at rest while user starts scrolling */
                     /* Exit: mobile slides UP, desktop slides DOWN */
                     tl.to(panel, { autoAlpha: 0,
-                                   y: isMobile ? panelCY - offY : panelCY + offY,
+                                   y: isMobile ? pY - offY : pY + offY,
                                    duration: 0.5, ease: 'power2.in' })
                       .to(img, {
                           autoAlpha: 0,
-                          ...(isMobile ? { y: imgCY - offY } : { x: -30 }),
+                          ...(isMobile ? { y: iY - offY } : { x: -30 }),
                           duration: isMobile ? 0.5 : 0.4,
                           ease: 'power2.in'
                       }, '<');
-                    if (link) tl.to(link, { autoAlpha: 0, y: linkY - offY,
+                    if (link) tl.to(link, { autoAlpha: 0, y: lY - offY,
                                             duration: 0.5, ease: 'power2.in' }, '<');
                 } else {
                     /* Entry: mobile slides UP into place, desktop slides DOWN */
-                    tl.to(panel, { autoAlpha: 1, y: panelCY,
+                    tl.to(panel, { autoAlpha: 1, y: pY,
                                    duration: 0.55, ease: 'power3.out' })
-                      .to(img, { autoAlpha: 1, y: imgCY, x: 0,
+                      .to(img, { autoAlpha: 1, y: iY, x: 0,
                                  duration: isMobile ? 0.55 : 0.65,
                                  ease: 'power3.out' }, isMobile ? '<' : '<0.08');
-                    if (link) tl.to(link, { autoAlpha: 1, y: linkY,
+                    if (link) tl.to(link, { autoAlpha: 1, y: lY,
                                             duration: 0.55, ease: 'power3.out' }, '<');
 
                     if (i < n - 1) {
                         tl.to({}, { duration: 0.4 });
                         tl.to(panel, { autoAlpha: 0,
-                                       y: isMobile ? panelCY - offY : panelCY + offY,
+                                       y: isMobile ? pY - offY : pY + offY,
                                        duration: 0.5, ease: 'power2.in' })
                           .to(img, {
                               autoAlpha: 0,
-                              ...(isMobile ? { y: imgCY - offY } : { x: -30 }),
+                              ...(isMobile ? { y: iY - offY } : { x: -30 }),
                               duration: isMobile ? 0.5 : 0.4,
                               ease: 'power2.in'
                           }, '<');
-                        if (link) tl.to(link, { autoAlpha: 0, y: linkY - offY,
+                        if (link) tl.to(link, { autoAlpha: 0, y: lY - offY,
                                                 duration: 0.5, ease: 'power2.in' }, '<');
                     }
                 }
@@ -1830,6 +1853,8 @@
                     }
                 );
             }
+          } catch (e2) { /* inner */ }
+          }); /* end document.fonts.ready */
           } catch (e) {
             /* Isolated so a services-animation error never kills the canvas renderer below */
           }
