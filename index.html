@@ -1073,7 +1073,10 @@
             }
             .svc-section-label { display: none; }
             .svc-progress { display: none; }
-            .svc-pbar { left: 24px; right: 24px; bottom: 24px; height: 4px; }
+            /* Vertical progress rail on the far left — never collides with the
+               centred title, image or the Start-a-project button */
+            .svc-pbar { left: 16px; right: auto; top: 150px; bottom: 60px; width: 4px; height: auto; }
+            .svc-pbar-fill { width: 100%; height: 0%; }
             .svc-title { font-size: clamp(34px, 8.5vw, 48px); }
             .svc-desc { font-size: 15px; max-width: 100%; }
             .svc-panel { padding: 0 32px; text-align: center; }
@@ -2217,9 +2220,14 @@
                 var stageEl = document.querySelector('.services-stage');
                 if (stageEl) stageEl.style.height = visH + 'px';
 
-                panelCY   = visH * 0.22;
-                imgCY     = visH * 0.62;
-                linkY     = visH * 0.91;
+                /* The marquee ticker is sticky (~132px) over the top of this
+                   section — reserve that space so panel titles are never covered,
+                   then distribute the rest so the button has clear room below. */
+                var topGuard = 132;
+                var usable   = visH - topGuard;
+                panelCY   = topGuard + usable * 0.18;
+                imgCY     = topGuard + usable * 0.55;
+                linkY     = topGuard + usable * 0.84;
                 offY      = 130;
                 imgStartX = 0;
             } else {
@@ -2241,8 +2249,9 @@
             var panelHalfH = Math.round(panels[0].offsetHeight / 2);
             var imgHalfH   = Math.round(imgs[0].offsetHeight   / 2);
             var linkHalfH  = links[0] ? Math.round(links[0].offsetHeight / 2) : 0;
-            /* Clamp so panel top is always ≥ 20px inside the stage on small screens */
-            var pY = Math.max(panelCY - panelHalfH, 20);
+            /* Clamp panel top: clear the sticky marquee on mobile (≥140px),
+               otherwise keep it ≥20px inside the stage */
+            var pY = Math.max(panelCY - panelHalfH, isMobile ? 140 : 20);
             var iY = imgCY   - imgHalfH;
             var lY = linkY   - linkHalfH;
 
@@ -2342,7 +2351,12 @@
                     var panelFrac = Math.min(self.progress * totalEnd / panelEnd, 1);
                     const idx = Math.min(Math.floor(panelFrac * n), n - 1);
                     dots.forEach((d, j) => d.classList.toggle('active', j === idx));
-                    if (pbarFill) pbarFill.style.width = (panelFrac * 100) + '%';
+                    if (pbarFill) {
+                        /* Mobile bar is a vertical rail on the left → fill height;
+                           desktop bar is horizontal → fill width */
+                        if (isMobile) pbarFill.style.height = (panelFrac * 100) + '%';
+                        else pbarFill.style.width = (panelFrac * 100) + '%';
+                    }
                 }
             });
 
