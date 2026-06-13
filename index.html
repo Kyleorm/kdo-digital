@@ -2225,8 +2225,8 @@
                    then distribute the rest so the button has clear room below. */
                 var topGuard = 132;
                 var usable   = visH - topGuard;
-                panelCY   = topGuard + usable * 0.18;
-                imgCY     = topGuard + usable * 0.55;
+                panelCY   = topGuard + usable * 0.23;
+                imgCY     = topGuard + usable * 0.57;
                 linkY     = topGuard + usable * 0.84;
                 offY      = 130;
                 imgStartX = 0;
@@ -2251,7 +2251,7 @@
             var linkHalfH  = links[0] ? Math.round(links[0].offsetHeight / 2) : 0;
             /* Clamp panel top: clear the sticky marquee on mobile (≥140px),
                otherwise keep it ≥20px inside the stage */
-            var pY = Math.max(panelCY - panelHalfH, isMobile ? 140 : 20);
+            var pY = Math.max(panelCY - panelHalfH, isMobile ? 172 : 20);
             var iY = imgCY   - imgHalfH;
             var lY = linkY   - linkHalfH;
 
