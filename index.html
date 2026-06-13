@@ -425,6 +425,9 @@
             color: var(--accent);
         }
 
+        /* Word units for Motion staggered headline reveal */
+        .hero-headline .hword { display: inline-block; will-change: transform, opacity; }
+
         /* Subline — Outfit 400 for weight contrast */
         .hero-subline {
             font-size: 17px;
@@ -1214,52 +1217,93 @@
         .fc-p2 .fc-pain, .fc-p3 .fc-pain { color: #fff; }
         .fc-p4 .fc-pain { color: #111; }
 
-        /* CTA card — full width */
-        .fc-cta {
+        /* Bridge card — full width; pivots the visitor forward into the solution */
+        .fc-bridge {
             grid-column: 1 / 4;
             background: #111;
-            padding: 56px 60px;
+            padding: 48px 60px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 40px;
+            gap: 48px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .fc-cta-text {
+        /* Accent glow bleeding up from the base — hints at the dark section coming next */
+        .fc-bridge::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -70%;
+            width: 70%;
+            height: 130%;
+            transform: translateX(-50%);
+            background: radial-gradient(ellipse at center, rgba(26,143,255,0.22), transparent 65%);
+            pointer-events: none;
+        }
+
+        .fc-bridge-text { position: relative; z-index: 1; max-width: 680px; }
+
+        .fc-bridge-label {
+            display: inline-block;
+            font-family: 'Outfit', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 14px;
+        }
+
+        .fc-bridge-line {
             font-family: 'Urbanist', sans-serif;
             font-size: clamp(24px, 2.4vw, 38px);
             font-weight: 500;
             color: #fff;
-            line-height: 1.25;
+            line-height: 1.22;
             letter-spacing: -0.025em;
-            max-width: 680px;
             margin: 0;
         }
 
-        .fc-cta-em {
-            color: var(--accent);
-            font-style: normal;
-        }
+        .fc-bridge-line em { font-style: italic; font-weight: 400; color: var(--accent); }
 
-        .fc-cta-btn {
+        .fc-bridge-cue {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
             font-family: 'Outfit', sans-serif;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.14em;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
-            color: #111;
-            background: #fff;
-            border-radius: 100px;
-            padding: 20px 36px;
+            color: rgba(255,255,255,0.85);
             text-decoration: none;
-            white-space: nowrap;
             flex-shrink: 0;
-            transition: background 0.2s ease, color 0.2s ease;
+            transition: color 0.25s ease;
         }
 
-        .fc-cta-btn:hover {
-            background: var(--accent);
-            color: #fff;
+        .fc-bridge-cue:hover { color: var(--accent); }
+
+        .fc-bridge-cue svg {
+            width: 26px;
+            height: 26px;
+            stroke: var(--accent);
+            stroke-width: 2;
+            fill: none;
+            animation: bridgeBob 1.8s ease-in-out infinite;
+        }
+
+        @keyframes bridgeBob {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(7px); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .fc-bridge-cue svg { animation: none !important; }
         }
 
         @media (max-width: 860px) {
@@ -1275,9 +1319,10 @@
             .fc-p2 .fc-num, .fc-p3 .fc-num { opacity: 0.22; }
             .fc-p4 .fc-num { opacity: 0.1; }
             .fc-pain { font-size: 21px; line-height: 1.25; }
-            .fc-cta { grid-column: 1; flex-direction: column; align-items: flex-start; padding: 36px 28px; gap: 24px; }
-            .fc-cta-text { font-size: 24px; }
-            .fc-cta-btn { font-size: 11px; padding: 16px 28px; }
+            .fc-bridge { grid-column: 1; flex-direction: column; align-items: flex-start; padding: 32px 28px 36px; gap: 26px; }
+            .fc-bridge-line { font-size: 23px; }
+            .fc-bridge-cue { flex-direction: row; align-self: flex-start; align-items: center; gap: 12px; }
+            .fc-bridge-cue svg { width: 22px; height: 22px; }
         }
 
         /* ════════════════════════════════════════════════════════════
@@ -1382,12 +1427,12 @@
         .gain-ico svg { width: 13px; height: 13px; stroke: var(--cyan); stroke-width: 2.5; fill: none; }
         .gain-text { font-family: 'Outfit', sans-serif; font-size: 16.5px; line-height: 1.5; color: rgba(255,255,255,0.78); }
         .gain-text b { color: #fff; font-weight: 600; }
-        .transform-visual { position: relative; }
-        .transform-visual img {
-            width: 100%; border-radius: 24px; display: block;
+        .transform-visual {
+            position: relative; border-radius: 24px; overflow: hidden;
             border: 1px solid rgba(255,255,255,0.12);
             box-shadow: 0 34px 90px rgba(0,0,0,0.55);
         }
+        .transform-visual img { width: 100%; height: auto; display: block; }
         .transform-visual figcaption {
             position: absolute; left: 24px; bottom: 24px; right: 24px;
             display: flex; align-items: center; gap: 12px;
@@ -1513,26 +1558,10 @@
         .footer-legal a { font-family: 'Outfit', sans-serif; font-size: 12.5px; color: rgba(255,255,255,0.45); text-decoration: none; }
         .footer-legal a:hover { color: rgba(255,255,255,0.8); }
 
-        /* ── RECENT WORK (FitnessPod) ── */
-        .work { position: relative; z-index: 100; background: #04080F; overflow: hidden; padding: clamp(88px, 12vw, 150px) 0; }
-        .work::before { content: ''; position: absolute; bottom: -18%; left: -8%; width: 56%; height: 82%; background: radial-gradient(ellipse at center, rgba(26,143,255,0.15), transparent 62%); pointer-events: none; }
-        .work-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 60px; align-items: center; position: relative; z-index: 1; }
-        .work-visual { position: relative; border-radius: 24px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 34px 90px rgba(0,0,0,0.55); }
-        .work-visual img { width: 100%; display: block; aspect-ratio: 4 / 3; object-fit: cover; }
-        .work-badge { position: absolute; top: 20px; left: 20px; font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #fff; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 8px 15px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.2); }
-        .work-copy { max-width: 520px; }
-        .work-title { font-family: 'Urbanist', sans-serif; font-weight: 500; font-size: clamp(38px, 4.4vw, 58px); letter-spacing: -0.03em; color: #fff; margin-bottom: 8px; line-height: 1; }
-        .work-tagline { font-family: 'Urbanist', sans-serif; font-style: italic; font-weight: 400; font-size: clamp(18px, 1.6vw, 22px); color: var(--cyan); margin-bottom: 24px; }
-        .work-desc { font-family: 'Outfit', sans-serif; font-size: 17px; line-height: 1.7; color: rgba(255,255,255,0.62); margin-bottom: 28px; }
-        .work-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 34px; }
-        .work-tag { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.16); border-radius: 100px; padding: 9px 16px; }
-
         /* ── NEW SECTIONS — MOBILE ── */
         @media (max-width: 980px) {
             .transform-grid { grid-template-columns: 1fr; gap: 44px; }
             .transform-visual { order: -1; }
-            .work-grid { grid-template-columns: 1fr; gap: 40px; }
-            .work-visual { order: -1; }
             .why-grid { grid-template-columns: 1fr; gap: 44px; }
             .why-statement, .faq-intro { position: static; }
             .faq-grid { grid-template-columns: 1fr; gap: 36px; }
@@ -1576,7 +1605,7 @@
             <li><a href="#why">Why KDO</a></li>
             <li><a href="#faq">FAQ</a></li>
         </ul>
-        <a href="#contact" class="nav-cta">Start a Project</a>
+        <a href="#contact" class="nav-cta" data-magnetic>Start a Project</a>
         <button class="nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
             <span></span>
             <span></span>
@@ -1617,7 +1646,7 @@
             <p class="hero-subline">One agency, everything digital,<br>handled under one roof.</p>
 
             <div class="hero-ctas">
-                <a href="#contact" class="cta-primary">Get in Touch</a>
+                <a href="#contact" class="cta-primary" data-magnetic>Get in Touch</a>
                 <a href="#services" class="cta-text-link">Explore Services &nbsp;→</a>
             </div>
 
@@ -1789,10 +1818,16 @@
                     <p class="fc-pain">Half your visitors leave in seconds because your site breaks on mobile.</p>
                 </div>
 
-                <!-- CTA card -->
-                <div class="fam-card fc-cta">
-                    <p class="fc-cta-text">We've helped Isle of Man businesses fix <em class="fc-cta-em">every one</em> of these. Ready to talk?</p>
-                    <a href="#contact" class="fc-cta-btn">Start a project</a>
+                <!-- Bridge card — pivots forward into the solution, not a page-ending CTA -->
+                <div class="fam-card fc-bridge">
+                    <div class="fc-bridge-text">
+                        <span class="fc-bridge-label">But none of this is permanent</span>
+                        <p class="fc-bridge-line">Every one of these has a fix — and it's <em>simpler</em> than you'd think.</p>
+                    </div>
+                    <a href="#difference" class="fc-bridge-cue">
+                        See what changes
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+                    </a>
                 </div>
 
             </div>
@@ -1800,12 +1835,12 @@
     </section>
 
     <!-- ── Transformation — the after-state ── -->
-    <section class="transform" aria-label="What changes when it's built properly">
+    <section class="transform" id="difference" aria-label="What changes when it's built properly">
         <div class="section-shell transform-grid" data-reveal-group>
             <div class="transform-copy">
                 <span class="eyebrow on-dark reveal">The difference</span>
-                <h2 class="sec-head on-dark reveal">What it feels like when it's <em>built properly.</em></h2>
-                <p class="sec-sub on-dark reveal">The same four problems, turned on their head. This is what changes the day your digital presence finally starts pulling its weight.</p>
+                <h2 class="sec-head on-dark reveal">The same business.<br><em>A different league.</em></h2>
+                <p class="sec-sub on-dark reveal">Nothing about how you work has to change — only how the world sees you. This is what shifts the day your online presence finally starts earning its keep.</p>
                 <ul class="gain-list reveal">
                     <li class="gain">
                         <span class="gain-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>
@@ -1817,7 +1852,7 @@
                     </li>
                     <li class="gain">
                         <span class="gain-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>
-                        <span class="gain-text"><b>Enquiries run themselves.</b> Bookings, quotes and leads land in your inbox automatically, day and night.</span>
+                        <span class="gain-text"><b>Enquiries arrive while you sleep.</b> Bookings, quotes and leads land in your inbox on their own — day, night and weekends.</span>
                     </li>
                     <li class="gain">
                         <span class="gain-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>
@@ -1826,8 +1861,8 @@
                 </ul>
             </div>
             <figure class="transform-visual reveal">
-                <img src="Photo assets/gen-momentum.jpg" alt="Abstract blue light ribbons sweeping upward, representing business growth and momentum" loading="lazy" decoding="async" width="1248" height="832">
-                <figcaption><span></span> Built for growth — designed to deliver results</figcaption>
+                <img src="Photo assets/gen-devices.jpg" alt="A business website and matching mobile app built by KDO Digital, shown on a laptop and phone" loading="lazy" decoding="async" width="1280" height="853">
+                <figcaption><span></span> One website, one app — designed to look the part and built to perform</figcaption>
             </figure>
         </div>
     </section>
@@ -1900,30 +1935,6 @@
                     <h3>Local roots, wider reach.</h3>
                     <p>Based on the Isle of Man, trusted by businesses from here to London. Close enough to care, set up to work anywhere.</p>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ── Recent work — FitnessPod (single proof feature) ── -->
-    <section class="work" aria-label="Recent work">
-        <div class="section-shell work-grid" data-reveal-group>
-            <figure class="work-visual reveal">
-                <img src="Photo assets/work-fitnesspod.jpg" alt="FitnessPod — a premium fitness studio with moody lighting" loading="lazy" decoding="async" width="1200" height="900">
-                <span class="work-badge">Recent build</span>
-            </figure>
-            <div class="work-copy">
-                <span class="eyebrow on-dark reveal">Recent work</span>
-                <h2 class="work-title reveal">FitnessPod</h2>
-                <p class="work-tagline reveal">A fitness brand built to look as premium as it feels.</p>
-                <p class="work-desc reveal">A standout space deserves a standout presence. We handled the digital side end to end — a sharp identity and a fast, modern build, designed to make the right first impression and turn interest into action.</p>
-                <div class="work-tags reveal">
-                    <span class="work-tag">Brand</span>
-                    <span class="work-tag">Web Design</span>
-                    <span class="work-tag">Build</span>
-                </div>
-                <a href="#contact" class="btn btn-primary reveal">Start your project
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </a>
             </div>
         </div>
     </section>
@@ -2033,7 +2044,7 @@
                         <textarea id="cf-message" name="message" placeholder="A few lines about your business and what you're hoping to achieve…" required></textarea>
                         <span class="field-error">Please add a short message.</span>
                     </div>
-                    <button type="submit" class="btn btn-primary form-submit">Send it over
+                    <button type="submit" class="btn btn-primary form-submit" data-magnetic>Send it over
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                     </button>
                     <p class="form-note">Prefer email? Reach me directly at <a href="mailto:kyle.orm@turbolt.co.uk" style="color:rgba(255,255,255,0.7);">kyle.orm@turbolt.co.uk</a></p>
@@ -2111,6 +2122,8 @@
                 setTimeout(() => {
                     siteLoader.remove();
                     document.body.classList.add('loaded');
+                    /* Signal hero entrance animations (Motion word-reveal) to fire */
+                    window.dispatchEvent(new Event('site:loaded'));
                 }, 500);
             }, 260);
         }
@@ -2707,57 +2720,175 @@
         }());
     </script>
 
-    <!-- Motion ("frame emotion") — premium scroll reveals.
-         Progressive enhancement: if the module fails to load, .motion-ready is
-         never set and all content stays fully visible. -->
+    <!-- Motion — premium reveals, magnetic CTAs, headline word-cascade, scroll parallax.
+         Progressive enhancement: if the module fails to load, all content stays fully
+         visible and the magnetic buttons (pure vanilla) keep working. -->
     <script type="module">
         const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (!reduce) {
-            let M = null;
-            try {
-                M = await import('https://cdn.jsdelivr.net/npm/motion@10.18.0/+esm');
-            } catch (e) { M = null; }
+        const finePointer = window.matchMedia('(pointer: fine)').matches;
 
-            if (M && M.animate && M.inView) {
-                const { animate, inView, stagger } = M;
-                try {
-                    document.body.classList.add('motion-ready');
-                    document.querySelectorAll('[data-reveal-group]').forEach(function (group) {
-                        const items = Array.prototype.slice.call(group.querySelectorAll('.reveal'));
-                        if (!items.length) return;
-                        inView(group, function () {
-                            if (group.dataset.revealed) return;
-                            group.dataset.revealed = '1';
-                            try {
-                                animate(items,
-                                    { opacity: [0, 1], transform: ['translateY(28px)', 'translateY(0px)'] },
-                                    { duration: 0.7, delay: stagger(0.08), easing: [0.22, 1, 0.36, 1] }
-                                );
-                            } catch (err) {
-                                items.forEach(function (el) { el.style.opacity = '1'; el.style.transform = 'none'; });
-                            }
-                        }, { amount: 0.15 });
-                    });
+        /* Fire a callback once the loader has handed off to the page */
+        function whenLoaded(cb) {
+            if (document.body.classList.contains('loaded')) cb();
+            else window.addEventListener('site:loaded', cb, { once: true });
+        }
 
-                    /* Safety net: any .reveal not inside a group is observed on its
-                       own, so an orphaned element can never remain hidden. */
-                    document.querySelectorAll('.reveal').forEach(function (el) {
-                        if (el.closest('[data-reveal-group]')) return;
-                        inView(el, function () {
-                            if (el.dataset.revealed) return;
-                            el.dataset.revealed = '1';
-                            try {
-                                animate(el,
-                                    { opacity: [0, 1], transform: ['translateY(28px)', 'translateY(0px)'] },
-                                    { duration: 0.7, easing: [0.22, 1, 0.36, 1] }
-                                );
-                            } catch (err) { el.style.opacity = '1'; el.style.transform = 'none'; }
-                        }, { amount: 0.1 });
-                    });
-                } catch (setupErr) {
-                    /* If reveal setup fails for any reason, un-hide everything. */
-                    document.body.classList.remove('motion-ready');
+        /* ── Magnetic buttons — vanilla rAF lerp, no Motion dependency ── */
+        if (finePointer && !reduce) {
+            document.querySelectorAll('[data-magnetic]').forEach(function (el) {
+                let tx = 0, ty = 0, cx = 0, cy = 0, raf = null, active = false;
+                const strength = 0.35;
+                function loop() {
+                    cx += (tx - cx) * 0.18;
+                    cy += (ty - cy) * 0.18;
+                    el.style.transform = 'translate(' + cx.toFixed(2) + 'px,' + cy.toFixed(2) + 'px)';
+                    if (active || Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1) {
+                        raf = requestAnimationFrame(loop);
+                    } else { el.style.transform = ''; raf = null; }
                 }
+                el.addEventListener('pointerenter', function () { active = true; if (!raf) raf = requestAnimationFrame(loop); });
+                el.addEventListener('pointermove', function (e) {
+                    const r = el.getBoundingClientRect();
+                    tx = (e.clientX - (r.left + r.width / 2)) * strength;
+                    ty = (e.clientY - (r.top + r.height / 2)) * strength;
+                });
+                el.addEventListener('pointerleave', function () { active = false; tx = 0; ty = 0; if (!raf) raf = requestAnimationFrame(loop); });
+            });
+        }
+
+        /* ── Split the hero headline into word units (keeps <br> and .ital intact) ── */
+        function splitWords(el) {
+            const out = [];
+            Array.prototype.slice.call(el.childNodes).forEach(function (node) {
+                if (node.nodeType === 3) {
+                    node.textContent.split(/(\s+)/).forEach(function (p) {
+                        if (p === '') return;
+                        if (/^\s+$/.test(p)) { out.push(document.createTextNode(p)); }
+                        else { const s = document.createElement('span'); s.className = 'hword'; s.textContent = p; out.push(s); }
+                    });
+                } else if (node.nodeName === 'BR') {
+                    out.push(document.createElement('br'));
+                } else if (node.nodeType === 1) {
+                    node.classList.add('hword'); out.push(node);
+                }
+            });
+            el.innerHTML = '';
+            out.forEach(function (n) { el.appendChild(n); });
+            return Array.prototype.slice.call(el.querySelectorAll('.hword'));
+        }
+
+        /* Pre-hide hero words synchronously (no flash). A hard fallback reveals them
+           even if Motion never loads, so the headline can never stay hidden. */
+        let heroWords = null, heroDone = false;
+        function revealHeroPlain() {
+            heroDone = true;
+            if (heroWords) heroWords.forEach(function (w) { w.style.opacity = '1'; w.style.transform = 'none'; });
+        }
+        if (!reduce) {
+            const hh = document.querySelector('.hero-headline');
+            if (hh) {
+                try {
+                    heroWords = splitWords(hh);
+                    hh.style.animation = 'none';
+                    hh.style.opacity = '1';
+                    heroWords.forEach(function (w) { w.style.opacity = '0'; });
+                } catch (e) { heroWords = null; }
+            }
+        }
+        const heroFallback = setTimeout(revealHeroPlain, 2200);
+
+        /* ── Load Motion ── */
+        let M = null;
+        if (!reduce) {
+            try { M = await import('https://cdn.jsdelivr.net/npm/motion@11.13.5/+esm'); }
+            catch (e) { M = null; }
+        }
+
+        if (!M || !M.animate || !M.inView) {
+            /* No Motion → guarantee the hero headline is shown; reveals stay visible. */
+            revealHeroPlain();
+            clearTimeout(heroFallback);
+        } else {
+            const animate = M.animate, inView = M.inView, stagger = M.stagger,
+                  scroll = M.scroll, spring = M.spring;
+            try {
+                document.body.classList.add('motion-ready');
+
+                /* Hero headline — spring word cascade, timed to the loader hand-off */
+                if (heroWords && heroWords.length && !heroDone) {
+                    whenLoaded(function () {
+                        if (heroDone) return;
+                        heroDone = true;
+                        clearTimeout(heroFallback);
+                        try {
+                            animate(heroWords,
+                                { opacity: [0, 1], y: [42, 0], rotate: [4, 0] },
+                                { type: spring, stiffness: 130, damping: 15, delay: stagger(0.06) }
+                            );
+                        } catch (err) { revealHeroPlain(); }
+                    });
+                }
+
+                /* Grouped reveals — spring rise + faint scale, staggered */
+                function revealItems(items) {
+                    try {
+                        animate(items,
+                            { opacity: [0, 1], y: [34, 0], scale: [0.985, 1] },
+                            { type: spring, stiffness: 95, damping: 20, delay: stagger(0.09) }
+                        );
+                    } catch (err) {
+                        items.forEach(function (el) { el.style.opacity = '1'; el.style.transform = 'none'; });
+                    }
+                }
+                document.querySelectorAll('[data-reveal-group]').forEach(function (group) {
+                    const items = Array.prototype.slice.call(group.querySelectorAll('.reveal'));
+                    if (!items.length) return;
+                    inView(group, function () {
+                        if (group.dataset.revealed) return;
+                        group.dataset.revealed = '1';
+                        revealItems(items);
+                    }, { amount: 0.15 });
+                });
+
+                /* Orphan reveals (not inside a group) — never left hidden */
+                document.querySelectorAll('.reveal').forEach(function (el) {
+                    if (el.closest('[data-reveal-group]')) return;
+                    inView(el, function () {
+                        if (el.dataset.revealed) return;
+                        el.dataset.revealed = '1';
+                        try {
+                            animate(el, { opacity: [0, 1], y: [34, 0], scale: [0.985, 1] },
+                                { type: spring, stiffness: 95, damping: 20 });
+                        } catch (err) { el.style.opacity = '1'; el.style.transform = 'none'; }
+                    }, { amount: 0.1 });
+                });
+
+                /* ── Scroll-linked parallax for depth ── */
+                if (typeof scroll === 'function') {
+                    function parallax(node, target, keyframes) {
+                        if (!node || !target) return;
+                        try {
+                            scroll(animate(node, keyframes, { ease: 'linear' }),
+                                { target: target, offset: ['start end', 'end start'] });
+                        } catch (e) {}
+                    }
+                    /* Device showcase drifts gently within its frame */
+                    parallax(
+                        document.querySelector('.transform-visual img'),
+                        document.querySelector('.transform'),
+                        { y: [16, -16], scale: [1.1, 1.1] }
+                    );
+                    /* Contact background photo — slow drift behind the form */
+                    parallax(
+                        document.querySelector('.contact-bg img'),
+                        document.querySelector('.contact'),
+                        { y: [-26, 26], scale: [1.1, 1.1] }
+                    );
+                }
+            } catch (setupErr) {
+                document.body.classList.remove('motion-ready');
+                revealHeroPlain();
+                clearTimeout(heroFallback);
             }
         }
     </script>
