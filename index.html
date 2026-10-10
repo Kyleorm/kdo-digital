@@ -1661,6 +1661,10 @@
         .field.invalid .field-error { display: block; }
         .field.invalid input, .field.invalid select, .field.invalid textarea { border-color: #ff7a7a; }
         .form-submit { width: 100%; margin-top: 6px; }
+        .form-submit[disabled] { opacity: 0.6; cursor: wait; }
+        .form-honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+        .form-status { font-family: 'Outfit', sans-serif; font-size: 13.5px; line-height: 1.5; color: #ff9b9b; background: rgba(255,122,122,0.08); border: 1px solid rgba(255,122,122,0.35); border-radius: 12px; padding: 12px 14px; margin-top: 14px; text-align: center; }
+        .form-status a { color: #fff; }
         .form-note { font-family: 'Outfit', sans-serif; font-size: 12px; line-height: 1.5; color: rgba(255,255,255,0.4); margin-top: 16px; text-align: center; }
         .form-success { display: none; text-align: center; padding: 28px 8px; }
         .form-success-ico { width: 58px; height: 58px; margin: 0 auto 22px; border-radius: 50%; background: rgba(0,230,118,0.12); border: 1px solid rgba(0,230,118,0.45); display: grid; place-items: center; }
@@ -2193,21 +2197,23 @@
 
             <div class="contact-form reveal" id="contactForm">
                 <form class="form-fields" id="projectForm" novalidate>
+                    <!-- Honeypot: hidden from people, bots fill it in and get silently dropped -->
+                    <input type="checkbox" name="botcheck" id="cf-botcheck" class="form-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
                     <div class="field-row">
                         <div class="field">
                             <label for="cf-name">Your name</label>
-                            <input type="text" id="cf-name" name="name" autocomplete="name" required>
+                            <input type="text" id="cf-name" name="name" autocomplete="name" maxlength="100" required>
                             <span class="field-error">Please enter your name.</span>
                         </div>
                         <div class="field">
                             <label for="cf-email">Email</label>
-                            <input type="email" id="cf-email" name="email" autocomplete="email" required>
+                            <input type="email" id="cf-email" name="email" autocomplete="email" maxlength="254" required>
                             <span class="field-error">Please enter a valid email.</span>
                         </div>
                     </div>
                     <div class="field">
                         <label for="cf-business">Business <span style="text-transform:none;letter-spacing:0;opacity:0.5;">(optional)</span></label>
-                        <input type="text" id="cf-business" name="business" autocomplete="organization">
+                        <input type="text" id="cf-business" name="business" autocomplete="organization" maxlength="120">
                     </div>
                     <div class="field">
                         <label for="cf-need">What do you need?</label>
@@ -2221,18 +2227,19 @@
                     </div>
                     <div class="field">
                         <label for="cf-message">Tell me about it</label>
-                        <textarea id="cf-message" name="message" placeholder="A few lines about your business and what you're hoping to achieve…" required></textarea>
+                        <textarea id="cf-message" name="message" maxlength="5000" placeholder="A few lines about your business and what you're hoping to achieve…" required></textarea>
                         <span class="field-error">Please add a short message.</span>
                     </div>
-                    <button type="submit" class="btn btn-primary form-submit" data-magnetic>Send it over
+                    <button type="submit" class="btn btn-primary form-submit" data-magnetic><span class="form-submit-label">Send it over</span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                     </button>
+                    <p class="form-status" id="cf-status" role="alert" hidden>Sorry, your message didn't send. Please try again, or email me directly at <a href="mailto:kyle.orm@turbolt.co.uk">kyle.orm@turbolt.co.uk</a>.</p>
                     <p class="form-note">Prefer email? Reach me directly at <a href="mailto:kyle.orm@turbolt.co.uk" style="color:rgba(255,255,255,0.7);">kyle.orm@turbolt.co.uk</a></p>
                 </form>
                 <div class="form-success" role="status" aria-live="polite">
                     <div class="form-success-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></div>
-                    <h3>Your email's ready to send.</h3>
-                    <p>I've opened a pre-filled message in your mail app — just hit send and it'll come straight to me. I'll get back to you personally, usually within a day.</p>
+                    <h3>Thanks, your message is on its way.</h3>
+                    <p>It's come straight to my inbox. I'll get back to you personally, usually within a day.</p>
                 </div>
             </div>
         </div>
@@ -2856,16 +2863,24 @@
                 }
             }, { passive: true });
 
-            /* ── Contact form — client-side validation + mailto handoff ──
-               Static site (no backend yet): we validate, then build a pre-filled
-               email so nothing is lost and no secrets/endpoints are exposed.
-               All values are URL-encoded to prevent mailto header injection. */
+            /* ── Contact form — client-side validation + delivery via Web3Forms ──
+               Static site (no backend), so enquiries are posted straight to Web3Forms,
+               which emails them to the inbox tied to the access key below. That key is a
+               public form ID by design (it can only ever send to that one inbox), so it is
+               safe in page code. Web3Forms also rate-limits and spam-filters submissions. */
             var form = document.getElementById('projectForm');
             if (form) {
+                var WEB3FORMS_KEY = 'WEB3FORMS_ACCESS_KEY';
+                var SEND_TIMEOUT_MS = 15000;
                 var nameEl = document.getElementById('cf-name');
                 var emailEl = document.getElementById('cf-email');
                 var msgEl = document.getElementById('cf-message');
+                var statusEl = document.getElementById('cf-status');
+                var submitBtn = form.querySelector('.form-submit');
+                var submitLabel = form.querySelector('.form-submit-label');
+                var card = document.getElementById('contactForm');
                 var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                var sending = false;
 
                 function setInvalid(el, invalid) {
                     var field = el.closest('.field');
@@ -2875,8 +2890,17 @@
                     el.addEventListener('input', function () { setInvalid(el, false); });
                 });
 
+                /* Lock the button while sending so a double-click can't send twice */
+                function setSending(on) {
+                    sending = on;
+                    submitBtn.disabled = on;
+                    submitLabel.textContent = on ? 'Sending…' : 'Send it over';
+                }
+
                 form.addEventListener('submit', function (e) {
                     e.preventDefault();
+                    if (sending) return;
+                    statusEl.hidden = true;
                     var checks = [
                         { el: nameEl, ok: nameEl.value.trim().length > 0 },
                         { el: emailEl, ok: EMAIL_RE.test(emailEl.value.trim()) },
@@ -2889,24 +2913,47 @@
                     });
                     if (firstBad) { firstBad.focus(); return; }
 
+                    /* A bot ticked the hidden honeypot: look successful, send nothing */
+                    if (document.getElementById('cf-botcheck').checked) {
+                        card.classList.add('sent');
+                        return;
+                    }
+
                     var name = nameEl.value.trim();
-                    var email = emailEl.value.trim();
-                    var business = (document.getElementById('cf-business').value || '').trim() || '—';
-                    var need = document.getElementById('cf-need').value;
-                    var message = msgEl.value.trim();
+                    var payload = {
+                        access_key: WEB3FORMS_KEY,
+                        subject: 'New project enquiry — ' + name,
+                        from_name: 'KDO Digital website',
+                        name: name,
+                        email: emailEl.value.trim(),
+                        business: (document.getElementById('cf-business').value || '').trim() || '—',
+                        looking_for: document.getElementById('cf-need').value,
+                        message: msgEl.value.trim()
+                    };
 
-                    var subject = 'New project enquiry — ' + name;
-                    var body = 'Name: ' + name +
-                               '\nEmail: ' + email +
-                               '\nBusiness: ' + business +
-                               '\nLooking for: ' + need +
-                               '\n\n' + message;
-                    var href = 'mailto:kyle.orm@turbolt.co.uk?subject=' +
-                               encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+                    /* Give up after a while so a dead connection never leaves the form stuck */
+                    var controller = window.AbortController ? new AbortController() : null;
+                    var timer = controller ? setTimeout(function () { controller.abort(); }, SEND_TIMEOUT_MS) : null;
 
-                    var card = document.getElementById('contactForm');
-                    if (card) card.classList.add('sent');
-                    window.location.href = href;
+                    setSending(true);
+                    fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify(payload),
+                        signal: controller ? controller.signal : undefined
+                    })
+                        .then(function (res) { return res.json(); })
+                        .then(function (data) {
+                            if (!data || !data.success) throw new Error('Not sent');
+                            form.reset();
+                            card.classList.add('sent');
+                        })
+                        /* Network down, timeout or rejected: keep what they typed and offer email instead */
+                        .catch(function () { statusEl.hidden = false; })
+                        .then(function () {
+                            clearTimeout(timer);
+                            setSending(false);
+                        });
                 });
             }
         }());

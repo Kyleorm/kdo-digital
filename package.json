@@ -8,10 +8,14 @@
   "description": "**Kyle David Ormesher — Full Service Digital Agency**",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "playwright test"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "http-server": "^14.1.1"
+  }
 }
