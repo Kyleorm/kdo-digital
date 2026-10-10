@@ -91,7 +91,7 @@ test.describe('Contact form', () => {
         await submitBtn(page).click();
 
         await expect(errorBox(page)).toBeVisible();
-        await expect(errorBox(page).locator('a[href="mailto:kyle.orm@turbolt.co.uk"]')).toBeVisible();
+        await expect(errorBox(page).locator('a[href="mailto:kyle@kdodigital.co.uk"]')).toBeVisible();
         await expect(errorBox(page)).not.toContainText('Invalid key'); // raw service errors never shown
         await expect(successPanel(page)).toBeHidden();
         await expect(page.locator('#cf-message')).toHaveValue('Hi Kyle, FitnessPod recommended you. I need an app.');
