@@ -13,7 +13,7 @@ Written 29 October 2026, following `../WEBSITE-STANDARD.md`. Notes in *(Kyle: â€
 - **On phones, the form comes straight after its heading**, so the button lands on it (an iPhone test caught this).
 - **The yellow notes** are questions for you; **yellow highlights** are missing words. "Hide Kyle's notes" (bottom left on a computer, in the footer on a phone) shows the clean look. Adding `?notes=off` to the link does the same.
 - **Faster and safer:** the 3D background and animation libraries are gone. Fonts are served from the site itself (no Google), and `vercel.json` adds strict security headers. New link-preview picture (`og.png`) with the headline.
-- **The live site publishes internal files** today (for example DESIGN.md, index-old.html and the tests). `.vercelignore` should stop that. Check it once the redesign goes live.
+- **The live site publishes internal files** today (for example DESIGN.md, index-old.html and the tests). `.vercelignore` stops that: checked on 29 October 2026 on Vercel's own copy of this branch, where those files return "not found" and the page still loads.
 
 ### Before it goes live
 
