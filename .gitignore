@@ -23,3 +23,6 @@ skills-lock.json
 # Playwright test output
 test-results/
 playwright-report/
+
+# Preview copy made by deploy-preview.mjs
+preview-build/

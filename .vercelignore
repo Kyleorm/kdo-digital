@@ -1,0 +1,36 @@
+# Only the website itself goes online.
+# Notes, tests, design files and old drafts stay private.
+*.md
+*.png
+!og.png
+*.jpeg
+*.jpg
+*.zip
+*.mjs
+*.yml
+*.log
+index-*.html
+pages/
+tests/
+test-results/
+playwright-report/
+playwright.config.js
+package.json
+package-lock.json
+skills-lock.json
+.agents/
+.claude/
+.playwright-mcp/
+.mcp.json
+STITCH/
+brand/
+Photo assets/
+video assets/
+assets/images/
+assets/css/main.css
+assets/css/light-theme.css
+assets/css/purple-theme.css
+assets/css/red-theme.css
+assets/js/main.js
+assets/js/pyramid.js
+preview-build/

@@ -1,5 +1,10 @@
 # KDO Digital
 
+> **October 2026:** the home page is being redesigned around Kyle's e-commerce story, on the branch `redesign-story`.
+> Read `PAGE-PLAN.md` first: the plan, the build notes and what's still needed.
+> Preview: https://kdo-redesign-preview.vercel.app (update it with `node deploy-preview.mjs`).
+> The headline, colours and Stitch/Three.js plan further down this file are out of date.
+
 **Kyle David Ormesher — Full Service Digital Agency, Isle of Man**
 
 KDO Digital is a full service digital agency built for ambitious businesses. One agency, everything handled — websites, apps, ads, systems, and more.

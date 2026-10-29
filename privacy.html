@@ -10,55 +10,33 @@
     <meta name="robots" content="index, follow">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <meta name="theme-color" content="#04080F">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,500;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        :root { --accent: #1a8fff; }
-        body { font-family: 'Outfit', sans-serif; color: #1c2230; background: #fff; -webkit-font-smoothing: antialiased; line-height: 1.7; }
-
-        .legal-nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 40px; border-bottom: 1px solid rgba(0,0,0,0.08); position: sticky; top: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 10; }
-        .legal-nav a { text-decoration: none; }
-        .legal-logo { font-weight: 700; font-size: 16px; color: #0b0f17; letter-spacing: -0.02em; }
-        .legal-back { font-size: 13px; font-weight: 500; color: #5b6270; display: inline-flex; align-items: center; gap: 8px; transition: color 0.2s ease; }
-        .legal-back:hover { color: var(--accent); }
-
-        .legal-wrap { max-width: 760px; margin: 0 auto; padding: 80px 32px 100px; }
-        .legal-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
-        .legal-wrap h1 { font-family: 'Urbanist', sans-serif; font-weight: 500; font-size: clamp(34px, 6vw, 52px); letter-spacing: -0.03em; line-height: 1.05; color: #0b0f17; margin-bottom: 18px; }
-        .legal-updated { font-size: 14px; color: #8a909c; margin-bottom: 48px; }
-        .legal-wrap h2 { font-family: 'Urbanist', sans-serif; font-weight: 500; font-size: 24px; letter-spacing: -0.02em; color: #0b0f17; margin: 44px 0 14px; }
-        .legal-wrap p, .legal-wrap li { font-size: 16px; color: #3a4150; }
-        .legal-wrap p { margin-bottom: 16px; }
-        .legal-wrap ul { margin: 0 0 16px 22px; }
-        .legal-wrap li { margin-bottom: 8px; }
-        .legal-wrap a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(26,143,255,0.35); }
-        .legal-wrap a:hover { border-bottom-color: var(--accent); }
-        .legal-foot { border-top: 1px solid rgba(0,0,0,0.08); padding: 28px 32px; text-align: center; font-size: 13px; color: #8a909c; }
-        .legal-foot a { color: #5b6270; text-decoration: none; }
-    </style>
+    <link rel="preload" href="assets/fonts/outfit-normal-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/kdo.css">
+    <script src="assets/js/kdo.js" defer></script>
 </head>
-<body>
-    <nav class="legal-nav">
-        <a href="index.html" class="legal-logo">KDO Digital</a>
-        <a href="index.html" class="legal-back">← Back to site</a>
-    </nav>
+<body class="legal-page">
+    <header class="legal-header">
+        <div class="wrap header-inner">
+            <a class="logo" href="index.html">KD<span class="logo-o">O</span> Digital</a>
+            <a class="legal-back" href="index.html">Back to the website</a>
+        </div>
+    </header>
+
 
     <main class="legal-wrap">
         <p class="legal-eyebrow">Legal</p>
         <h1>Privacy Policy</h1>
-        <p class="legal-updated">Last updated: June 2026</p>
+        <p class="legal-updated">Last updated: October 2026</p>
 
         <p>This policy explains how KDO Digital ("we", "us", "I") collects, uses and protects your personal data when you visit this website or get in touch. We are committed to handling your information responsibly and in line with the Isle of Man Data Protection Act 2018 and the applied GDPR.</p>
 
         <h2>Who we are</h2>
-        <p>KDO Digital is a digital agency based on the Isle of Man, providing websites, applications and related digital services. For any data-related questions, contact us at <a href="mailto:kyle@kdodigital.co.uk">kyle@kdodigital.co.uk</a>.</p>
+        <p>KDO Digital is a one-person web design business on the Isle of Man, run by Kyle Ormesher. It builds websites and related services for businesses. For any data-related questions, contact us at <a href="mailto:kyle@kdodigital.co.uk">kyle@kdodigital.co.uk</a>.</p>
 
         <h2>What we collect</h2>
         <p>We only collect what we need to respond to you and run our service:</p>
         <ul>
-            <li><strong>Information you give us</strong> — such as your name, email address, business name and the contents of any message you send through our contact form or by email.</li>
+            <li><strong>Information you give us</strong> — such as your name, email address, your website address and the contents of any message you send through the free website check form or by email.</li>
             <li><strong>Technical information</strong> — basic, non-identifying information your browser shares automatically (such as device type and general location) may be processed by our hosting provider to keep the site secure and reliable.</li>
         </ul>
 
@@ -83,7 +61,7 @@
         <p>You have the right to access the personal data we hold about you, to ask us to correct or delete it, to object to or restrict its processing, and to request a copy of it. To exercise any of these rights, email <a href="mailto:kyle@kdodigital.co.uk">kyle@kdodigital.co.uk</a> and we will respond within one month.</p>
 
         <h2>Cookies</h2>
-        <p>This site is designed to use as little tracking as possible. We do not use advertising cookies. Some essential third-party resources (such as web fonts) may be loaded to display the site correctly. If we add analytics in future, this policy will be updated to reflect it.</p>
+        <p>This site doesn't use cookies or tracking. Its fonts and files are served from this site itself. If we add analytics in future, this policy will be updated to reflect it.</p>
 
         <h2>Changes to this policy</h2>
         <p>We may update this policy from time to time. The "last updated" date above will always show the current version.</p>
@@ -93,8 +71,7 @@
     </main>
 
     <footer class="legal-foot">
-        © <span id="y">2026</span> KDO Digital · Isle of Man · <a href="terms.html">Terms &amp; Conditions</a>
+        © <span data-year>2026</span> KDO Digital · Isle of Man · <a href="terms.html">Terms</a>
     </footer>
-    <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
 </body>
 </html>

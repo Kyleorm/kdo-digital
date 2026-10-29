@@ -1,22 +1,20 @@
-// Contact form — end-to-end journeys (happy + unhappy paths).
-// Web3Forms is mocked so tests never send real emails.
+// Free website check form: end-to-end journeys (happy and unhappy paths).
+// Web3Forms is mocked, so the tests never send real emails.
 const { test, expect } = require('@playwright/test');
 
 const WEB3FORMS_URL = 'https://api.web3forms.com/submit';
 
-// Open the homepage, wait for the loader to hand off, then scroll to the form
-async function openContactForm(page) {
-    await page.goto('/index.html#contact');
-    await page.waitForSelector('body.loaded', { timeout: 20000 });
-    await page.locator('#projectForm').scrollIntoViewIfNeeded();
+// Open the home page and bring the form into view
+async function openForm(page) {
+    await page.goto('/index.html#check');
+    await page.locator('#checkForm').scrollIntoViewIfNeeded();
 }
 
 async function fillValidForm(page) {
     await page.fill('#cf-name', 'Jane Tester');
     await page.fill('#cf-email', 'jane@example.com');
-    await page.fill('#cf-business', 'FitnessPod referral');
-    await page.selectOption('#cf-need', 'A mobile app');
-    await page.fill('#cf-message', 'Hi Kyle, FitnessPod recommended you. I need an app.');
+    await page.fill('#cf-website', 'janesbakery.im');
+    await page.fill('#cf-message', 'We bake cakes in Douglas. Our website is old.');
 }
 
 // Mock Web3Forms and record every request the page makes to it
@@ -29,127 +27,150 @@ async function mockWeb3Forms(page, respond) {
     return calls;
 }
 
-const submitBtn = (page) => page.locator('#projectForm .form-submit');
-const successPanel = (page) => page.locator('#contactForm .form-success');
-const errorBox = (page) => page.locator('#cf-status');
+const sendOk = (route) =>
+    route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true }) });
 
-test.describe('Contact form', () => {
-    test('sends a valid enquiry and shows the thank-you message', async ({ page }) => {
-        const calls = await mockWeb3Forms(page, (route) =>
-            route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true }) })
-        );
-        await openContactForm(page);
+const submitBtn = (page) => page.locator('#checkForm .form-submit');
+const successPanel = (page) => page.locator('#formCard .form-success');
+const errorBox = (page) => page.locator('#cf-status');
+const fieldError = (page, id) => page.locator(`#${id}-error`);
+
+test.describe('Free website check form', () => {
+    test('sends a valid request and shows the thank-you message', async ({ page }) => {
+        const calls = await mockWeb3Forms(page, sendOk);
+        await openForm(page);
         await fillValidForm(page);
         await submitBtn(page).click();
 
         await expect(successPanel(page)).toBeVisible();
-        await expect(successPanel(page)).toContainText('on its way');
-        await expect(page.locator('#projectForm')).toBeHidden();
+        await expect(successPanel(page)).toContainText("it's on its way");
+        await expect(page.locator('#checkForm')).toBeHidden();
 
         expect(calls).toHaveLength(1);
         expect(calls[0]).toMatchObject({
             name: 'Jane Tester',
             email: 'jane@example.com',
-            business: 'FitnessPod referral',
-            looking_for: 'A mobile app',
-            message: 'Hi Kyle, FitnessPod recommended you. I need an app.',
-            subject: 'New project enquiry — Jane Tester',
+            website: 'janesbakery.im',
+            message: 'We bake cakes in Douglas. Our website is old.',
+            subject: 'Free website check: Jane Tester',
         });
         expect(typeof calls[0].access_key).toBe('string');
     });
 
-    test('blocks an empty form and shows every required-field error', async ({ page }) => {
-        const calls = await mockWeb3Forms(page, (route) => route.abort());
-        await openContactForm(page);
+    test('works with just a name and email (no website yet)', async ({ page }) => {
+        const calls = await mockWeb3Forms(page, sendOk);
+        await openForm(page);
+        await page.fill('#cf-name', 'Sam');
+        await page.fill('#cf-email', 'sam@example.com');
         await submitBtn(page).click();
 
-        await expect(page.locator('#cf-name').locator('xpath=..').locator('.field-error')).toBeVisible();
-        await expect(page.locator('#cf-email').locator('xpath=..').locator('.field-error')).toBeVisible();
-        await expect(page.locator('#cf-message').locator('xpath=..').locator('.field-error')).toBeVisible();
+        await expect(successPanel(page)).toBeVisible();
+        expect(calls).toHaveLength(1);
+        expect(calls[0]).toMatchObject({ website: 'No website yet', message: '(no message)' });
+    });
+
+    test('blocks an empty form and shows the name and email errors', async ({ page }) => {
+        const calls = await mockWeb3Forms(page, (route) => route.abort());
+        await openForm(page);
+        await submitBtn(page).click();
+
+        await expect(fieldError(page, 'cf-name')).toBeVisible();
+        await expect(fieldError(page, 'cf-email')).toBeVisible();
+        await expect(fieldError(page, 'cf-website')).toBeHidden();
         await expect(page.locator('#cf-name')).toBeFocused();
+        await expect(page.locator('#cf-name')).toHaveAttribute('aria-invalid', 'true');
         expect(calls).toHaveLength(0);
     });
 
     test('rejects a badly formed email address', async ({ page }) => {
         const calls = await mockWeb3Forms(page, (route) => route.abort());
-        await openContactForm(page);
+        await openForm(page);
         await fillValidForm(page);
         await page.fill('#cf-email', 'not-an-email');
         await submitBtn(page).click();
 
-        await expect(page.locator('#cf-email').locator('xpath=..').locator('.field-error')).toBeVisible();
-        await expect(page.locator('#cf-name').locator('xpath=..').locator('.field-error')).toBeHidden();
+        await expect(fieldError(page, 'cf-email')).toBeVisible();
+        await expect(page.locator('#cf-email')).toBeFocused();
         expect(calls).toHaveLength(0);
     });
 
-    test('shows a friendly error and keeps the message when the service refuses it', async ({ page }) => {
-        await mockWeb3Forms(page, (route) =>
-            route.fulfill({ status: 400, contentType: 'application/json', body: JSON.stringify({ success: false, message: 'Invalid key' }) })
-        );
-        await openContactForm(page);
+    test('rejects something that is not a web address', async ({ page }) => {
+        const calls = await mockWeb3Forms(page, (route) => route.abort());
+        await openForm(page);
         await fillValidForm(page);
+        await page.fill('#cf-website', 'not a website');
         await submitBtn(page).click();
 
-        await expect(errorBox(page)).toBeVisible();
-        await expect(errorBox(page).locator('a[href="mailto:kyle@kdodigital.co.uk"]')).toBeVisible();
-        await expect(errorBox(page)).not.toContainText('Invalid key'); // raw service errors never shown
-        await expect(successPanel(page)).toBeHidden();
-        await expect(page.locator('#cf-message')).toHaveValue('Hi Kyle, FitnessPod recommended you. I need an app.');
-        await expect(submitBtn(page)).toBeEnabled();
+        await expect(fieldError(page, 'cf-website')).toBeVisible();
+        expect(calls).toHaveLength(0);
+
+        // Fixing it clears the error straight away
+        await page.fill('#cf-website', 'https://www.janesbakery.co.uk/cakes');
+        await expect(fieldError(page, 'cf-website')).toBeHidden();
     });
 
-    test('shows a friendly error when the connection fails, then recovers on retry', async ({ page }) => {
-        let attempt = 0;
-        await mockWeb3Forms(page, (route) => {
-            attempt += 1;
-            return attempt === 1
-                ? route.abort('internetdisconnected')
-                : route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true }) });
-        });
-        await openContactForm(page);
+    test('handles junk and script tags as plain text', async ({ page }) => {
+        const calls = await mockWeb3Forms(page, sendOk);
+        await openForm(page);
         await fillValidForm(page);
+        const nasty = '<script>alert(1)</script> ' + 'x'.repeat(6000);
+        await page.fill('#cf-message', nasty);
         await submitBtn(page).click();
-        await expect(errorBox(page)).toBeVisible();
-
-        await submitBtn(page).click();
-        await expect(successPanel(page)).toBeVisible();
-    });
-
-    test('only sends once if the button is pressed repeatedly', async ({ page }) => {
-        const calls = await mockWeb3Forms(page, async (route) => {
-            await new Promise((r) => setTimeout(r, 800)); // slow network
-            await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true }) });
-        });
-        await openContactForm(page);
-        await fillValidForm(page);
-        await submitBtn(page).click();
-
-        await expect(submitBtn(page)).toBeDisabled();
-        await expect(submitBtn(page)).toContainText('Sending');
-        await page.locator('#projectForm').evaluate((f) => f.requestSubmit());
 
         await expect(successPanel(page)).toBeVisible();
         expect(calls).toHaveLength(1);
+        // The box stops at 5,000 characters and nothing on the page ran the script
+        expect(calls[0].message.length).toBeLessThanOrEqual(5000);
+        expect(calls[0].message.startsWith('<script>')).toBe(true);
     });
 
-    test('silently drops spam bots that fill the hidden field', async ({ page }) => {
+    test('keeps what they typed and offers email when sending fails', async ({ page }) => {
         const calls = await mockWeb3Forms(page, (route) => route.abort());
-        await openContactForm(page);
+        await openForm(page);
         await fillValidForm(page);
-        await page.locator('#cf-botcheck').evaluate((el) => { el.checked = true; });
+        await submitBtn(page).click();
+
+        await expect(errorBox(page)).toBeVisible();
+        await expect(errorBox(page)).toContainText('kyle@kdodigital.co.uk');
+        await expect(page.locator('#cf-name')).toHaveValue('Jane Tester');
+        await expect(successPanel(page)).toBeHidden();
+        await expect(submitBtn(page)).toBeEnabled();
+        expect(calls).toHaveLength(1);
+    });
+
+    test('treats a rejected send as a failure', async ({ page }) => {
+        await mockWeb3Forms(page, (route) =>
+            route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: false }) })
+        );
+        await openForm(page);
+        await fillValidForm(page);
+        await submitBtn(page).click();
+
+        await expect(errorBox(page)).toBeVisible();
+        await expect(successPanel(page)).toBeHidden();
+    });
+
+    test('a bot that ticks the hidden box is dropped without sending', async ({ page }) => {
+        const calls = await mockWeb3Forms(page, sendOk);
+        await openForm(page);
+        await fillValidForm(page);
+        await page.evaluate(() => { document.getElementById('cf-botcheck').checked = true; });
         await submitBtn(page).click();
 
         await expect(successPanel(page)).toBeVisible();
         expect(calls).toHaveLength(0);
     });
 
-    test('form fits the screen with no sideways scrolling', async ({ page }) => {
-        await openContactForm(page);
-        const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
-        expect(overflow).toBeLessThanOrEqual(0);
-        const box = await page.locator('#contactForm').boundingBox();
-        const viewport = page.viewportSize();
-        expect(box.x).toBeGreaterThanOrEqual(0);
-        expect(box.x + box.width).toBeLessThanOrEqual(viewport.width + 1);
+    test('a double click only sends once', async ({ page }) => {
+        const calls = await mockWeb3Forms(page, async (route) => {
+            await new Promise((resolve) => setTimeout(resolve, 600));
+            await sendOk(route);
+        });
+        await openForm(page);
+        await fillValidForm(page);
+        await submitBtn(page).dblclick();
+
+        await expect(successPanel(page)).toBeVisible();
+        expect(calls).toHaveLength(1);
     });
 });

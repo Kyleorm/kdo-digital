@@ -1,0 +1,9 @@
+The font files in this folder are the latin subsets of two Google Fonts, served from
+this website. Both are free to use and share under the SIL Open Font License 1.1:
+https://openfontlicense.org
+
+outfit-normal-var.woff2
+  Outfit. Copyright 2021 The Outfit Project Authors (https://github.com/Outfitio/Outfit-Fonts)
+
+urbanist-normal-var.woff2, urbanist-italic-var.woff2
+  Urbanist. Copyright 2021 The Urbanist Project Authors (https://github.com/coreyhu/Urbanist)
